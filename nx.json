@@ -7,5 +7,18 @@
     "tslint.json": "*",
     "nx.json": "*"
   },
-  "projects": {}
+  "projects": {
+    "store": {
+      "tags": []
+    },
+    "formula": {
+      "tags": []
+    },
+    "formula-example": {
+      "tags": []
+    },
+    "formula-example-e2e": {
+      "tags": []
+    }
+  }
 }

@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FormulaDirective should create a form 1`] = `
+<div
+  id="root2"
+  ng-version="7.1.4"
+>
+  <z-formula
+    ng-reflect-formula="[object Object]"
+    ng-reflect-value="[object Object]"
+  />
+  <z-fake-field>
+    <input
+      name="fake"
+    />
+  </z-fake-field>
+</div>
+`;
+
+exports[`FormulaDirective when the formula changes should render a new form 1`] = `
+<div
+  id="root5"
+  ng-version="7.1.4"
+>
+  <z-formula
+    ng-reflect-formula="[object Object]"
+    ng-reflect-value="fake1,fake2,fake3,fake4"
+  />
+  <z-fake-field>
+    <input
+      name="fake"
+    />
+  </z-fake-field>
+  <z-fake-field>
+    <input
+      name="fake"
+    />
+  </z-fake-field>
+  <z-fake-field>
+    <input
+      name="fake"
+    />
+  </z-fake-field>
+</div>
+`;

@@ -2,7 +2,209 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "",
-  "projects": {},
+  "schematics": {
+    "@schematics/angular:component": {
+      "inlineTemplate": true,
+      "changeDetection": "OnPush",
+      "prefix": "z",
+      "styleext": "scss"
+    }
+  },
+  "projects": {
+    "store": {
+      "root": "libs/store",
+      "sourceRoot": "libs/store/src",
+      "projectType": "library",
+      "prefix": "z",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/store/tsconfig.lib.json",
+            "project": "libs/store/ng-package.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/store/tsconfig.lib.json",
+              "libs/store/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/store/jest.config.js",
+            "tsConfig": "libs/store/tsconfig.spec.json",
+            "setupFile": "libs/store/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "formula": {
+      "root": "libs/formula",
+      "sourceRoot": "libs/formula/src",
+      "projectType": "library",
+      "prefix": "z",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/formula/tsconfig.lib.json",
+            "project": "libs/formula/ng-package.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/formula/tsconfig.lib.json",
+              "libs/formula/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/formula/jest.config.js",
+            "tsConfig": "libs/formula/tsconfig.spec.json",
+            "setupFile": "libs/formula/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "formula-example": {
+      "root": "apps/formula-example/",
+      "sourceRoot": "apps/formula-example/src",
+      "projectType": "application",
+      "prefix": "zodiac-ui",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/formula-example",
+            "index": "apps/formula-example/src/index.html",
+            "main": "apps/formula-example/src/main.ts",
+            "polyfills": "apps/formula-example/src/polyfills.ts",
+            "tsConfig": "apps/formula-example/tsconfig.app.json",
+            "assets": [
+              "apps/formula-example/src/favicon.ico",
+              "apps/formula-example/src/assets"
+            ],
+            "styles": [
+              "apps/formula-example/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/formula-example/src/environments/environment.ts",
+                  "with": "apps/formula-example/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "formula-example:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "formula-example:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "formula-example:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/formula-example/tsconfig.app.json",
+              "apps/formula-example/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "apps/formula-example/jest.config.js",
+            "tsConfig": "apps/formula-example/tsconfig.spec.json",
+            "setupFile": "apps/formula-example/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "formula-example-e2e": {
+      "root": "apps/formula-example-e2e",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/builders:cypress",
+          "options": {
+            "cypressConfig": "apps/formula-example-e2e/cypress.json",
+            "tsConfig": "apps/formula-example-e2e/tsconfig.e2e.json",
+            "devServerTarget": "formula-example:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "formula-example:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "apps/formula-example-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
   "cli": {
     "warnings": {
       "typescriptMismatch": false,

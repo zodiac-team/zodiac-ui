@@ -16,7 +16,16 @@
     ],
     "baseUrl": ".",
     "paths": {
-    }
+      "@zodiac-ui/store": [
+        "libs/store/src/index.ts"
+      ],
+      "@zodiac-ui/formula": [
+        "libs/formula/src/index.ts"
+      ]
+    },
+    "plugins": [{
+      "name": "@angular/language-service"
+    }]
   },
   "exclude": [
     "node_modules",
