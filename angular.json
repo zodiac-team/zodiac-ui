@@ -203,6 +203,129 @@
           }
         }
       }
+    },
+    "store-example": {
+      "root": "apps/store-example/",
+      "sourceRoot": "apps/store-example/src",
+      "projectType": "application",
+      "prefix": "zodiac-ui",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/store-example",
+            "index": "apps/store-example/src/index.html",
+            "main": "apps/store-example/src/main.ts",
+            "polyfills": "apps/store-example/src/polyfills.ts",
+            "tsConfig": "apps/store-example/tsconfig.app.json",
+            "assets": [
+              "apps/store-example/src/favicon.ico",
+              "apps/store-example/src/assets"
+            ],
+            "styles": [
+              "apps/store-example/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/store-example/src/environments/environment.ts",
+                  "with": "apps/store-example/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "store-example:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "store-example:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "store-example:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/store-example/tsconfig.app.json",
+              "apps/store-example/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "apps/store-example/jest.config.js",
+            "tsConfig": "apps/store-example/tsconfig.spec.json",
+            "setupFile": "apps/store-example/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "store-example-e2e": {
+      "root": "apps/store-example-e2e",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/builders:cypress",
+          "options": {
+            "cypressConfig": "apps/store-example-e2e/cypress.json",
+            "tsConfig": "apps/store-example-e2e/tsconfig.e2e.json",
+            "devServerTarget": "store-example:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "store-example:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "apps/store-example-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {

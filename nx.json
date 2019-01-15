@@ -19,6 +19,12 @@
     },
     "formula-example-e2e": {
       "tags": []
+    },
+    "store-example": {
+      "tags": []
+    },
+    "store-example-e2e": {
+      "tags": []
     }
   }
 }

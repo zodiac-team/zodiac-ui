@@ -41,13 +41,14 @@
         "@angular/platform-browser": "^7.0.0",
         "@angular/platform-browser-dynamic": "^7.0.0",
         "@angular/router": "^7.0.0",
-        "core-js": "^2.5.4",
-        "rxjs": "~6.3.3",
-        "zone.js": "^0.8.26",
-        "@nrwl/nx": "7.1.1",
         "@ngrx/effects": "6.1.0",
         "@ngrx/router-store": "6.1.0",
-        "@ngrx/store": "6.1.0"
+        "@ngrx/store": "6.1.0",
+        "@nrwl/nx": "7.1.1",
+        "core-js": "^2.5.4",
+        "immer": "^1.10.2",
+        "rxjs": "~6.3.3",
+        "zone.js": "^0.8.26"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "~0.10.0",

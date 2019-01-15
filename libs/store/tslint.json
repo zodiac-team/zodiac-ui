@@ -2,6 +2,7 @@
     "extends": "../../tslint.json",
     "rules": {
         "directive-selector": [true, "attribute", "z", "camelCase"],
-        "component-selector": [true, "element", "z", "kebab-case"]
+        "component-selector": [true, "element", "z", "kebab-case"],
+        "import-blacklist": [true, "rxjs/Rx", "@zodiac-ui/store"]
     }
 }

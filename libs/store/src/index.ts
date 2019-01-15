@@ -1,1 +1,6 @@
 export * from "./lib/store.module"
+export * from "./lib/store.service"
+export * from "./lib/constants"
+export * from "./lib/interfaces"
+export * from "./lib/effects/effects.module"
+export * from "./lib/effects/effects.service"
