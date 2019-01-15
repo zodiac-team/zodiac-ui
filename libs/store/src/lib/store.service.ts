@@ -21,7 +21,7 @@ import { produce } from "immer"
 import { STORE_FEATURE, STORE_INITIAL_STATE } from "./constants"
 import { Action, ActionType, Feature } from "./interfaces"
 
-export function TypeOf<T extends { new (...args: any[]): {} }>(type: string) {
+export function OfType<T extends { new (...args: any[]): {} }>(type: string) {
     return function(constructor) {
         return class extends constructor {
             static type = type
@@ -157,7 +157,7 @@ export class Store<T> extends Observable<T> implements OnDestroy {
             return this.actions$.pipe(filter<U>(action => action.type === (actionType as any).type))
         } else {
             console.error(
-                `Action missing static property "type". Did you forget the @TypeOf() decorator?`,
+                `Action missing static property "type". Did you forget the @OfType() decorator?`,
                 actionType,
             )
             throw new Error()

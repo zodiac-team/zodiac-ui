@@ -19,11 +19,6 @@ export class AppComponent {
 
     constructor(store: Store<AppState>) {
         this.store = store
-
-        this.store.subscribe(wtf => {
-            console.log("wtf", wtf)
-        })
-
         this.store.dispatch(new GetTodos("https://jsonplaceholder.typicode.com/todos/1"))
     }
 

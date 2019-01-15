@@ -6,8 +6,8 @@ An immutable store implementation for Angular based on ngrx.
 
 Install from NPM
 ```
-npm install @zodiac-ui/store
-yarn add @zodiac-ui/store
+npm install @zodiac-ui/store immer
+yarn add @zodiac-ui/store immer
 ```
 
 ## Early adopters
@@ -60,7 +60,7 @@ In a service or component
 
 ```ts
 export class ExampleComponent {
-    contructor(public store: Store<AppState>) {}
+    constructor(public store: Store<AppState>) {}
     
     increment() {
         this.store.setState((state) => {
@@ -78,21 +78,21 @@ From a template
 @Component({
     selector: "z-example",
     template: `
-        <ng-container *zStore="let state of store">
+        <ng-container *zStore="let state in store">
             {{ state | json }}
         </ng-container>
     `
 })
 export class ExampleComponent {
-    contructor(public store: Store<AppState>) {}
+    constructor(public store: Store<AppState>) {}
 }
 ```
 
 From TypeScript
 
-```
+```ts
 export class ExampleComponent {
-    contructor(public store: Store<AppState>) {
+    constructor(public store: Store<AppState>) {
         store.subscribe((state) => console.log(state))
     }
 }
@@ -103,7 +103,7 @@ export class ExampleComponent {
 Create an action
 
 ```ts
-@TypeOf("GET_TODOS")
+@OfType("GET_TODOS")
 export class GetTodos {
     constructor(public payload: any) {}
 }
@@ -155,10 +155,10 @@ AppEffects.connect((store, ctx) => {
 React to actions
 
 ```ts
-AppEffects.connect((store, ctx) => {
+AppEffects.connect((store, ctx) => (
     store.ofAction(GET_TODOS).pipe(
         switchMap((action) => ctx.http.get(action.payload)),
         tap((todos) => store.setState({ todos })
     )
-})
+))
 ```

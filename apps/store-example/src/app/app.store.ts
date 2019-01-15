@@ -1,4 +1,4 @@
-import { TypeOf, createConnector, select, watch } from "@zodiac-ui/store"
+import { OfType, createConnector, select, watch } from "@zodiac-ui/store"
 import { Injectable } from "@angular/core"
 import { HttpClient } from "@angular/common/http"
 import { delay, switchMap, tap } from "rxjs/operators"
@@ -18,7 +18,7 @@ export const initialState: AppState = {
     todo: null,
 }
 
-@TypeOf("GET_TODOS")
+@OfType("GET_TODOS")
 export class GetTodos {
     constructor(public payload: any) {}
 }
