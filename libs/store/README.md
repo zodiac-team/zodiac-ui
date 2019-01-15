@@ -156,7 +156,7 @@ React to actions
 
 ```ts
 AppEffects.connect((store, ctx) => (
-    store.ofAction(GET_TODOS).pipe(
+    store.ofAction(GetTodos).pipe(
         switchMap((action) => ctx.http.get(action.payload)),
         tap((todos) => store.setState({ todos })
     )
