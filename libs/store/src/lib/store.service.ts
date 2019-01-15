@@ -102,7 +102,7 @@ export class Store<T> extends Observable<T> implements OnDestroy {
 
     constructor(
         @Inject(STORE_FEATURE) feature: Feature,
-        @Inject(STORE_INITIAL_STATE) initialState: T,
+        @Inject(STORE_INITIAL_STATE) initialState: any,
         @Optional() @SkipSelf() parent?: Store<any>,
     ) {
         super((subscriber: Subscriber<T>) => {

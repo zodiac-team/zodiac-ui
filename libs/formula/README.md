@@ -6,7 +6,7 @@ Angular developers.
 
 ## Early adopters
 
-Formula is in very early development. Please do not use this in production yet.
+Formula is in very early development. Please do not use this in production.
 
 ## Why Formula?
 
@@ -79,21 +79,6 @@ In this example we are declaring a `formula` that contains a single form control
 concept is similar to that of Angular route components. For example, the `TextFieldComponent`
 may be as simple as this:
 
-### Public API
-
-Formula is under active development. The current API is experimental and likely to change
-before release.
-
-|                                              |                                                        |
-| -------------------------------------------- | ------------------------------------------------------ |
-| `@Input() formula: Formula`                  | The formula to be rendered. See `Formula` for options. |
-| `@Input() value: any`                        | Form value setter. Unknown object keys are discarded.  |
-| `@Output() valueChanges: EventEmitter<any>`  | Forwards `valueChanges` from `AbstractControl`.        |
-| `@Output() statusChanges: EventEmitter<any>` | Forwards `statusChanges` from `AbstractControl`.       |
-| `@Output() statusChanges: EventEmitter<any>` | Forwards `submit` events from a registered `NgForm`.   |
-| `setForm(form: NgForm): void`                | Registers a `NgForm` with the outlet.                  |
-| `setValue(value: any): void`                 | Immediately patches the value of the form              |
-
 ```ts
 @Component({
     selector: "z-text-field",
@@ -108,6 +93,21 @@ export class TextFieldComponent {
 
 Each component in the tree receives a `FormulaContext` containing the `model`, `data` and `resolve`
 data.
+
+### Public API
+
+Formula is under active development. The current API is experimental and likely to change
+before release.
+
+|                                              |                                                        |
+| -------------------------------------------- | ------------------------------------------------------ |
+| `@Input() formula: Formula`                  | The formula to be rendered. See `Formula` for options. |
+| `@Input() value: any`                        | Form value setter. Unknown object keys are discarded.  |
+| `@Output() valueChanges: EventEmitter<any>`  | Forwards `valueChanges` from `AbstractControl`.        |
+| `@Output() statusChanges: EventEmitter<any>` | Forwards `statusChanges` from `AbstractControl`.       |
+| `@Output() submit: EventEmitter<any>`        | Forwards `submit` events from a registered `NgForm`.   |
+| `setForm(form: NgForm): void`                | Registers a `NgForm` with the outlet.                  |
+| `setValue(value: any): void`                 | Immediately patches the value of the form              |
 
 ## FormulaOutlet
 
