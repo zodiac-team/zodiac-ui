@@ -60,7 +60,7 @@ In a service or component
 
 ```ts
 export class ExampleComponent {
-    contructor(public store: Store<AppState>) {}
+    constructor(public store: Store<AppState>) {}
     
     increment() {
         this.store.setState((state) => {
@@ -84,7 +84,7 @@ From a template
     `
 })
 export class ExampleComponent {
-    contructor(public store: Store<AppState>) {}
+    constructor(public store: Store<AppState>) {}
 }
 ```
 
@@ -92,7 +92,7 @@ From TypeScript
 
 ```
 export class ExampleComponent {
-    contructor(public store: Store<AppState>) {
+    constructor(public store: Store<AppState>) {
         store.subscribe((state) => console.log(state))
     }
 }
