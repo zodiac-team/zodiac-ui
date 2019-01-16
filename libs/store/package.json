@@ -1,12 +1,19 @@
 {
     "name": "@zodiac-ui/store",
     "author": "zodiac-team",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "homepage": "https://github.com/zodiac-team/zodiac-ui",
-    "keywords": ["RxJS", "Angular", "Store", "Redux", "Zodiac"],
+    "keywords": [
+        "RxJS",
+        "Angular",
+        "Store",
+        "Redux",
+        "Zodiac"
+    ],
     "peerDependencies": {
         "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
         "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
-        "immer": "^1.10.2"
+        "immer": "^1.10.2",
+        "reselect": "^4.0.0"
     }
 }

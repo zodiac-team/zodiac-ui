@@ -5,9 +5,10 @@ An immutable store implementation for Angular based on ngrx.
 ## Getting Started
 
 Install from NPM
+
 ```
-npm install @zodiac-ui/store immer
-yarn add @zodiac-ui/store immer
+npm install @zodiac-ui/store immer reselect
+yarn add @zodiac-ui/store immer reselect
 ```
 
 ## Early adopters
@@ -27,9 +28,7 @@ Import the store module into your app.
 
 ```ts
 @NgModule({
-    imports: [
-        StoreModule.forRoot(initialState)
-    ]
+    imports: [StoreModule.forRoot(initialState)],
 })
 export class AppModule {}
 ```
@@ -42,6 +41,7 @@ Create an interface
 export interface AppState {
     count: number
     todos: any
+    computedValue: number
 }
 ```
 
@@ -50,7 +50,8 @@ Define the initial state
 ```ts
 export const initialState: AppState = {
     count: 0,
-    todos: null
+    todos: null,
+    computedValue: null
 }
 ```
 
@@ -61,9 +62,9 @@ In a service or component
 ```ts
 export class ExampleComponent {
     constructor(public store: Store<AppState>) {}
-    
+
     increment() {
-        this.store.setState((state) => {
+        this.store.setState(state => {
             state.count += 1
         })
     }
@@ -78,10 +79,8 @@ From a template
 @Component({
     selector: "z-example",
     template: `
-        <ng-container *zStore="let state in store">
-            {{ state | json }}
-        </ng-container>
-    `
+        <ng-container *zStore="let state; in: store"> {{ state | json }} </ng-container>
+    `,
 })
 export class ExampleComponent {
     constructor(public store: Store<AppState>) {}
@@ -93,19 +92,25 @@ From TypeScript
 ```ts
 export class ExampleComponent {
     constructor(public store: Store<AppState>) {
-        store.subscribe((state) => console.log(state))
+        // Observable
+        store.pipe(
+            select((state) => state.count)
+        ).subscribe(count => console.log(count))
+        
+        // Snapshot
+        const count = store.state.count
     }
 }
 ```
 
 ### Actions
- 
-Create an action
+
+Create an action. Actions are only used to trigger effects.
 
 ```ts
 @OfType("GET_TODOS")
 export class GetTodos {
-    constructor(public payload: any) {}
+    constructor(public payload: string) {}
 }
 ```
 
@@ -114,7 +119,7 @@ Dispatch an action
 ```ts
 export class StoreExample {
     constructor(private store: Store<AppState>) {}
-    
+
     getTodos() {
         this.store.dispatch(new GetTodos("http://..."))
     }
@@ -127,9 +132,7 @@ Import the effects module
 
 ```ts
 @NgModule({
-    imports: [
-        EffectsModule.forRoot([AppEffects])
-    ]
+    imports: [EffectsModule.forRoot([AppEffects])],
 })
 export class AppModule {}
 ```
@@ -144,7 +147,7 @@ export class AppEffects {
 }
 ```
 
-Write some effects.
+Write some effects
 
 ```ts
 AppEffects.connect((store, ctx) => {
@@ -161,4 +164,31 @@ AppEffects.connect((store, ctx) => (
         tap((todos) => store.setState({ todos })
     )
 ))
+
+```
+
+## Selectors
+
+Create a feature selector
+
+```ts
+const $feature = createFeatureSelector<AppState>()
+```
+
+Create a selector
+
+```ts
+const $count = createSelector($feature, state => state.count)
+``` 
+
+## Computed Properties
+
+A convenience method is available using effects.
+
+```ts
+AppEffects.connect(
+    compute($count, (count, state) => {
+        state.computedValue = count + 1
+    }),
+)
 ```

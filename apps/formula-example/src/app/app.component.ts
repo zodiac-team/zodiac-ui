@@ -88,7 +88,7 @@ export class AppComponent {
     public value = [{ test: "testing", test2: 123 }, { test: "testing3", test2: 234 }]
 
     handleEvents() {
-        console.log("submit!")
+        // console.log("submit!")
     }
 
     handleValueChanges(event: any) {

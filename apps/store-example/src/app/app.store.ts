@@ -1,14 +1,24 @@
-import { OfType, createConnector, select, watch } from "@zodiac-ui/store"
+import {
+    compute,
+    createConnector,
+    createFeatureSelector,
+    ofAction,
+    OfType,
+    setState,
+    watch,
+} from "@zodiac-ui/store"
 import { Injectable } from "@angular/core"
 import { HttpClient } from "@angular/common/http"
-import { delay, switchMap, tap } from "rxjs/operators"
+import { switchMap, tap } from "rxjs/operators"
 import { timer } from "rxjs"
+import { createSelector } from "reselect"
 
 export interface AppState {
     count: number
     didIncrement: boolean
     somethingElse: string
     todo: any
+    computedValue: number
 }
 
 export const initialState: AppState = {
@@ -16,6 +26,7 @@ export const initialState: AppState = {
     didIncrement: false,
     somethingElse: null,
     todo: null,
+    computedValue: null,
 }
 
 @OfType("GET_TODOS")
@@ -29,41 +40,32 @@ export class AppEffects {
     constructor(public http: HttpClient) {}
 }
 
-export enum app {
-    DID_INCREMENT = "Did increment",
-    SOMETHING_ELSE = "Something else",
-    GET_TODO = "Get todo",
-}
-
-AppEffects.connect(
-    store =>
-        store.pipe(
-            watch("count"),
-            tap(() => store.setState({ didIncrement: true })),
-        ),
-    app.DID_INCREMENT,
+const feature = createFeatureSelector<AppState>()
+const $count = createSelector(
+    feature,
+    state => state.count,
 )
 
-AppEffects.connect(
-    store =>
-        timer(1000).pipe(
-            tap(() =>
-                store.setState(draft => Object.assign(draft, { somethingElse: "somethingElse" })),
-            ),
-        ),
-    app.SOMETHING_ELSE,
+AppEffects.connect(store =>
+    store.pipe(
+        watch(state => state.count),
+        tap(() => store.setState({ didIncrement: true })),
+    ),
 )
 
+AppEffects.connect(store => timer(1000).pipe(setState(store, { somethingElse: "somethingElse" })))
+
 AppEffects.connect(
-    (store, ctx) =>
-        store
-            .ofAction(GetTodos)
-            .pipe(
-                switchMap(action =>
-                    ctx.http
-                        .get(action.payload)
-                        .pipe(tap(todo => store.setState({ todo }))),
-                ),
-            ),
-    app.GET_TODO,
+    compute($count, (count, state) => {
+        state.computedValue = count + 1
+    }),
+)
+
+AppEffects.connect((store, ctx) =>
+    store.pipe(
+        ofAction(GetTodos),
+        switchMap(action =>
+            ctx.http.get(action.payload).pipe(tap(todo => store.setState({ todo }))),
+        ),
+    ),
 )

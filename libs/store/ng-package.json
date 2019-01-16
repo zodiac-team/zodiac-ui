@@ -4,7 +4,8 @@
     "lib": {
         "entryFile": "src/index.ts",
         "umdModuleIds": {
-            "immer": "immer"
+            "immer": "immer",
+            "reselect": "reselect"
         }
     }
 }

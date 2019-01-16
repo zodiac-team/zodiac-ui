@@ -1,9 +1,7 @@
-import { Action, ConnectFactoryWithContext, ConnectFnWithContext } from "../interfaces"
+import { ConnectFactoryWithContext, ConnectFnWithContext } from "../interfaces"
 import { Inject, Injectable, Injector, Optional, Type } from "@angular/core"
 import { Store } from "../store.service"
 import { STORE_EFFECTS } from "../constants"
-import { asapScheduler, defer, Observable, Subject } from "rxjs"
-import { debounceTime, share, skip, throttleTime } from "rxjs/operators"
 
 const connections = Symbol("connections")
 
@@ -12,13 +10,13 @@ export interface Effects extends Type<any> {
 }
 
 export function createConnector<T, U>(): ConnectFactoryWithContext<T, U> {
-    function connect(connectFn: ConnectFnWithContext<T, U>, name: string) {
-        connect[connections].set(name, connectFn)
+    function connect(connectFn: ConnectFnWithContext<T, U>, name?: string) {
+        connect[connections].add(connectFn)
         return connectFn
     }
 
     Object.defineProperty(connect, connections, {
-        value: new Map(),
+        value: new Set(),
     })
 
     return connect

@@ -200,11 +200,8 @@ export class FormulaContainerRenderer extends FormulaRenderer {
             const factory = this.cfr.resolveComponentFactory(node.formula.component)
             this.refs.set(node, this.vcr.createComponent(factory, null, injector))
         } else {
-            console.log("children", node.children)
             node.children.forEach(childNode => {
                 const renderer = createRenderer(childNode.formula, injector)
-
-                console.log("renderer")
 
                 renderer.render(childNode)
             })

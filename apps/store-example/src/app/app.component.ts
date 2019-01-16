@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core"
-import { Store } from "@zodiac-ui/store"
+import { Store, toState } from "@zodiac-ui/store"
 import { AppState, GetTodos } from "./app.store"
 
 @Component({

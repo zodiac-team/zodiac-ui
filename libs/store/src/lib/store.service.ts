@@ -1,99 +1,27 @@
 import { Inject, Injectable, OnDestroy, Optional, SkipSelf, Type } from "@angular/core"
-import {
-    asapScheduler,
-    asyncScheduler,
-    BehaviorSubject,
-    Observable,
-    OperatorFunction,
-    Subject,
-    Subscriber,
-} from "rxjs"
+import { asapScheduler, BehaviorSubject, Observable, Subject } from "rxjs"
 import {
     debounceTime,
     distinctUntilChanged,
     filter,
-    map,
+    mapTo,
     skip,
-    switchMap,
+    startWith,
     tap,
 } from "rxjs/operators"
 import { produce } from "immer"
-import { STORE_FEATURE, STORE_INITIAL_STATE } from "./constants"
-import { Action, ActionType, Feature } from "./interfaces"
+import { STORE_ACTIONS, STORE_FEATURE, STORE_INITIAL_STATE } from "./constants"
+import { Action, Feature, StateSetter, StoreLike } from "./interfaces"
+import { defaultMemoize, Selector } from "reselect"
+import { isRecipe } from "./operators"
+import { select } from "./operators"
 
-export function OfType<T extends { new (...args: any[]): {} }>(type: string) {
-    return function(constructor) {
-        return class extends constructor {
-            static type = type
-            type = type
-            constructor(...args: any[]) {
-                super(...args)
-            }
-        } as typeof constructor
-    }
-}
-
-const actions$$ = new Subject<Action>()
-export const actions$ = actions$$.asObservable()
-
-export function setState<T>(store: T): any
-export function setState<T, U>(
-    setter: (ctxOrStore: U | Store<T>, store: Store<T>) => U,
-): OperatorFunction<[U, Store<T>], any> {
-    return function(source$: Observable<[U, Store<T>]>) {
-        return source$.pipe(
-            tap(([source, store]) => {
-                store.setState(setter.bind(null, source))
-            }),
-            map(([source]) => source),
-        )
-    }
-}
-
-export type WithStoreReturnFn<T> = (source$: Observable<T>) => Observable<T>
-export type WithStoreFn<T, U> = (...ops: OperatorFunction<T, T>[]) => Observable<T>
-
-export function withStore<T, U>(store: Store<T>): WithStoreFn<T, U> {
-    return function(...ops) {
-        return (function(source$) {
-            return source$
-        })()
-    }
-}
-
-export function select<T>(key): any {
-    return function(source$: Observable<T>) {
-        return source$.pipe(
-            map(state => state[key]),
-            distinctUntilChanged(),
-        )
-    }
-}
-
-export function watch<T>(key?): any {
-    return function(source$: Observable<T>) {
-        return source$.pipe(
-            map(state => (key ? state[key] : state)),
-            distinctUntilChanged(),
-            skip(1),
-        )
-    }
-}
-
-export function isRecipe<T>(setter): setter is (draft: T) => any {
-    return typeof setter === "function"
-}
-
-export function ofAction<T extends Action>(
-    action: ActionType<T>,
-): (source$: Observable<Store<any>>) => Observable<Action> {
-    return function(source$) {
-        return source$.pipe(switchMap(store => store.ofAction(action)))
-    }
+export function createFeatureSelector<T>(): (state: T) => T {
+    return defaultMemoize(state => state)
 }
 
 @Injectable()
-export class Store<T> extends Observable<T> implements OnDestroy {
+export class Store<T> extends Observable<Store<T>> implements StoreLike<T>, OnDestroy {
     private readonly feature: Feature
     private readonly state$: BehaviorSubject<T>
     private readonly destroyed$: Subject<void>
@@ -103,15 +31,17 @@ export class Store<T> extends Observable<T> implements OnDestroy {
     constructor(
         @Inject(STORE_FEATURE) feature: Feature,
         @Inject(STORE_INITIAL_STATE) initialState: any,
+        @Inject(STORE_ACTIONS) actions: Subject<any>,
         @Optional() @SkipSelf() parent?: Store<any>,
     ) {
-        super((subscriber: Subscriber<T>) => {
+        super(subscriber => {
             this.state$
                 .pipe(
+                    skip(1),
                     debounceTime(0, asapScheduler),
-                    distinctUntilChanged((x, y) => {
-                        return y === x
-                    }),
+                    distinctUntilChanged(),
+                    mapTo(this),
+                    startWith(this),
                 )
                 .subscribe(subscriber)
         })
@@ -120,14 +50,12 @@ export class Store<T> extends Observable<T> implements OnDestroy {
         this.parent = parent
         this.state$ = new BehaviorSubject(initialState)
         this.destroyed$ = new Subject()
-        this.actions$ = actions$$
+        this.actions$ = actions
 
         if (this.parent) {
-            this.setState(draft => draft)
-
-            this.parent.state$.pipe(select(this.feature.name)).subscribe(this.state$)
-
-            this.parent.actions$.subscribe(this.actions$)
+            this.parent.state$
+                .pipe(select(state => state[this.feature.name]))
+                .subscribe(this.state$)
         }
     }
 
@@ -140,21 +68,19 @@ export class Store<T> extends Observable<T> implements OnDestroy {
         this.destroyed$.complete()
     }
 
-    public select(selector) {
+    public select<R>(selector: Selector<T, R>) {
         return this.pipe(select(selector))
     }
 
     public dispatch(action: any) {
-        if (this.parent) {
-            this.parent.dispatch(action)
-        } else {
-            this.actions$.next(action)
-        }
+        this.actions$.next(action)
     }
 
     public ofAction<U extends any>(actionType: Type<U>): Observable<U> {
         if (actionType.hasOwnProperty("type")) {
-            return this.actions$.pipe(filter<U>(action => action.type === (actionType as any).type))
+            return this.actions$.pipe(
+                filter<U>(action => action.type === (actionType as any).type),
+            )
         } else {
             console.error(
                 `Action missing static property "type". Did you forget the @OfType() decorator?`,
@@ -164,7 +90,7 @@ export class Store<T> extends Observable<T> implements OnDestroy {
         }
     }
 
-    public setState(setter: Partial<T> | ((draft: T) => any)) {
+    public setState(setter: StateSetter<T>) {
         let state: T
 
         if (isRecipe<T>(setter)) {
