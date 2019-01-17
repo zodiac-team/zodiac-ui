@@ -1,43 +1,37 @@
 import {
-    compute,
     createConnector,
     createFeatureSelector,
+    Effects,
+    InitialState,
     ofAction,
+    ofEffect,
     OfType,
     setState,
+    Store,
     watch,
 } from "@zodiac-ui/store"
 import { Injectable } from "@angular/core"
 import { HttpClient } from "@angular/common/http"
-import { switchMap, tap } from "rxjs/operators"
+import { switchMap } from "rxjs/operators"
 import { timer } from "rxjs"
 import { createSelector } from "reselect"
+import { Actions } from "@zodiac-ui/store"
+
+interface Todo {
+    userId: number
+    id: number
+    title: string
+    completed: boolean
+}
 
 export interface AppState {
     count: number
     didIncrement: boolean
     somethingElse: string
-    todo: any
+    isLoaded: boolean
+    todo: Todo
     computedValue: number
-}
-
-export const initialState: AppState = {
-    count: 0,
-    didIncrement: false,
-    somethingElse: null,
-    todo: null,
-    computedValue: null,
-}
-
-@OfType("GET_TODOS")
-export class GetTodos {
-    constructor(public payload: any) {}
-}
-
-@Injectable()
-export class AppEffects {
-    static connect = createConnector<AppState, AppEffects>()
-    constructor(public http: HttpClient) {}
+    chainedValue: number
 }
 
 const feature = createFeatureSelector<AppState>()
@@ -46,26 +40,77 @@ const $count = createSelector(
     state => state.count,
 )
 
-AppEffects.connect(store =>
-    store.pipe(
+export const $computedValue = createSelector(
+    $count,
+    count => {
+        return count + 1
+    },
+)
+
+export const $chainedValue = createSelector(
+    $computedValue,
+    computedValue => {
+        return computedValue * 5
+    },
+)
+
+export function initialState(): InitialState<AppState> {
+    return {
+        count: 0,
+        didIncrement: false,
+        somethingElse: null,
+        todo: null,
+        isLoaded: false,
+        computedValue: $computedValue,
+        chainedValue: $chainedValue,
+    }
+}
+
+export const connect = createConnector<AppEffects>()
+
+@OfType("GET_TODOS")
+export class GetTodos {
+    constructor(public payload: any) {}
+}
+
+@Injectable()
+export class AppEffects {
+    static connect = connect
+    constructor(
+        public http: HttpClient,
+        public store: Store<AppState>,
+        public actions: Actions,
+        public effects: Effects,
+    ) {}
+}
+
+connect(({ store }) => {
+    return store.pipe(
         watch(state => state.count),
-        tap(() => store.setState({ didIncrement: true })),
+        setState(store, { didIncrement: true }),
+    )
+})
+
+connect(({ store }) => timer(1000).pipe(setState(store, { somethingElse: "somethingElse" })))
+
+const someEffect = connect(({ http, store, actions }) =>
+    actions.pipe(
+        ofAction(GetTodos),
+        switchMap(action => {
+            return http.get<Todo>(action.payload).pipe(
+                setState(store, (todo, state) => {
+                    state.todo = todo
+                }),
+            )
+        }),
     ),
 )
 
-AppEffects.connect(store => timer(1000).pipe(setState(store, { somethingElse: "somethingElse" })))
-
-AppEffects.connect(
-    compute($count, (count, state) => {
-        state.computedValue = count + 1
-    }),
-)
-
-AppEffects.connect((store, ctx) =>
-    store.pipe(
-        ofAction(GetTodos),
-        switchMap(action =>
-            ctx.http.get(action.payload).pipe(tap(todo => store.setState({ todo }))),
-        ),
+connect(({ store, effects }) =>
+    effects.pipe(
+        ofEffect(someEffect),
+        setState(store, (_, state) => {
+            state.isLoaded = true
+        }),
     ),
 )

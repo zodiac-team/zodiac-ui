@@ -1,7 +1,7 @@
 import { ModuleWithProviders, NgModule } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { STORE_EFFECTS } from "../constants"
-import { Effects, EffectsService } from "./effects.service"
+import { Effects, EffectsProvider, EffectsService } from "./effects.service"
 
 @NgModule({
     imports: [CommonModule],
@@ -9,11 +9,12 @@ import { Effects, EffectsService } from "./effects.service"
     providers: [],
 })
 export class EffectsModule {
-    static forRoot(effects: Effects[]): ModuleWithProviders {
+    static forRoot(effects: EffectsProvider[]): ModuleWithProviders {
         return {
             ngModule: EffectsModule,
             providers: [
                 EffectsService,
+                Effects,
                 effects,
                 {
                     provide: STORE_EFFECTS,

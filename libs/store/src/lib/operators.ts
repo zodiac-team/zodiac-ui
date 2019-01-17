@@ -1,8 +1,25 @@
 import { Selector } from "reselect"
-import { Observable } from "rxjs"
-import { distinctUntilChanged, map, skip, switchMap, take, tap } from "rxjs/operators"
+import { from, merge, Observable } from "rxjs"
+import {
+    distinctUntilChanged,
+    filter,
+    map,
+    mapTo,
+    skip,
+    switchMap,
+    take,
+    tap,
+} from "rxjs/operators"
 import { Type } from "@angular/core"
-import { StateSetter, StateSetterWithContext, StoreLike } from "./interfaces"
+import {
+    Action,
+    Computed,
+    ConnectFnWithContext,
+    StateSetter,
+    StateSetterWithContext,
+    StoreLike,
+} from "./interfaces"
+import { Effect } from "./effects/effects.service"
 
 export function OfType<T extends { new (...args: any[]): {} }>(type: string) {
     return function(constructor) {
@@ -43,28 +60,30 @@ export function isRecipe<T>(setter): setter is (draft: T) => any {
     return typeof setter === "function"
 }
 
-export function ofAction<T extends Observable<any>, U>(
-    store: StoreLike<any>,
-    actionType: Type<U>,
-): (source$: T) => Observable<U>
-export function ofAction<T extends StoreLike<any>, U>(
-    actionType: Type<U>,
-): (source$: Observable<T>) => Observable<U>
-export function ofAction(actionType: any): (source$: Observable<any>) => Observable<any> {
-    const actionArg = arguments[arguments.length - 1]
-    const storeArg = arguments[arguments.length - 2]
-
+export function ofAction<T>(actionType: Type<T>): (source$: Observable<any>) => Observable<T> {
     return function(source$) {
-        if (storeArg) {
-            return storeArg.ofAction(actionArg)
-        } else {
-            return source$.pipe(
-                take(1),
-                switchMap(source =>
-                    source.ofAction(actionArg)
-                ),
-            )
-        }
+        return source$.pipe(
+            filter(action => {
+                if (actionType.hasOwnProperty("type")) {
+                    return action.type === (actionType as any).type
+                } else {
+                    console.error(
+                        `Action missing static property "type". Did you forget the @OfType() decorator?`,
+                        actionType,
+                    )
+                    throw new Error()
+                }
+            }),
+        )
+    }
+}
+
+export function ofEffect<T, U>(effect: ConnectFnWithContext<T, U>) {
+    return function(source$: Observable<Effect<T, U>>): U {
+        return source$.pipe(
+            filter(source => source.source === effect),
+            map(source => source.value),
+        ) as any
     }
 }
 
@@ -152,13 +171,21 @@ export function setState(setter: any): (source$: any) => any {
 }
 
 export function compute<T, R>(
-    selector: Selector<T, R>,
-    fn: StateSetterWithContext<T, R>,
-): (store: StoreLike<T>) => Observable<R> {
-    return function(store) {
-        return store.pipe(
-            select(selector),
-            setState(store, fn),
+    computed: Computed<T>,
+): (source: Observable<StoreLike<T>>) => Observable<StoreLike<T>> {
+    const values = Object.keys(computed)
+        .filter(key => typeof computed[key] === "function")
+        .map((key): [string, Selector<T, R>] => [key, computed[key]])
+
+    return function(source) {
+        return source.pipe(
+            tap(store => {
+                values.forEach(([key, selector]) => {
+                    store.setState(state => {
+                        state[key] = selector(state)
+                    })
+                })
+            }),
         )
     }
 }

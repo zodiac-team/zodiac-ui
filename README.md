@@ -3,8 +3,7 @@
 A collection of useful UI libraries.
 
 ## Packages
-
-[@zodiac-ui/formula](/libs/formula/README.md)
-[@zodiac-ui/store](/libs/store/README.md)
-
-
+| Package                                      | Description                                      |
+|----------------------------------------------|--------------------------------------------------|
+| [@zodiac-ui/formula](/libs/formula)          | A form generator inspired by Angular Router
+| [@zodiac-ui/store](/libs/store)              | An immutable store implementation based on ngrx

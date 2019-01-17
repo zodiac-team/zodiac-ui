@@ -18,9 +18,9 @@ Zodiac Store is in very early development. Please do not use this in production.
 ## Why use Zodiac Store?
 
 Zodiac Store is a zero boilerplate immutable state store implementation based on `@ngrx/store`. Instead of
-writing cumbersome actions and reducers, all state modifications are performed with a `setState` function.
-Zodiac Store also offers a more powerful effects module that lets you take full advantage of reactive streams,
-allowing you to read and set state at any time.
+writing actions and reducers, all state modifications are performed with a `setState` function and computed properties.
+Zodiac Store also offers a more powerful effects module that lets you take full advantage of reactive streams. If
+effects aren't your thing, services work just as well.
 
 ## Usage
 
@@ -41,35 +41,77 @@ Create an interface
 export interface AppState {
     count: number
     todos: any
+    todosLoaded: boolean
+}
+```
+
+Define the initial state getter
+
+```ts
+export function initialState(): InitialState<AppState> {
+    return {
+        count: 0,
+        todos: null,
+        todosLoaded: false,
+    }
+}
+```
+
+### Selectors
+
+Create a feature selector
+
+```ts
+const $feature = createFeatureSelector<AppState>()
+```
+
+Create a selector
+
+```ts
+const $count = createSelector(
+    $feature,
+    state => state.count,
+)
+```
+
+## Computed Properties
+
+Extend the app state interface to include computed properties
+
+```ts
+export interface AppState {
+    count: number
+    todos: any
+    todosLoaded: boolean
     computedValue: number
 }
 ```
 
-Define the initial state
+Create a selector. This can also be used to read the state later
 
-```ts
-export const initialState: AppState = {
-    count: 0,
-    todos: null,
-    computedValue: null
-}
+```
+const $computedValue = createSelector(
+    $count,
+    count => count + 1,
+)
 ```
 
-### Set State
-
-In a service or component
+Extend the initial state getter
 
 ```ts
-export class ExampleComponent {
-    constructor(public store: Store<AppState>) {}
-
-    increment() {
-        this.store.setState(state => {
-            state.count += 1
-        })
+export function initialState(): InitialState<AppState> {
+    return {
+        count: 0,
+        todos: null,
+        computedValue: $computedValue,
     }
 }
 ```
+
+Computed properties are evaluated in the same microtask queue. Use memoized selectors to prevent unnecessary recalculations
+
+For default values in computed properties, return them from the selector function. You can freely chain
+computed properties together if they don't cause circular references
 
 ### Read State
 
@@ -93,19 +135,66 @@ From TypeScript
 export class ExampleComponent {
     constructor(public store: Store<AppState>) {
         // Observable
-        store.pipe(
-            select((state) => state.count)
-        ).subscribe(count => console.log(count))
-        
+        store.pipe(select($count).subscribe(count => console.log(count))
+
         // Snapshot
-        const count = store.state.count
+        const count = $count(store.state)
+    }
+}
+```
+
+### Set State
+
+In a component
+
+```ts
+export class ExampleComponent {
+    constructor(public store: Store<AppState>) {}
+
+    increment() {
+        this.store.setState(state => {
+            state.count += 1
+        })
+    }
+}
+```
+
+In a service
+
+```ts
+export class ExampleService {
+    constructor(private store: Store<AppState>, private http: HttpClient) {}
+
+    async loadTodos(url) {
+        const todos = await this.http.get(url).toPromise()
+
+        this.store.setState({ todos })
+    }
+}
+```
+
+In an observable stream
+
+```ts
+export class ExampleService {
+    constructor(private store: Store<AppState>, private http: HttpClient) {}
+
+    loadTodos(url) {
+        this.http
+            .get(url)
+            .pipe(
+                setState(this.store, (todos, state) => {
+                    state.todos = todos
+                }),
+            )
+            .subscribe()
     }
 }
 ```
 
 ### Actions
 
-Create an action. Actions are only used to trigger effects.
+Create an action. Actions are used to trigger effects.
 
 ```ts
 @OfType("GET_TODOS")
@@ -126,6 +215,19 @@ export class StoreExample {
 }
 ```
 
+Listen for an action
+
+```ts
+export class ExampleService {
+    constructor(actions: Actions) {
+        actions.pipe(
+            ofAction(GetTodos),
+            tap(action => console.log(action)),
+        )
+    }
+}
+```
+
 ### Effects
 
 Import the effects module
@@ -142,24 +244,29 @@ Create an effects class with injected dependencies
 ```ts
 @Injectable()
 export class AppEffects {
-    static connect = createConnector<AppState, AppEffects>()
-    constructor(public http: HttpClient) {}
+    static connect = createConnector<AppEffects>()
+    constructor(
+        public http: HttpClient,
+        public store: Store<AppState>,
+        public actions: Actions,
+        public effects: Effects,
+    ) {}
 }
 ```
 
 Write some effects
 
 ```ts
-AppEffects.connect((store, ctx) => {
-    // Return an Observable
+const someEffect = AppEffects.connect((store, ctx) => {
+    // Return any Observable
 })
 ```
 
 React to actions
 
 ```ts
-AppEffects.connect((store, ctx) => (
-    store.ofAction(GetTodos).pipe(
+const loadTodos = AppEffects.connect((ctx) => (
+    ctx.actions(GetTodos).pipe(
         switchMap((action) => ctx.http.get(action.payload)),
         tap((todos) => store.setState({ todos })
     )
@@ -167,28 +274,15 @@ AppEffects.connect((store, ctx) => (
 
 ```
 
-## Selectors
-
-Create a feature selector
+React to effects
 
 ```ts
-const $feature = createFeatureSelector<AppState>()
-```
-
-Create a selector
-
-```ts
-const $count = createSelector($feature, state => state.count)
-``` 
-
-## Computed Properties
-
-A convenience method is available using effects.
-
-```ts
-AppEffects.connect(
-    compute($count, (count, state) => {
-        state.computedValue = count + 1
-    }),
+const afterLoadTodos = AppEffects.connect((ctx) => (
+    ctx.effects.pipe(
+        ofEffect(loadTodos),
+        setState(ctx.store, (_, state) => {
+            state.todosLoaded = true
+        })
+    )
 )
 ```
