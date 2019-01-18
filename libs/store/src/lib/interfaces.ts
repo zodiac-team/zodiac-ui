@@ -1,10 +1,7 @@
 import { Observable } from "rxjs"
 import { Selector } from "reselect"
 
-export interface Feature {
-    name: string
-    path: any
-}
+export type Feature = string
 
 export interface StoreContext<T> {
     $implicit: T

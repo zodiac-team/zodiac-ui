@@ -1,7 +1,7 @@
 {
     "name": "@zodiac-ui/store",
     "author": "zodiac-team",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "homepage": "https://github.com/zodiac-team/zodiac-ui",
     "keywords": [
         "RxJS",

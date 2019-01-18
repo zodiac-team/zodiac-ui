@@ -1,8 +1,8 @@
 import { ModuleWithProviders, NgModule } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import { provideStore, Store } from "./store.service"
+import { provideStore } from "./store.service"
 import { StoreDirective } from "./store.directive"
-import { STORE_ACTIONS } from "./constants"
+import { STORE_ACTIONS_OBSERVER } from "./constants"
 import { Subject } from "rxjs"
 import { Actions } from "./actions.service"
 import { InitialState } from "./interfaces"
@@ -11,17 +11,17 @@ import { InitialState } from "./interfaces"
     imports: [CommonModule],
     declarations: [StoreDirective],
     exports: [StoreDirective],
+    providers: [],
 })
 export class StoreModule {
     static forRoot(initialState: InitialState<any>): ModuleWithProviders {
         return {
             ngModule: StoreModule,
             providers: [
-                Store,
                 Actions,
                 provideStore("root", initialState),
                 {
-                    provide: STORE_ACTIONS,
+                    provide: STORE_ACTIONS_OBSERVER,
                     useClass: Subject,
                 },
             ],

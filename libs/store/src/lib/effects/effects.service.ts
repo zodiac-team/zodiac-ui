@@ -1,6 +1,6 @@
 import { ConnectFactoryWithContext, ConnectFnWithContext } from "../interfaces"
 import { Inject, Injectable, Injector, Optional, Type } from "@angular/core"
-import { STORE_EFFECTS } from "../constants"
+import { STORE_EFFECTS, STORE_EFFECTS_OBSERVER } from "../constants"
 import { Observable, Subject } from "rxjs"
 import { map, tap } from "rxjs/operators"
 
@@ -31,13 +31,6 @@ export function createConnector<T>(): <U extends ConnectFnWithContext<T, V>, V>(
 }
 
 @Injectable()
-export class Effects extends Observable<Effect<any, any>> {
-    constructor(effects: EffectsService) {
-        super(subscriber => effects.subscribe(subscriber))
-    }
-}
-
-@Injectable()
 export class EffectsService extends Observable<Effect<any, any>> {
     private readonly effects: EffectsProvider[]
     private readonly injector: Injector
@@ -45,11 +38,12 @@ export class EffectsService extends Observable<Effect<any, any>> {
 
     constructor(
         injector: Injector,
-        @Optional() @Inject(STORE_EFFECTS) effects?: EffectsProvider[],
+        @Inject(STORE_EFFECTS_OBSERVER) observer: Subject<Effect<any, any>>,
+        @Inject(STORE_EFFECTS) effects: EffectsProvider[],
     ) {
         super(subscriber => this.effects$.subscribe(subscriber))
 
-        this.effects$ = new Subject()
+        this.effects$ = observer
         this.effects = effects
         this.injector = injector
     }
@@ -74,5 +68,12 @@ export class EffectsService extends Observable<Effect<any, any>> {
                 })
             }
         })
+    }
+}
+
+@Injectable()
+export class Effects extends Observable<Effect<any, any>> {
+    constructor(@Inject(STORE_EFFECTS) effects: Observable<Effect<any, any>>) {
+        super(subscriber => effects.subscribe(subscriber))
     }
 }

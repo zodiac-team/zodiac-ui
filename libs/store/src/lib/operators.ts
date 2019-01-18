@@ -33,7 +33,7 @@ export function OfType<T extends { new (...args: any[]): {} }>(type: string) {
         } as typeof constructor
     }
 }
-
+export function select<T, R>(selector: Selector<T, R>): (source$: Observable<any>) => Observable<R>
 export function select<T, R>(
     selector: Selector<T, R>,
 ): (source$: Observable<StoreLike<T>>) => Observable<R> {

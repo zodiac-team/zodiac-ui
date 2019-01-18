@@ -1,7 +1,8 @@
-import { ModuleWithProviders, NgModule } from "@angular/core"
+import { APP_INITIALIZER, ModuleWithProviders, NgModule } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import { STORE_EFFECTS } from "../constants"
+import { STORE_EFFECTS, STORE_EFFECTS_OBSERVER } from "../constants"
 import { Effects, EffectsProvider, EffectsService } from "./effects.service"
+import { Subject } from "rxjs"
 
 @NgModule({
     imports: [CommonModule],
@@ -13,18 +14,35 @@ export class EffectsModule {
         return {
             ngModule: EffectsModule,
             providers: [
-                EffectsService,
                 Effects,
-                effects,
+                provideEffects(effects),
                 {
-                    provide: STORE_EFFECTS,
-                    useValue: effects,
+                    provide: STORE_EFFECTS_OBSERVER,
+                    useClass: Subject,
                 },
             ],
+        }
+    }
+
+    static forChild(effects: EffectsProvider[]) {
+        return {
+            ngModule: EffectsModule,
+            providers: [provideEffects(effects)],
         }
     }
 
     constructor(effects: EffectsService) {
         effects.runEffects()
     }
+}
+
+export function provideEffects(effects: EffectsProvider[]) {
+    return [
+        EffectsService,
+        effects,
+        {
+            provide: STORE_EFFECTS,
+            useValue: effects,
+        },
+    ]
 }

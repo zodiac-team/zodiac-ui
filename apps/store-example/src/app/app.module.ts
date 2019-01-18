@@ -5,6 +5,7 @@ import { AppComponent } from "./app.component"
 import { EffectsModule, StoreModule } from "@zodiac-ui/store"
 import { AppEffects, initialState } from "./app.store"
 import { HttpClientModule } from "@angular/common/http"
+import { RouterModule } from "@angular/router"
 
 @NgModule({
     declarations: [AppComponent],
@@ -13,6 +14,12 @@ import { HttpClientModule } from "@angular/common/http"
         StoreModule.forRoot(initialState),
         EffectsModule.forRoot([AppEffects]),
         HttpClientModule,
+        RouterModule.forRoot([
+            {
+                path: "",
+                loadChildren: "./feature/feature.module#FeatureModule",
+            },
+        ]),
     ],
     providers: [],
     bootstrap: [AppComponent],
