@@ -303,7 +303,7 @@ export class FeatureModule {}
 
 Feature stores are configured the same way as the root store
 
-```
+```ts
 export interface FeatureState {
     count: number
     computedValue: number
