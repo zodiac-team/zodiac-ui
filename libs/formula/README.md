@@ -1,29 +1,30 @@
 # @zodiac-ui/formula
 
 Formula is a powerful form generator built for Angular. Inspired by Angular Router, Formula
-provides a declarative interface for building forms that should be very familiar to experienced
-Angular developers.
+provides a declarative interface for building reactive forms
 
 ## Early adopters
 
-Formula is in very early development. Please do not use this in production.
+Formula is in early development. Please don't use this in production.
 
 ## Why Formula?
 
-Forms are complex things. Client-side form generation often comes with tradeoffs
-in complexity, performance, and the inability to meet business requirements.
+Forms are complex. Client-side form generation often comes with tradeoffs
+in complexity, performance, and ability to handle exceptions to the pattern.
 
 Formula is built with power in mind, utilising the full power of
 Angular forms.
 
-Formula is built for speed and efficiency. There are no wasted rendering cycles. Formula only
-renders what you tell it to.
+Formula is tuned for speed and efficiency. Formula only renders what's necessary.
+
+Formula is designed for maximum flexibility. Create, compose and reuse forms with ease.
 
 ## Features
 
 Formula aims to achieve feature symmetry with the `Route` interface from `@angular/router` and
 `FormBuilder` from `@angular/forms`.
 
+-   Builder (in progress): A convenient utility for generating Formula objects
 -   Renderer (in progress): Automatically synchronises the UI based on the current formula and value
 -   FormArray (in progress): Automatically populate array controls based on the current value and expose api
     for adding, moving or removing controls
@@ -39,12 +40,69 @@ There will also be some enhancements:
 -   Smart Validators (not supported yet): In addition to the usual validator options, Formula will also support
     validator class tokens that will be instantiated with the Angular injector.
 
+## FormulaBuilder
+
+Formula provides a form builder to construct Formula objects that are used to render forms. 
+
+### API
+
+| Member                                         | Description                                            |
+| :--------------------------------------------- | :----------------------------------------------------- |
+| `group: FormulaBuildFn<FormulaGroup>`          | Creates a factory for `FormulaType.GROUP` nodes        |
+| `array: FormulaBuildFn<FormulaArray>`          | Creates a factory for `FormulaType.ARRAY` nodes        |
+| `control:  FormulaBuildFn<FormulaControl>`     | Creates a factory for `FormulaType.CONTROL` nodes      |
+| `container:  FormulaBuildFn<FormulaContainer>` | Creates a factory for `FormulaType.CONTAINER` nodes    |
+
+### Usage
+
+Use `FormulaBuilder` to functionally create and compose various form elements together.
+
+```ts
+const fb = new FormBuilder()
+
+export const form = (name: string) =>
+    fb.group({
+        name,
+        component: FormContainerComponent
+    })
+    
+export const text = (name: string, label: string) =>
+    fb.control({
+        name,
+        component: TextFieldComponent,
+        data: {
+            label,
+        }
+    })
+    
+export const formula: Formula =
+    form("user")(
+        text("firstName", "First Name"),
+        text("lastName", "First Name")
+    )
+```
+
 ## FormulaDirective
 
 Creates a `FormulaNode` tree that is used to render a form. `FormulaDirective` provides a declarative
 approach for dynamic forms creation
 `FormulaDirective` requires a `Formula`, if a falsy value is set the view will clear and the
 form will get destroyed.
+
+### API
+
+Formula is under active development. The current API is experimental and likely to change
+before release.
+
+| Member                                       | Description                                            |
+| :------------------------------------------- | :----------------------------------------------------- |
+| `@Input() formula: Formula`                  | The formula to be rendered. See `Formula` for options. |
+| `@Input() value: any`                        | Form value setter. Unknown object keys are discarded.  |
+| `@Output() valueChanges: EventEmitter<any>`  | Forwards `valueChanges` from `AbstractControl`.        |
+| `@Output() statusChanges: EventEmitter<any>` | Forwards `statusChanges` from `AbstractControl`.       |
+| `@Output() submit: EventEmitter<any>`        | Forwards `submit` events from a registered `NgForm`.   |
+| `setForm(form: NgForm): void`                | Registers a `NgForm` with the outlet.                  |
+| `setValue(value: any): void`                 | Immediately patches the value of the form              |
 
 ### Usage
 
@@ -62,14 +120,18 @@ export class ExampleComponent {
         exampleText: null,
     }
 
-    formula: Formula = {
-        type: FormulaType.CONTROL,
-        name: "exampleText",
-        component: TextFieldComponent,
-        data: {
-            label: "Example Text",
-            placeholder: "Type text here",
-        },
+    formula: Formula
+
+    constructor(fb: FormulaBuilder) {
+        this.formula = 
+            fb.control({
+                name: "exampleText",
+                component: TextFieldComponent,
+                data: {
+                    label: "Example Text",
+                    placeholder: "Type text here",
+                },
+            })
     }
 }
 ```
@@ -94,20 +156,9 @@ export class TextFieldComponent {
 Each component in the tree receives a `FormulaContext` containing the `model`, `data` and `resolve`
 data.
 
-### Public API
-
-Formula is under active development. The current API is experimental and likely to change
-before release.
-
-|                                              |                                                        |
-| -------------------------------------------- | ------------------------------------------------------ |
-| `@Input() formula: Formula`                  | The formula to be rendered. See `Formula` for options. |
-| `@Input() value: any`                        | Form value setter. Unknown object keys are discarded.  |
-| `@Output() valueChanges: EventEmitter<any>`  | Forwards `valueChanges` from `AbstractControl`.        |
-| `@Output() statusChanges: EventEmitter<any>` | Forwards `statusChanges` from `AbstractControl`.       |
-| `@Output() submit: EventEmitter<any>`        | Forwards `submit` events from a registered `NgForm`.   |
-| `setForm(form: NgForm): void`                | Registers a `NgForm` with the outlet.                  |
-| `setValue(value: any): void`                 | Immediately patches the value of the form              |
+> **Important note:** Formula components are rendered dynamically. You may encounter errors about missing
+ComponentFactory or unknown Provider. Ensure all components are marked as entry components and that all providers
+are provided in the NgModule the form gets rendered in. 
 
 ## FormulaOutlet
 
@@ -128,11 +179,14 @@ Anywhere in your Formula component template, place a single `z-formula-outlet` t
 export class FormContainerComponent {}
 ```
 
-In many cases you probably want a native `form` element as the top level component in your form.
-This is a minimal way to achieve that. All child nodes are now rendered between the `<z-form>`
-tags.
+## FormComponent
+Selectors: `<z-form>`
 
-## FormContainer
+A basic wrapper for `NgForm` that forwards native submit events to the root `FormulaOutlet`.
+If nested inside another `FormComponent`, renders `<ng-form>` instead of `<form>`. Will throw an error
+if not used with `FormulaGroup` or `FormulaArray`
 
-A basic wrapper for `NgForm` that handles forwards submit events to the root `FormulaOutlet`.
-The top level will render a native `<form>` element, nested forms will render `<ng-form>`
+
+### Usage
+
+See [Formula Outlet](#formulaoutlet)

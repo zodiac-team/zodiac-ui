@@ -34,59 +34,88 @@ export type FormulaLoadChildrenCallback = () =>
 
 export type FormulaLoadChildren = string | FormulaLoadChildrenCallback
 
-export interface FormulaControl {
+export interface FormulaControlBase {
     type: FormulaType.CONTROL
+}
+
+export interface FormulaControlOptions {
+    name: string
+    component?: Type<any>
     data?: FormulaData
     default?: any
-    component: Type<any>
     canLoad?: any[]
     canActivate?: any[]
     canDeactivate?: any[]
-    name: string
     resolve?: FormulaResolveData
     validators?: any[]
     asyncValidators?: any[]
 }
 
-export interface FormulaGroup {
+export type FormulaControl = FormulaControlBase & FormulaControlOptions
+
+export interface FormulaGroupBase {
     type: FormulaType.GROUP
-    data?: FormulaData
     name: string
+    children: Formula[]
+}
+
+export interface FormulaGroupOptions {
+    name: string
+    data?: FormulaData
     component?: Type<any>
     canLoad?: any[]
     canActivateChild?: any[]
-    children: Formula[]
     loadChildren?: FormulaLoadChildren
     resolve?: FormulaResolveData
     validators?: any[]
     asyncValidators?: any[]
 }
 
-export interface FormulaArray {
+export type FormulaGroup = FormulaGroupBase & FormulaGroupOptions
+
+export interface FormulaArrayBase {
     type: FormulaType.ARRAY
-    data?: FormulaData
+    children: Formula[]
+}
+
+export interface FormulaArrayOptions {
     name: string
+    data?: FormulaData
     canLoad?: any[]
     canActivateChild?: any[]
     component?: Type<any>
-    children: Formula[]
     loadChildren?: FormulaLoadChildren
     resolve?: FormulaResolveData
     validators?: any[]
     asyncValidators?: any[]
 }
 
-export interface FormulaContainer {
-    name?: string
+export type FormulaArray = FormulaArrayBase & FormulaArrayOptions
+
+export interface FormulaContainerBase {
     type: FormulaType.CONTAINER
+    children?: Formula[]
+}
+
+export interface FormulaContainerOptions {
+    name: string
+    component?: Type<any>
     data?: FormulaData
-    component: Type<any>
     canLoad?: any[]
     canActivateChild?: any[]
-    children?: Formula[]
     loadChildren?: FormulaLoadChildren
     resolve?: FormulaResolveData
 }
+
+export type FormulaContainer = FormulaContainerBase & FormulaContainerOptions
+
+export type FormulaOptions<T> = T extends FormulaGroup
+    ? FormulaGroupOptions
+    : T extends FormulaArray
+        ? FormulaArrayOptions
+        : T extends FormulaContainer
+            ? FormulaContainerOptions
+            : FormulaControlOptions
 
 export abstract class FormulaContext {
     abstract data: FormulaData
