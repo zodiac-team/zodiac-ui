@@ -34,7 +34,6 @@ export class StoreDevtoolsService {
                 if (message.type === "ACTION") {
                     let action
                     try {
-                        console.log(message)
                         action = JSON.parse(message.payload.replace(/\n/, " "))
                     } catch (e) {
                         console.warn("Invalid JSON received from dispatcher.", e)
