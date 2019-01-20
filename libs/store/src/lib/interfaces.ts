@@ -18,9 +18,9 @@ export type ConnectFactoryWithContext<T, U extends ConnectFnWithContext<any, any
 ) => U
 
 export type StateSetter<T> = Partial<T> | ((draft: T) => any)
-export type StateSetterWithContext<T, U> = Partial<T> | ((ctx: U, draft: T) => any)
+export type StateSetterWithContext<T, U> = Partial<T> | ((draft: T, ctx: U) => any)
 
-export interface StoreLike<T> extends Observable<StoreLike<T>> {
+export interface StoreLike<T> extends Observable<T> {
     state: T
     select<R>(selector: Selector<T, R>): Observable<R>
     dispatch(action: any): void

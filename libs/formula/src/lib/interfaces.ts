@@ -112,10 +112,10 @@ export type FormulaContainer = FormulaContainerBase & FormulaContainerOptions
 export type FormulaOptions<T> = T extends FormulaGroup
     ? FormulaGroupOptions
     : T extends FormulaArray
-        ? FormulaArrayOptions
-        : T extends FormulaContainer
-            ? FormulaContainerOptions
-            : FormulaControlOptions
+    ? FormulaArrayOptions
+    : T extends FormulaContainer
+    ? FormulaContainerOptions
+    : FormulaControlOptions
 
 export abstract class FormulaContext {
     abstract data: FormulaData

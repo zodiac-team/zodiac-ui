@@ -14,7 +14,7 @@ export interface EffectsProvider extends Type<any> {
 
 export interface Effect<T, U> {
     source: ConnectFnWithContext<T, U>
-    value: U
+    value: Observable<U>
 }
 
 export function createConnector<T>(): <U extends ConnectFnWithContext<T, V>, V>(connectFn: U) => U {

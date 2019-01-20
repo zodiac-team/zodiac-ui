@@ -42,16 +42,16 @@ There will also be some enhancements:
 
 ## FormulaBuilder
 
-Formula provides a form builder to construct Formula objects that are used to render forms. 
+Formula provides a form builder to construct Formula objects that are used to render forms.
 
 ### API
 
-| Member                                         | Description                                            |
-| :--------------------------------------------- | :----------------------------------------------------- |
-| `group: FormulaBuildFn<FormulaGroup>`          | Creates a factory for `FormulaType.GROUP` nodes        |
-| `array: FormulaBuildFn<FormulaArray>`          | Creates a factory for `FormulaType.ARRAY` nodes        |
-| `control:  FormulaBuildFn<FormulaControl>`     | Creates a factory for `FormulaType.CONTROL` nodes      |
-| `container:  FormulaBuildFn<FormulaContainer>` | Creates a factory for `FormulaType.CONTAINER` nodes    |
+| Member                                        | Description                                         |
+| :-------------------------------------------- | :-------------------------------------------------- |
+| `group: FormulaBuildFn<FormulaGroup>`         | Creates a factory for `FormulaType.GROUP` nodes     |
+| `array: FormulaBuildFn<FormulaArray>`         | Creates a factory for `FormulaType.ARRAY` nodes     |
+| `control: FormulaBuildFn<FormulaControl>`     | Creates a factory for `FormulaType.CONTROL` nodes   |
+| `container: FormulaBuildFn<FormulaContainer>` | Creates a factory for `FormulaType.CONTAINER` nodes |
 
 ### Usage
 
@@ -63,23 +63,22 @@ const fb = new FormBuilder()
 export const form = (name: string) =>
     fb.group({
         name,
-        component: FormContainerComponent
+        component: FormContainerComponent,
     })
-    
+
 export const text = (name: string, label: string) =>
     fb.control({
         name,
         component: TextFieldComponent,
         data: {
             label,
-        }
+        },
     })
-    
-export const formula: Formula =
-    form("user")(
-        text("firstName", "First Name"),
-        text("lastName", "First Name")
-    )
+
+export const formula: Formula = form("user")(
+    text("firstName", "First Name"),
+    text("lastName", "First Name"),
+)
 ```
 
 ## FormulaDirective
@@ -123,15 +122,14 @@ export class ExampleComponent {
     formula: Formula
 
     constructor(fb: FormulaBuilder) {
-        this.formula = 
-            fb.control({
-                name: "exampleText",
-                component: TextFieldComponent,
-                data: {
-                    label: "Example Text",
-                    placeholder: "Type text here",
-                },
-            })
+        this.formula = fb.control({
+            name: "exampleText",
+            component: TextFieldComponent,
+            data: {
+                label: "Example Text",
+                placeholder: "Type text here",
+            },
+        })
     }
 }
 ```
@@ -157,8 +155,8 @@ Each component in the tree receives a `FormulaContext` containing the `model`, `
 data.
 
 > **Important note:** Formula components are rendered dynamically. You may encounter errors about missing
-ComponentFactory or unknown Provider. Ensure all components are marked as entry components and that all providers
-are provided in the NgModule the form gets rendered in. 
+> ComponentFactory or unknown Provider. Ensure all components are marked as entry components and that all providers
+> are provided in the NgModule the form gets rendered in.
 
 ## FormulaOutlet
 
@@ -180,12 +178,12 @@ export class FormContainerComponent {}
 ```
 
 ## FormComponent
+
 Selectors: `<z-form>`
 
 A basic wrapper for `NgForm` that forwards native submit events to the root `FormulaOutlet`.
 If nested inside another `FormComponent`, renders `<ng-form>` instead of `<form>`. Will throw an error
 if not used with `FormulaGroup` or `FormulaArray`
-
 
 ### Usage
 

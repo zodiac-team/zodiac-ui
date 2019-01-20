@@ -7,8 +7,6 @@ import { FormulaBuilder } from "./formula-builder"
     imports: [ReactiveFormsModule],
     declarations: [FormulaDirective],
     exports: [FormulaDirective],
-    providers: [
-        FormulaBuilder
-    ]
+    providers: [FormulaBuilder],
 })
 export class FormulaModule {}

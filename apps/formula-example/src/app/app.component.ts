@@ -13,34 +13,34 @@ export const text = (name: string, label: string) =>
         component: TextFieldComponent,
         data: {
             label,
-        }
+        },
     })
 
 export const fieldset = (name: string) =>
     fb.group({
         name,
-        component: PresentationContainerComponent
+        component: PresentationContainerComponent,
     })
 
 export const number = (name: string, label: string) =>
     fb.control({
         name,
         component: NumberFieldComponent,
-        data:  {
-            label
-        }
+        data: {
+            label,
+        },
     })
 
 export const form = (name: string) =>
     fb.array({
         name,
-        component: FormContainerComponent
+        component: FormContainerComponent,
     })
 
 export const container = (name: string) =>
     fb.container({
         name,
-        component: PresentationContainerComponent
+        component: PresentationContainerComponent,
     })
 
 @Component({
@@ -56,15 +56,12 @@ export const container = (name: string) =>
     styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
-    public formula =
-        form("test")(
-            fieldset("test")(
-                text("test", "Test Label"),
-                container("test2")(
-                    number("test", "Test Label 2")
-                )
-            )
-        )
+    public formula = form("test")(
+        fieldset("test")(
+            text("test", "Test Label"),
+            container("test2")(number("test", "Test Label 2")),
+        ),
+    )
 
     public value = [{ test: "testing", test2: 123 }, { test: "testing3", test2: 234 }]
 

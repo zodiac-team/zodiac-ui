@@ -12,7 +12,7 @@ import { StoreContext } from "./interfaces"
 import { Subscription } from "rxjs"
 
 @Directive({
-    selector: "[zStore]",
+    selector: "[zStore][zStoreIn]",
 })
 export class StoreDirective<T> implements OnChanges, OnDestroy {
     @Input()

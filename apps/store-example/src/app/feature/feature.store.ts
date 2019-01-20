@@ -3,9 +3,12 @@ import { Injectable } from "@angular/core"
 import { interval } from "rxjs"
 import { setState } from "@zodiac-ui/store"
 import { createSelector } from "reselect"
+import { filter } from "rxjs/operators"
+import { select } from "@zodiac-ui/store"
 
 export interface FeatureState {
     count: number
+    test: boolean
     computedValue: number
 }
 
@@ -19,6 +22,7 @@ export const $computedValue = createSelector(
 export function initialState(): InitialState<FeatureState> {
     return {
         count: 0,
+        test: true,
         computedValue: $computedValue,
     }
 }
@@ -31,8 +35,10 @@ export class FeatureEffects {
 
 FeatureEffects.connect(ctx => {
     return interval(1000).pipe(
-        setState(ctx.store, (_, state) => {
-            state.count = Math.max(0, state.count - 1)
+        select(() => ctx.store.state.count),
+        filter(count => count > 0),
+        setState(ctx.store, state => {
+            state.count = state.count - 1
         }),
     )
 })

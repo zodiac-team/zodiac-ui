@@ -1,18 +1,24 @@
 import { Inject, Injectable, OnDestroy, Optional, SkipSelf } from "@angular/core"
 import { asapScheduler, BehaviorSubject, Observable, Subject } from "rxjs"
-import { debounceTime, distinctUntilChanged, mapTo } from "rxjs/operators"
+import { distinctUntilChanged, throttleTime } from "rxjs/operators"
 import { produce } from "immer"
 import { STORE_ACTIONS_OBSERVER, STORE_FEATURE, STORE_INITIAL_STATE } from "./constants"
 import { Action, Computed, Feature, InitialStateGetter, StateSetter, StoreLike } from "./interfaces"
 import { defaultMemoize, Selector } from "reselect"
-import { compute, isRecipe, select } from "./operators"
+import { select } from "./operators"
+import { compute, isRecipe, OfType } from "./utils"
 
 export function createFeatureSelector<T>(): (state: any) => T {
     return defaultMemoize(state => (state && name ? state[name] : state) || {})
 }
 
+@OfType("SET_STATE")
+export class SetState {
+    constructor(public payload: any) {}
+}
+
 @Injectable()
-export class Store<T> extends Observable<Store<T>> implements StoreLike<T>, OnDestroy {
+export class Store<T> extends Observable<T> implements StoreLike<T>, OnDestroy {
     public readonly initialState: T
 
     private readonly feature: Feature
@@ -28,7 +34,7 @@ export class Store<T> extends Observable<Store<T>> implements StoreLike<T>, OnDe
         @Inject(STORE_ACTIONS_OBSERVER) actions: Subject<any>,
         @Optional() @SkipSelf() parent?: Store<any>,
     ) {
-        let sub: Observable<Store<T>>
+        let sub: Observable<T>
 
         super(subscriber => sub.subscribe(subscriber))
 
@@ -58,20 +64,21 @@ export class Store<T> extends Observable<Store<T>> implements StoreLike<T>, OnDe
 
         sub = this.state$.pipe(
             distinctUntilChanged(),
-            debounceTime(0, asapScheduler),
-            mapTo(this),
+            throttleTime(0, asapScheduler),
         )
 
-        this.pipe(compute(this.computed)).subscribe()
+        compute(this, this.state$, this.computed).subscribe()
 
         if (this.parent) {
             this.parent.state$
                 .pipe(
-                    mapTo(this.parent),
-                    select(defaultMemoize(state => state[this.feature] || {})),
+                    select(state =>
+                        produce(this.state, draft => {
+                            Object.assign(draft, state[this.feature])
+                        }),
+                    ),
                 )
                 .subscribe(this.state$)
-            this.setState(initialState)
         }
     }
 
@@ -102,12 +109,12 @@ export class Store<T> extends Observable<Store<T>> implements StoreLike<T>, OnDe
         }
 
         if (this.parent) {
-            this.parent.setState(parentState => {
-                parentState[this.feature] = state
-            })
+            this.parent.setState({ [this.feature]: state })
         } else {
             this.state$.next(state)
         }
+
+        this.dispatch(new SetState(state))
     }
 }
 

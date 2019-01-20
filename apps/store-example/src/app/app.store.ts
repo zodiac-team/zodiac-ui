@@ -6,13 +6,13 @@ import {
     ofAction,
     ofEffect,
     OfType,
+    select,
     setState,
     Store,
-    watch,
 } from "@zodiac-ui/store"
 import { Injectable } from "@angular/core"
 import { HttpClient } from "@angular/common/http"
-import { switchMap } from "rxjs/operators"
+import { switchMap, take } from "rxjs/operators"
 import { timer } from "rxjs"
 import { createSelector } from "reselect"
 import { Actions } from "@zodiac-ui/store"
@@ -86,7 +86,8 @@ export class AppEffects {
 
 connect(({ store }) => {
     return store.pipe(
-        watch(state => state.count),
+        select($count),
+        take(1),
         setState(store, { didIncrement: true }),
     )
 })
@@ -98,7 +99,7 @@ const someEffect = connect(({ http, store, actions }) =>
         ofAction(GetTodos),
         switchMap(action => {
             return http.get<Todo>(action.payload).pipe(
-                setState(store, (todo, state) => {
+                setState(store, (state, todo) => {
                     state.todo = todo
                 }),
             )
@@ -109,7 +110,7 @@ const someEffect = connect(({ http, store, actions }) =>
 connect(({ store, effects }) =>
     effects.pipe(
         ofEffect(someEffect),
-        setState(store, (_, state) => {
+        setState(store, state => {
             state.isLoaded = true
         }),
     ),
