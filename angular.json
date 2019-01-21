@@ -105,6 +105,7 @@
               "apps/formula-example/src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "apps/formula-example/src/styles.scss"
             ],
             "scripts": []
@@ -323,6 +324,41 @@
             "exclude": [
               "**/node_modules/**"
             ]
+          }
+        }
+      }
+    },
+    "formula-material": {
+      "root": "libs/formula-material",
+      "sourceRoot": "libs/formula-material/src",
+      "projectType": "library",
+      "prefix": "z",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/formula-material/tsconfig.lib.json",
+            "project": "libs/formula-material/ng-package.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/formula-material/tsconfig.lib.json",
+              "libs/formula-material/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/formula-material/jest.config.js",
+            "tsConfig": "libs/formula-material/tsconfig.spec.json",
+            "setupFile": "libs/formula-material/src/test-setup.ts"
           }
         }
       }

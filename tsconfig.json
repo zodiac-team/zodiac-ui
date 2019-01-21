@@ -21,11 +21,16 @@
       ],
       "@zodiac-ui/formula": [
         "libs/formula/src/index.ts"
+      ],
+      "@zodiac-ui/formula-material": [
+        "libs/formula-material/src/index.ts"
       ]
     },
-    "plugins": [{
-      "name": "@angular/language-service"
-    }]
+    "plugins": [
+      {
+        "name": "@angular/language-service"
+      }
+    ]
   },
   "exclude": [
     "node_modules",

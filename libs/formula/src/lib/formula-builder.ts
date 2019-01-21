@@ -90,7 +90,7 @@ export function container(config: FormulaContainerOptions): FormulaBuildFn<Formu
 
 export function extend<T extends (...args: Formula[]) => any>(
     dest: T,
-    src: FormulaOptions<ReturnType<T>>,
+    src: FormulaOptions<ReturnType<T>>,[]
 ): T {
     return function(...args) {
         return Object.assign(dest(...args), src)
