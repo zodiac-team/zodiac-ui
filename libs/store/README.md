@@ -306,10 +306,11 @@ React to actions
 const loadTodos = AppEffects.connect((ctx) => (
     ctx.actions(GetTodos).pipe(
         switchMap((action) => ctx.http.get(action.payload)),
-        tap((todos) => store.setState({ todos })
+        setState(ctx.store, (state, todos) => {
+            state.todos = todos
+        })
     )
 ))
-
 ```
 
 React to effects
@@ -318,7 +319,7 @@ React to effects
 const afterLoadTodos = AppEffects.connect((ctx) => (
     ctx.effects.pipe(
         ofEffect(loadTodos),
-        setState(ctx.store, (_, state) => {
+        setState(ctx.store, (state) => {
             state.todosLoaded = true
         })
     )
@@ -368,7 +369,7 @@ export class FeatureEffects {
 
 FeatureEffects.connect(ctx => {
     return interval(1000).pipe(
-        setState(ctx.store, (_, state) => {
+        setState(ctx.store, (state) => {
             state.count = Math.max(0, state.count - 1)
         }),
     )
@@ -536,7 +537,8 @@ Taps a store to immediately dispatch an action. Returns the source Observable fo
 | Param                                      | Description                                                                                                              |
 | :----------------------------------------- | :----------------------------------------------------------------------------------------------------------------------- |
 | `store: StoreLike<T>`                      | An object that implements the `StoreLike` interface                                                                      |
-| `setter: any | (context: inferred) => any` | An action to dispatch, or a function that returns an action, with the upstream observable value passed in as a paramater |
+| `setter: any`  | An action to dispatch, usually with a `type` and optional `payload` |
+| `setter: (context: inferred) => any` | A function that returns an action, with the upstream observable value passed in as a paramater |
 
 | Returns                |
 | :--------------------- |
