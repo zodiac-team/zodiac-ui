@@ -1,11 +1,16 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TextareaComponent } from './textarea.component';
+import { NgModule } from "@angular/core"
+import { TextareaComponent } from "./textarea.component"
+import { ReactiveFormsModule } from "@angular/forms"
+import { MatFormFieldModule, MatInputModule } from "@angular/material"
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: [TextareaComponent]
+    imports: [
+        ReactiveFormsModule,
+        MatInputModule,
+        MatFormFieldModule
+    ],
+    declarations: [TextareaComponent],
+    entryComponents: [TextareaComponent],
+    exports: [TextareaComponent],
 })
-export class TextareaModule { }
+export class TextareaModule {}

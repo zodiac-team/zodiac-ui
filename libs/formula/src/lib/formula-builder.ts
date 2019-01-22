@@ -17,12 +17,12 @@ export type ExtendFn<T extends (...args: Formula[]) => any> = (
 ) => T
 export type FormulaBuildFn<T> = ((
     ...children: (Formula | ((...children: Formula[]) => any))[]
-) => T) & { extend: ExtendFn<FormulaBuildFn<T>> }
+) => T)
 
 const mapChildren = child => (typeof child === "function" ? child() : child)
 
 export function group(config: FormulaGroupOptions): FormulaBuildFn<FormulaGroup> {
-    const fn = function(...children): FormulaGroup {
+    return function(...children): FormulaGroup {
         return {
             type: FormulaType.GROUP,
             children: children.map(mapChildren),
@@ -30,32 +30,20 @@ export function group(config: FormulaGroupOptions): FormulaBuildFn<FormulaGroup>
             data: config.data || {},
         }
     }
-
-    Object.assign(fn, {
-        extend: extend.bind(null, fn),
-    })
-
-    return fn as FormulaBuildFn<FormulaGroup>
 }
 
 export function control(config?: FormulaControlOptions): FormulaBuildFn<FormulaControl> {
-    const fn = function(): FormulaControl {
+    return function(): FormulaControl {
         return {
             type: FormulaType.CONTROL,
             ...config,
             data: config.data || {},
         }
     }
-
-    Object.assign(fn, {
-        extend: extend.bind(null, fn),
-    })
-
-    return fn as FormulaBuildFn<FormulaControl>
 }
 
 export function array(config: FormulaArrayOptions): FormulaBuildFn<FormulaArray> {
-    const fn = function(...children): FormulaArray {
+    return function(...children): FormulaArray {
         return {
             type: FormulaType.ARRAY,
             children: children.map(mapChildren),
@@ -63,16 +51,10 @@ export function array(config: FormulaArrayOptions): FormulaBuildFn<FormulaArray>
             data: config.data || {},
         }
     }
-
-    Object.assign(fn, {
-        extend: extend.bind(null, fn),
-    })
-
-    return fn as FormulaBuildFn<FormulaArray>
 }
 
 export function container(config: FormulaContainerOptions): FormulaBuildFn<FormulaContainer> {
-    const fn = function(...children): FormulaContainer {
+    return function(...children): FormulaContainer {
         return {
             type: FormulaType.CONTAINER,
             children: children.map(mapChildren),
@@ -80,21 +62,31 @@ export function container(config: FormulaContainerOptions): FormulaBuildFn<Formu
             data: config.data || {},
         }
     }
-
-    Object.assign(fn, {
-        extend: extend.bind(null, fn),
-    })
-
-    return fn as FormulaBuildFn<FormulaContainer>
 }
 
-export function extend<T extends (...args: Formula[]) => any>(
-    dest: T,
-    src: FormulaOptions<ReturnType<T>>,[]
-): T {
+export function extend<T extends Formula>(
+    buildFn: FormulaBuildFn<T>,
+    opts: Partial<FormulaOptions<ReturnType<FormulaBuildFn<T>>>>,
+): FormulaBuildFn<T> {
     return function(...args) {
-        return Object.assign(dest(...args), src)
-    } as T
+        const formula = buildFn(...args)
+
+        Object.getOwnPropertyNames(opts).forEach((key) => {
+            const source = formula[key]
+            const value = opts[key]
+
+            if (Array.isArray(value)) {
+                formula[key] = [...source, ...value]
+            }
+            else if (typeof value === "object" && value !== null) {
+                formula[key] = {...source, ...value}
+            } else {
+                formula[key] = value
+            }
+        })
+
+        return formula
+    }
 }
 
 export class FormulaBuilder {

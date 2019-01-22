@@ -1,3 +1,5 @@
+![Render forms beautifully](docs/images/example.png "Render beautiful, powerful forms")
+
 # @zodiac-ui/formula-material
 
 Angular Material components for Formula.

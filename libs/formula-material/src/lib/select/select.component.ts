@@ -5,15 +5,20 @@ import { AbstractControl } from "@angular/forms"
 @Component({
     selector: "z-select",
     template: `
-        <mat-select placeholder="Favorite food" [formControl]="model">
-            <mat-option *ngFor="let option of (resolve.options || data.options) | async" [value]="option.value">
-                {{ option.viewValue }}
-            </mat-option>
-        </mat-select>
+        <mat-form-field class="z-select-mat-form-field">
+            <mat-select placeholder="Favorite food" [formControl]="model">
+                <mat-option *ngFor="let option of data.options" [value]="option.value">
+                    {{ option.viewValue }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
     `,
     styleUrls: ["./select.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    host: {
+        class: "z-input z-select"
+    }
 })
 export class SelectComponent implements FormulaContext {
     public data: FormulaData

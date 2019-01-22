@@ -1,23 +1,66 @@
 # @zodiac-ui/formula
 
 Formula is a powerful form generator built for Angular. Inspired by Angular Router, Formula
-provides a declarative interface for building reactive forms
+provides a declarative interface for building reactive forms.
+
 
 ## Early adopters
 
-Formula is in early development. Please don't use this in production.
+Formula is in early development. Don't use this in production.
 
-## Why Formula?
+## At A Glance
 
-Forms are complex. Client-side form generation often comes with tradeoffs
-in complexity, performance, and ability to handle exceptions to the pattern.
+With Formula you start with the value you want to model...
 
-Formula is built with power in mind, utilising the full power of
-Angular forms.
+```ts
+const value = [
+    {
+        name: "Bob",
+        dob: "1988-01-01",
+        favouriteFood: "APPLE_PIE",
+        notes: "..."
+    },
+    ...
+]
+```
 
-Formula is tuned for speed and efficiency. Formula only renders what's necessary.
+...and craft a formula that models your value
 
-Formula is designed for maximum flexibility. Create, compose and reuse forms with ease.
+```ts
+const formula = users(
+    user(
+        name,
+        age,
+        notes,
+        dob,
+        favouriteFood,
+    )
+)
+```
+
+Then you just hook it up to a component
+
+```ts
+@Component({
+    selector: "z-root",
+    template: `
+        <z-formula [formula]="formula" [value]="value"></z-formula>
+    `,
+    styleUrls: ["./app.component.scss"],
+})
+export class AppComponent {
+    public formula = formula
+    public value = value
+}
+```
+
+The result
+
+<p align="center">
+  <img width="460" height="300" src="docs/images/example.png" title="Build beautiful, powerful forms" />
+</p>
+
+If you'd like to learn more, read on or [check out the example](../../apps/formula-example/src/app/app.component.ts).
 
 ## Features
 
@@ -32,13 +75,15 @@ Formula aims to achieve feature symmetry with the `Route` interface from `@angul
 -   Resolve (not supported yet): Contextually fetch remote or async data
     (eg. populating select options based on the current user)
 -   LoadChildren (not supported yet): To allow for code splitting/lazy loading
-
-There will also be some enhancements:
-
+-   StyleGuide (in progress): A common convention for declaring readable, composible, maintainable forms
+-   Themes (in progress): Apply different styles to the same form by targeting classes exposed by each form element
 -   FormContainer (in progress): Formula provides a container type useful for adding nodes that do not need a model
     (eg. a submit button)
 -   Smart Validators (not supported yet): In addition to the usual validator options, Formula will also support
     validator class tokens that will be instantiated with the Angular injector.
+-   Computed Fields (in progress): A method for creating one-way or two-way computed fields that react to changes in
+    the form model
+-   Material (in progress): A [support library](../formula-material) that wraps Angular Material
 
 ## FormulaBuilder
 

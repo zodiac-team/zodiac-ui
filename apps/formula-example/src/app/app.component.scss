@@ -1,0 +1,57 @@
+::ng-deep {
+    .z-form {
+        display: block;
+        padding: 2rem 1rem;
+        margin: 2rem;
+        float: left;
+        border: 2px solid #eeeeee;
+
+        &:after {
+            content: "";
+            display: table;
+        }
+    }
+
+    .z-fieldset {
+        display: block;
+        clear: both;
+
+        &:not(:last-of-type) {
+            &:after {
+                content: "";
+                display: block;
+                height: 1rem;
+                border-bottom: 2px solid #eeeeee;
+                margin: 0 1rem 2rem;
+                clear: both
+            }
+        }
+    }
+
+    .z-input {
+        display: block;
+        float: left;
+        margin: 0.2rem 1rem
+    }
+
+    .z-name {
+        width: 12em
+    }
+
+    .z-age {
+        width: 4em
+    }
+
+    .z-dob {
+        width: 8rem;
+        clear: left
+    }
+
+    .z-favourite-food {
+        width: 8rem
+    }
+
+    .z-notes {
+        max-height: 0;
+    }
+}

@@ -23,7 +23,7 @@ export interface FormulaData {
 }
 
 export interface FormulaResolveData {
-    [key: string]: any
+    [key: string]: Type<any>
 }
 
 export type FormulaLoadChildrenCallback = () =>
@@ -40,6 +40,7 @@ export interface FormulaControlBase {
 
 export interface FormulaControlOptions {
     name: string
+    class?: string
     component?: Type<any>
     data?: FormulaData
     default?: any
@@ -61,6 +62,7 @@ export interface FormulaGroupBase {
 
 export interface FormulaGroupOptions {
     name: string
+    class?: string
     data?: FormulaData
     component?: Type<any>
     canLoad?: any[]
@@ -80,6 +82,7 @@ export interface FormulaArrayBase {
 
 export interface FormulaArrayOptions {
     name: string
+    class?: string
     data?: FormulaData
     canLoad?: any[]
     canActivateChild?: any[]
@@ -99,6 +102,7 @@ export interface FormulaContainerBase {
 
 export interface FormulaContainerOptions {
     name: string
+    class?: string
     component?: Type<any>
     data?: FormulaData
     canLoad?: any[]

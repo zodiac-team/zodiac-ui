@@ -1,11 +1,11 @@
 import {
     ComponentFactoryResolver,
-    ComponentRef,
+    ComponentRef, inject,
     Injector,
     IterableDiffer,
     IterableDiffers,
     KeyValueDiffer,
-    KeyValueDiffers,
+    KeyValueDiffers, Renderer2,
     StaticProvider,
     ViewContainerRef,
 } from "@angular/core"
@@ -19,6 +19,7 @@ export abstract class FormulaRenderer {
     protected vcr: ViewContainerRef
     protected cfr: ComponentFactoryResolver
     protected injector: Injector
+    protected renderer: Renderer2
     public abstract differ: IterableDiffer<any> | KeyValueDiffer<any, any> | null
     public refs: Map<FormulaNode, ComponentRef<any>>
     public destroyed$: Subject<void>
@@ -29,22 +30,38 @@ export abstract class FormulaRenderer {
         this.cfr = cfr
         this.injector = injector
         this.refs = new Map()
+        this.renderer = injector.get(Renderer2)
         this.destroyed$ = new Subject()
         this.destroyed = false
     }
 
     render(node: FormulaNode) {
         const parent = this.injector.get(FORMULA_NODE, null)
+        const resolve = node.formula.resolve
+        const resolvers = resolve
+            ? Object.getOwnPropertySymbols(resolve)
+                .map((key: any) => ({
+                    key: key,
+                    token: resolve[key]
+                }))
+                .concat(Object.values(resolve).map((key: any) => ({
+                    key: key,
+                    token: resolve[key]
+                })))
+            : []
+
+        const context = {
+            model: node.model,
+            data: node.formula.data,
+            resolve: {},
+        }
+
         const injector = Injector.create({
             parent: this.injector,
             providers: [
                 {
                     provide: FormulaContext,
-                    useValue: {
-                        model: node.model,
-                        data: node.formula.data,
-                        resolve: {},
-                    },
+                    useValue: context,
                 },
                 {
                     provide: FORMULA_NODE,
@@ -53,9 +70,25 @@ export abstract class FormulaRenderer {
             ],
         })
 
+        const resolveData = {} as any
+
+        if (resolve) {
+            resolvers.forEach((ref) => {
+                const resolver = injector.get(ref.token)
+
+                resolveData[ref.key] = resolver.resolve(context)
+            })
+        }
+
         if (node.formula.component && node !== parent) {
             const factory = this.cfr.resolveComponentFactory(node.formula.component)
-            this.refs.set(node, this.vcr.createComponent(factory, null, injector))
+            const component = this.vcr.createComponent(factory, null, injector)
+
+            if (node.formula.class) {
+                node.formula.class.split(" ").forEach((className) => this.renderer.addClass(component.location.nativeElement, className))
+            }
+
+            this.refs.set(node, component)
         } else if (node.children) {
             node.children.forEach(childNode => {
                 const renderer = createRenderer(childNode.formula, injector)
@@ -134,7 +167,13 @@ export class FormulaArrayRenderer extends FormulaRenderer {
 
         if (node.formula.component && node !== parent) {
             const factory = this.cfr.resolveComponentFactory(node.formula.component)
-            this.refs.set(node, this.vcr.createComponent(factory, null, injector))
+            const component = this.vcr.createComponent(factory, null, injector)
+
+            if (node.formula.class) {
+                node.formula.class.split(" ").forEach((className) => this.renderer.addClass(component.location.nativeElement, className))
+            }
+
+            this.refs.set(node, component)
         } else {
             node.model.valueChanges.pipe(startWith(null)).subscribe(() => {
                 const diff = this.differ.diff(node.children)
@@ -198,7 +237,13 @@ export class FormulaContainerRenderer extends FormulaRenderer {
 
         if (node.formula.component && node !== parent) {
             const factory = this.cfr.resolveComponentFactory(node.formula.component)
-            this.refs.set(node, this.vcr.createComponent(factory, null, injector))
+            const component = this.vcr.createComponent(factory, null, injector)
+
+            if (node.formula.class) {
+                node.formula.class.split(" ").forEach((className) => this.renderer.addClass(component.location.nativeElement, className))
+            }
+
+            this.refs.set(node, component)
         } else {
             node.children.forEach(childNode => {
                 const renderer = createRenderer(childNode.formula, injector)

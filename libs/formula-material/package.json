@@ -1,7 +1,7 @@
 {
     "name": "@zodiac-ui/formula-material",
     "author": "zodiac-team",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "homepage": "https://github.com/zodiac-team/zodiac-ui",
     "keywords": [
         "Forms",
@@ -14,6 +14,7 @@
         "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
         "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
         "@angular/forms": "^6.0.0-rc.0 || ^6.0.0",
-        "@angular/material": "^6.0.0-rc.0 || ^6.0.0"
+        "@angular/material": "^6.0.0-rc.0 || ^6.0.0",
+        "@angular/formula": "^0.0.4"
     }
 }

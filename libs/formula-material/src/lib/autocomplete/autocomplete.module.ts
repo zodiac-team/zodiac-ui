@@ -2,13 +2,13 @@ import { NgModule } from "@angular/core"
 import { AutocompleteComponent } from "./autocomplete.component"
 import { CommonModule } from "@angular/common"
 import { ReactiveFormsModule } from "@angular/forms"
-import { MatInputModule } from "@angular/material"
+import { MatAutocompleteModule, MatInputModule } from "@angular/material"
 
 @NgModule({
   imports: [
       CommonModule,
       ReactiveFormsModule,
-      AutocompleteModule,
+      MatAutocompleteModule,
       MatInputModule
   ],
   declarations: [AutocompleteComponent],
