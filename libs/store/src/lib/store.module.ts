@@ -1,5 +1,4 @@
 import { ModuleWithProviders, NgModule } from "@angular/core"
-import { CommonModule } from "@angular/common"
 import { provideStore } from "./store.service"
 import { StoreDirective } from "./store.directive"
 import { STORE_ACTIONS_OBSERVER } from "./constants"
@@ -8,7 +7,7 @@ import { Actions } from "./actions.service"
 import { InitialState } from "./interfaces"
 
 @NgModule({
-    imports: [CommonModule],
+    imports: [],
     declarations: [StoreDirective],
     exports: [StoreDirective],
     providers: [],

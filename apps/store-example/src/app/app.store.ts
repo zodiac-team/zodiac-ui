@@ -12,7 +12,7 @@ import {
 } from "@zodiac-ui/store"
 import { Injectable } from "@angular/core"
 import { HttpClient } from "@angular/common/http"
-import { switchMap, take } from "rxjs/operators"
+import { filter, skip, switchMap, take, tap } from "rxjs/operators"
 import { timer } from "rxjs"
 import { createSelector } from "reselect"
 import { Actions } from "@zodiac-ui/store"
@@ -87,8 +87,11 @@ export class AppEffects {
 connect(({ store }) => {
     return store.pipe(
         select($count),
+        skip(1),
         take(1),
-        setState(store, { didIncrement: true }),
+        setState(store, (state) => {
+            state.didIncrement = true
+        }),
     )
 })
 

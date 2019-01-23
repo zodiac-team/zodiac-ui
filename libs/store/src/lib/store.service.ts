@@ -1,6 +1,6 @@
 import { Inject, Injectable, OnDestroy, Optional, SkipSelf } from "@angular/core"
 import { asapScheduler, BehaviorSubject, Observable, Subject } from "rxjs"
-import { distinctUntilChanged, throttleTime } from "rxjs/operators"
+import { distinctUntilChanged, map, publishReplay, throttleTime } from "rxjs/operators"
 import { produce } from "immer"
 import { STORE_ACTIONS_OBSERVER, STORE_FEATURE, STORE_INITIAL_STATE } from "./constants"
 import { Action, Computed, Feature, InitialStateGetter, StateSetter, StoreLike } from "./interfaces"
@@ -8,7 +8,8 @@ import { defaultMemoize, Selector } from "reselect"
 import { select } from "./operators"
 import { compute, isRecipe, OfType } from "./utils"
 
-export function createFeatureSelector<T>(): (state: any) => T {
+export function createFeatureSelector<T>(name?: string): (state: any) => T {
+    // istanbul ignore next
     return defaultMemoize(state => (state && name ? state[name] : state) || {})
 }
 
@@ -32,7 +33,7 @@ export class Store<T> extends Observable<T> implements StoreLike<T>, OnDestroy {
         @Inject(STORE_FEATURE) feature: Feature,
         @Inject(STORE_INITIAL_STATE) getInitialState: InitialStateGetter<T>,
         @Inject(STORE_ACTIONS_OBSERVER) actions: Subject<any>,
-        @Optional() @SkipSelf() parent?: Store<any>,
+        @Optional() @SkipSelf() parent?,
     ) {
         let sub: Observable<T>
 
@@ -42,17 +43,15 @@ export class Store<T> extends Observable<T> implements StoreLike<T>, OnDestroy {
         const initialState: T = {} as T
         const computed: any = {}
 
-        for (const key in stateConfig) {
-            if (stateConfig.hasOwnProperty(key)) {
-                const value = stateConfig[key]
-                if (typeof value === "function") {
-                    computed[key] = value
-                    initialState[key] = null
-                } else {
-                    initialState[key] = value as any
-                }
+        Object.getOwnPropertyNames(stateConfig).forEach((key) => {
+            const value = stateConfig[key]
+            if (typeof value === "function") {
+                computed[key] = value
+                initialState[key] = null
+            } else {
+                initialState[key] = value as any
             }
-        }
+        })
 
         this.computed = computed
         this.initialState = initialState
@@ -62,24 +61,26 @@ export class Store<T> extends Observable<T> implements StoreLike<T>, OnDestroy {
         this.destroyed$ = new Subject()
         this.actions$ = actions
 
-        sub = this.state$.pipe(
-            distinctUntilChanged(),
-            throttleTime(0, asapScheduler),
-        )
+        if (this.parent) {
+            this.state$.subscribe((state) => {
+                this.parent.setState({
+                    [this.feature]: state
+                })
+            })
+
+            sub = this.parent.state$
+                .pipe(
+                    throttleTime(0, asapScheduler),
+                    select(createFeatureSelector(this.feature)),
+                )
+        } else {
+            sub = this.state$.pipe(
+                throttleTime(0, asapScheduler),
+                distinctUntilChanged(),
+            )
+        }
 
         compute(this, this.state$, this.computed).subscribe()
-
-        if (this.parent) {
-            this.parent.state$
-                .pipe(
-                    select(state =>
-                        produce(this.state, draft => {
-                            Object.assign(draft, state[this.feature])
-                        }),
-                    ),
-                )
-                .subscribe(this.state$)
-        }
     }
 
     public get state(): T {
@@ -108,11 +109,7 @@ export class Store<T> extends Observable<T> implements StoreLike<T>, OnDestroy {
             state = produce(this.state, (draft: T) => Object.assign(draft, setter))
         }
 
-        if (this.parent) {
-            this.parent.setState({ [this.feature]: state })
-        } else {
-            this.state$.next(state)
-        }
+        this.state$.next(state)
 
         this.dispatch(new SetState(state))
     }
@@ -123,6 +120,7 @@ export function provideStore(feature: string, initialState: any) {
         {
             provide: Store,
             useClass: Store,
+            deps: [STORE_FEATURE, STORE_INITIAL_STATE, STORE_ACTIONS_OBSERVER, [Store, new Optional(), new SkipSelf()]],
         },
         {
             provide: STORE_FEATURE,
