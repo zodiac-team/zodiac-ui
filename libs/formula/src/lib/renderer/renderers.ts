@@ -1,11 +1,13 @@
 import {
     ComponentFactoryResolver,
-    ComponentRef, inject,
+    ComponentRef,
+    inject,
     Injector,
     IterableDiffer,
     IterableDiffers,
     KeyValueDiffer,
-    KeyValueDiffers, Renderer2,
+    KeyValueDiffers,
+    Renderer2,
     StaticProvider,
     ViewContainerRef,
 } from "@angular/core"
@@ -40,14 +42,16 @@ export abstract class FormulaRenderer {
         const resolve = node.formula.resolve
         const resolvers = resolve
             ? Object.getOwnPropertySymbols(resolve)
-                .map((key: any) => ({
-                    key: key,
-                    token: resolve[key]
-                }))
-                .concat(Object.values(resolve).map((key: any) => ({
-                    key: key,
-                    token: resolve[key]
-                })))
+                  .map((key: any) => ({
+                      key: key,
+                      token: resolve[key],
+                  }))
+                  .concat(
+                      Object.values(resolve).map((key: any) => ({
+                          key: key,
+                          token: resolve[key],
+                      })),
+                  )
             : []
 
         const context = {
@@ -73,7 +77,7 @@ export abstract class FormulaRenderer {
         const resolveData = {} as any
 
         if (resolve) {
-            resolvers.forEach((ref) => {
+            resolvers.forEach(ref => {
                 const resolver = injector.get(ref.token)
 
                 resolveData[ref.key] = resolver.resolve(context)
@@ -85,7 +89,11 @@ export abstract class FormulaRenderer {
             const component = this.vcr.createComponent(factory, null, injector)
 
             if (node.formula.class) {
-                node.formula.class.split(" ").forEach((className) => this.renderer.addClass(component.location.nativeElement, className))
+                node.formula.class
+                    .split(" ")
+                    .forEach(className =>
+                        this.renderer.addClass(component.location.nativeElement, className),
+                    )
             }
 
             this.refs.set(node, component)
@@ -170,7 +178,11 @@ export class FormulaArrayRenderer extends FormulaRenderer {
             const component = this.vcr.createComponent(factory, null, injector)
 
             if (node.formula.class) {
-                node.formula.class.split(" ").forEach((className) => this.renderer.addClass(component.location.nativeElement, className))
+                node.formula.class
+                    .split(" ")
+                    .forEach(className =>
+                        this.renderer.addClass(component.location.nativeElement, className),
+                    )
             }
 
             this.refs.set(node, component)
@@ -240,7 +252,11 @@ export class FormulaContainerRenderer extends FormulaRenderer {
             const component = this.vcr.createComponent(factory, null, injector)
 
             if (node.formula.class) {
-                node.formula.class.split(" ").forEach((className) => this.renderer.addClass(component.location.nativeElement, className))
+                node.formula.class
+                    .split(" ")
+                    .forEach(className =>
+                        this.renderer.addClass(component.location.nativeElement, className),
+                    )
             }
 
             this.refs.set(node, component)

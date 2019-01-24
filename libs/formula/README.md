@@ -3,7 +3,6 @@
 Formula is a powerful form generator built for Angular. Inspired by Angular Router, Formula
 provides a declarative interface for building reactive forms.
 
-
 ## Early adopters
 
 Formula is in early development. Don't use this in production.
@@ -27,15 +26,7 @@ const value = [
 ...and craft a formula that models your value
 
 ```ts
-const formula = users(
-    user(
-        name,
-        age,
-        notes,
-        dob,
-        favouriteFood,
-    )
-)
+const formula = users(user(name, age, notes, dob, favouriteFood))
 ```
 
 Then you just hook it up to a component

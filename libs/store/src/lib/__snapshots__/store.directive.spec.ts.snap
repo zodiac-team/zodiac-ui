@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StoreDirective should clear the view container 1`] = `
+<div
+  id="root2"
+  ng-version="7.1.4"
+>
+  <!--bindings={
+  "ng-reflect-z-store-in": null
+}-->
+</div>
+`;
+
+exports[`StoreDirective should render the new state 1`] = `
+<div
+  id="root1"
+  ng-version="7.1.4"
+>
+  <!--bindings={
+  "ng-reflect-z-store-in": "[object Object]"
+}-->
+  <pre>
+                {
+  "count": 2
+}
+        
+  </pre>
+</div>
+`;
+
+exports[`StoreDirective should render the state 1`] = `
+<div
+  id="root0"
+  ng-version="7.1.4"
+>
+  <!---->
+</div>
+`;

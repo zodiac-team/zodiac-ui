@@ -6,12 +6,6 @@ import { SelectModule } from "./select/select.module"
 import { TextareaModule } from "./textarea/textarea.module"
 
 @NgModule({
-    imports: [
-        AutocompleteModule,
-        DatepickerModule,
-        InputModule,
-        SelectModule,
-        TextareaModule
-    ],
+    imports: [AutocompleteModule, DatepickerModule, InputModule, SelectModule, TextareaModule],
 })
 export class FormulaMaterialModule {}

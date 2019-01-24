@@ -33,7 +33,7 @@ export class Store<T> extends Observable<T> implements StoreLike<T>, OnDestroy {
         @Inject(STORE_FEATURE) feature: Feature,
         @Inject(STORE_INITIAL_STATE) getInitialState: InitialStateGetter<T>,
         @Inject(STORE_ACTIONS_OBSERVER) actions: Subject<any>,
-        @Optional() @SkipSelf() parent?,
+        @Optional() @SkipSelf() parent?: Store<any>,
     ) {
         let sub: Observable<T>
 
@@ -43,7 +43,7 @@ export class Store<T> extends Observable<T> implements StoreLike<T>, OnDestroy {
         const initialState: T = {} as T
         const computed: any = {}
 
-        Object.getOwnPropertyNames(stateConfig).forEach((key) => {
+        Object.getOwnPropertyNames(stateConfig).forEach(key => {
             const value = stateConfig[key]
             if (typeof value === "function") {
                 computed[key] = value
@@ -62,17 +62,16 @@ export class Store<T> extends Observable<T> implements StoreLike<T>, OnDestroy {
         this.actions$ = actions
 
         if (this.parent) {
-            this.state$.subscribe((state) => {
+            this.state$.subscribe(state => {
                 this.parent.setState({
-                    [this.feature]: state
+                    [this.feature]: state,
                 })
             })
 
-            sub = this.parent.state$
-                .pipe(
-                    throttleTime(0, asapScheduler),
-                    select(createFeatureSelector(this.feature)),
-                )
+            sub = this.parent.state$.pipe(
+                throttleTime(0, asapScheduler),
+                select(createFeatureSelector(this.feature)),
+            )
         } else {
             sub = this.state$.pipe(
                 throttleTime(0, asapScheduler),
@@ -120,7 +119,12 @@ export function provideStore(feature: string, initialState: any) {
         {
             provide: Store,
             useClass: Store,
-            deps: [STORE_FEATURE, STORE_INITIAL_STATE, STORE_ACTIONS_OBSERVER, [Store, new Optional(), new SkipSelf()]],
+            deps: [
+                STORE_FEATURE,
+                STORE_INITIAL_STATE,
+                STORE_ACTIONS_OBSERVER,
+                [Store, new Optional(), new SkipSelf()],
+            ],
         },
         {
             provide: STORE_FEATURE,

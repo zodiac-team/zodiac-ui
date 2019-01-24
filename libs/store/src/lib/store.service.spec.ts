@@ -25,14 +25,11 @@ export function createTestStoreForRoot(initialState = emptyState) {
 export function createTestFeatureStore(feature, initialState = emptyState, parent) {
     return Injector.create({
         parent,
-        providers: [
-            provideStore(feature, initialState)
-        ],
+        providers: [provideStore(feature, initialState)],
     })
 }
 
 describe("StoreService", () => {
-
     afterEach(() => expect.hasAssertions())
 
     describe("when the root store is created", () => {
@@ -40,11 +37,11 @@ describe("StoreService", () => {
 
         const initialState = {
             isInitialised: true,
-            computed: () => 1 + 1
+            computed: () => 1 + 1,
         }
         const computedState = {
             isInitialised: true,
-            computed: 2
+            computed: 2,
         }
 
         beforeEach(() => {
@@ -72,11 +69,11 @@ describe("StoreService", () => {
         const parentState = { isParent: true }
         const featureState = {
             isFeature: true,
-            computed: () => 1 + 1
+            computed: () => 1 + 1,
         }
         const computedState = {
             isFeature: true,
-            computed: 2
+            computed: 2,
         }
 
         beforeEach(() => {
@@ -101,10 +98,12 @@ describe("StoreService", () => {
             const parentStore: Store<any> = parent.get(Store)
             const featureStore: Store<any> = injector.get(Store)
 
-            expect(parentStore.state).toEqual(objectContaining({
-                ...parentState,
-                feature: computedState
-            }))
+            expect(parentStore.state).toEqual(
+                objectContaining({
+                    ...parentState,
+                    feature: computedState,
+                }),
+            )
             expect(featureStore.state).toEqual(computedState)
         })
     })
@@ -114,23 +113,24 @@ describe("StoreService", () => {
         let store: Store<any>
 
         const initialState = {
-            count: 0
+            count: 0,
         }
 
-        beforeEach(() => injector = createTestStoreForRoot(() => initialState))
+        beforeEach(() => (injector = createTestStoreForRoot(() => initialState)))
 
-        beforeEach(() => store = injector.get(Store))
+        beforeEach(() => (store = injector.get(Store)))
 
         it("should return the current state when subscribing to the store", async(() => {
-            store.subscribe((subject) =>
-                expect(subject).toEqual(initialState)
-            ).unsubscribe()
+            store.subscribe(subject => expect(subject).toEqual(initialState)).unsubscribe()
         }))
 
         it("should return the current value when subscribing to a value selected from the store", async(() => {
-            store.select((state) => state.count).subscribe((subject) => {
-                expect(subject).toBe(0)
-            }).unsubscribe()
+            store
+                .select(state => state.count)
+                .subscribe(subject => {
+                    expect(subject).toBe(0)
+                })
+                .unsubscribe()
         }))
     })
 
@@ -138,17 +138,15 @@ describe("StoreService", () => {
         let injector: TestBedStatic
         let store: Store<any>
 
-        beforeEach(() => injector = createTestStoreForRoot())
+        beforeEach(() => (injector = createTestStoreForRoot()))
 
-        beforeEach(() => store = injector.get(Store))
+        beforeEach(() => (store = injector.get(Store)))
 
         it("should dispatch an action", async(() => {
             const subject: Actions = injector.get(Actions)
             const result = { type: "ACTION" }
 
-            subject.pipe(take(1)).subscribe((action) =>
-                expect(action).toEqual(result)
-            )
+            subject.pipe(take(1)).subscribe(action => expect(action).toEqual(result))
 
             store.dispatch(result)
         }))
@@ -160,9 +158,9 @@ describe("StoreService", () => {
 
         const initialState = { unchanged: {}, count: 0 }
 
-        beforeEach(() => injector = createTestStoreForRoot(() => initialState))
+        beforeEach(() => (injector = createTestStoreForRoot(() => initialState)))
 
-        beforeEach(() => store = injector.get(Store))
+        beforeEach(() => (store = injector.get(Store)))
 
         it("should partially update the state", () => {
             const result = { count: 1 }
@@ -172,15 +170,15 @@ describe("StoreService", () => {
         })
 
         it("should throw an error when attempting to modify an object created by immer", () => {
-            store.setState((state) => {
+            store.setState(state => {
                 state.count += 1
             })
-            expect(() => store.state.count = 0).toThrow()
+            expect(() => (store.state.count = 0)).toThrow()
         })
 
         it("should not throw an error when attempting to modify an object created by the user", () => {
             store.setState({ count: 0 })
-            expect(() => store.state.count = 1).not.toThrow()
+            expect(() => (store.state.count = 1)).not.toThrow()
         })
 
         it("should apply simultaneous updates in the order they were called", () => {
@@ -197,9 +195,9 @@ describe("StoreService", () => {
 
         const initialState = { unchanged: {}, count: 0 }
 
-        beforeEach(() => injector = createTestStoreForRoot(() => initialState))
+        beforeEach(() => (injector = createTestStoreForRoot(() => initialState)))
 
-        beforeEach(() => store = injector.get(Store))
+        beforeEach(() => (store = injector.get(Store)))
 
         it("should complete any active subscriptions", () => {
             const subject = store.subscribe()
@@ -208,5 +206,4 @@ describe("StoreService", () => {
             expect(subject.closed).toBe(true)
         })
     })
-
 })

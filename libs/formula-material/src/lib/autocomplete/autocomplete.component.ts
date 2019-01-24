@@ -14,17 +14,16 @@ import { AbstractControl } from "@angular/forms"
             [matAutocomplete]="auto"
         />
         <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of data.options | async" [value]="option">
+            <mat-option *ngFor="let option of (data.options | async)" [value]="option">
                 {{ option }}
             </mat-option>
         </mat-autocomplete>
     `,
     styleUrls: ["./autocomplete.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
 })
 export class AutocompleteComponent implements FormulaContext {
-
     public data: FormulaData
     public model: AbstractControl
     public resolve: FormulaResolveData

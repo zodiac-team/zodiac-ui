@@ -4,11 +4,7 @@ import { ReactiveFormsModule } from "@angular/forms"
 import { MatFormFieldModule, MatInputModule } from "@angular/material"
 
 @NgModule({
-    imports: [
-        ReactiveFormsModule,
-        MatInputModule,
-        MatFormFieldModule
-    ],
+    imports: [ReactiveFormsModule, MatInputModule, MatFormFieldModule],
     declarations: [TextareaComponent],
     entryComponents: [TextareaComponent],
     exports: [TextareaComponent],

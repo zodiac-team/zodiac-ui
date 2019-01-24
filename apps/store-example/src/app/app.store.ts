@@ -89,7 +89,7 @@ connect(({ store }) => {
         select($count),
         skip(1),
         take(1),
-        setState(store, (state) => {
+        setState(store, state => {
             state.didIncrement = true
         }),
     )

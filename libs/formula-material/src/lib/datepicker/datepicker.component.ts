@@ -21,8 +21,8 @@ import { AbstractControl } from "@angular/forms"
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
     host: {
-        class: "z-input z-datepicker"
-    }
+        class: "z-input z-datepicker",
+    },
 })
 export class DatepickerComponent implements FormulaContext {
     public data: FormulaData

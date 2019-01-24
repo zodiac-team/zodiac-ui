@@ -17,8 +17,8 @@ import { AbstractControl } from "@angular/forms"
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
     host: {
-        class: "z-input z-select"
-    }
+        class: "z-input z-select",
+    },
 })
 export class SelectComponent implements FormulaContext {
     public data: FormulaData

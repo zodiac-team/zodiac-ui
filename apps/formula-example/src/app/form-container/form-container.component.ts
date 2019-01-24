@@ -9,8 +9,8 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from "@
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
     host: {
-        class: "z-form-container"
-    }
+        class: "z-form-container",
+    },
 })
 export class FormContainerComponent implements OnInit {
     constructor() {}

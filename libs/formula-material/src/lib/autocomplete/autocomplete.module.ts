@@ -5,14 +5,9 @@ import { ReactiveFormsModule } from "@angular/forms"
 import { MatAutocompleteModule, MatInputModule } from "@angular/material"
 
 @NgModule({
-  imports: [
-      CommonModule,
-      ReactiveFormsModule,
-      MatAutocompleteModule,
-      MatInputModule
-  ],
-  declarations: [AutocompleteComponent],
-  entryComponents: [AutocompleteComponent],
-  exports: [AutocompleteComponent]
+    imports: [CommonModule, ReactiveFormsModule, MatAutocompleteModule, MatInputModule],
+    declarations: [AutocompleteComponent],
+    entryComponents: [AutocompleteComponent],
+    exports: [AutocompleteComponent],
 })
-export class AutocompleteModule { }
+export class AutocompleteModule {}

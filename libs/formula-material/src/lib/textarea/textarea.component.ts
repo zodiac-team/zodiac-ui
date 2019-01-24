@@ -1,4 +1,11 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, NgZone, ViewChild, ViewEncapsulation } from "@angular/core"
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    NgZone,
+    ViewChild,
+    ViewEncapsulation,
+} from "@angular/core"
 import { FormulaContext, FormulaData, FormulaResolveData } from "@zodiac-ui/formula"
 import { AbstractControl } from "@angular/forms"
 import { DefaultErrorStateMatcher } from "../input/input.component"
@@ -25,8 +32,8 @@ import { CdkTextareaAutosize } from "@angular/cdk/text-field"
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
     host: {
-        class: "z-input z-textarea"
-    }
+        class: "z-input z-textarea",
+    },
 })
 export class TextareaComponent implements FormulaContext, AfterViewInit {
     public data: FormulaData
@@ -53,7 +60,6 @@ export class TextareaComponent implements FormulaContext, AfterViewInit {
 
     public triggerResize() {
         // Wait for changes to be applied, then trigger textarea resize.
-        this.ngZone.onStable.pipe(take(1))
-            .subscribe(() => this.autosize.resizeToFitContent(true));
+        this.ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true))
     }
 }

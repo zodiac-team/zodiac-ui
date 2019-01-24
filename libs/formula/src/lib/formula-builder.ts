@@ -71,15 +71,14 @@ export function extend<T extends Formula>(
     return function(...args) {
         const formula = buildFn(...args)
 
-        Object.getOwnPropertyNames(opts).forEach((key) => {
+        Object.getOwnPropertyNames(opts).forEach(key => {
             const source = formula[key]
             const value = opts[key]
 
             if (Array.isArray(value)) {
                 formula[key] = [...source, ...value]
-            }
-            else if (typeof value === "object" && value !== null) {
-                formula[key] = {...source, ...value}
+            } else if (typeof value === "object" && value !== null) {
+                formula[key] = { ...source, ...value }
             } else {
                 formula[key] = value
             }

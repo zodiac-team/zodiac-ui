@@ -6,8 +6,6 @@ import { map, tap } from "rxjs/operators"
 
 export const connections = Symbol("connections")
 
-export const effectRef = Symbol("effectRef")
-
 export interface EffectsProvider extends Type<any> {
     connect: ConnectFactoryWithContext<any, any>
 }

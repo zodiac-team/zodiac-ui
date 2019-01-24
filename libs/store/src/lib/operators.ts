@@ -21,7 +21,9 @@ export function ofAction<T>(actionType: Type<T>): OperatorFunction<any, T> {
                 if (actionType.hasOwnProperty("type")) {
                     return action.type === (actionType as any).type
                 } else {
-                    throw new Error(`Action missing static property "type". Did you forget the @OfType() decorator?`)
+                    throw new Error(
+                        `Action missing static property "type". Did you forget the @OfType() decorator?`,
+                    )
                 }
             }),
         )

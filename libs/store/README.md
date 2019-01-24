@@ -4,40 +4,40 @@ An immutable store implementation for Angular based on ngrx.
 
 ## Table of Contents
 
-*   [Early Access](#early-access)
-*   [Getting Started](#getting-started)
-*   [Introduction](#introduction)
-*   [Usage](#usage)
-    *   [Initial State](#initial-state)
-    *   [Selectors](#selectors)
-    *   [Computed Properties](#computed-properties)
-    *   [Read State](#read-state)
-    *   [Set State](#set-state)
-    *   [Actions](#actions)
-    *   [Effects](#effects)
-    *   [Feature Modules](#feature-modules)
-    *   [Redux Devtools](#redux-devtools)
-*   [Api](#api)
-    *   [Store](#store)
-        *   [state](#state)
-        *   [dispatch(action)](#dispatchaction)
-        *   [setState(setter)](#setstatesetter)
-        *   [select(selector)](#selectselector)
-        *   [subscribe(2 overloads)](#subscribe2-overloads)
-    *   [StoreDirective](#storedirective)
-        *   [StoreContext](#storecontext)
-    *   [Operators](#operators)
-        *   [dispatch(store, setter)](#dispatchstore-setter)
-        *   [setState(store, setter)](#setstatestore-setter)
-        *   [select(selector)](#selectselectorspan-stylecolor-transparent2span)
-        *   [ofAction(action)](#ofactionaction)
-        *   [ofEffect(effect)](#ofeffecteffect)
-        *   [withLatestState(store)](#withlateststatestore)
-    *   [Utils](#utils)
-        *   [@OfType(type)](#oftypetype)
-        *   [createConnector\<T\>()](#createconnectort)
-        *   [createFeatureSelector()](#createfeatureselector)
-        *   [createSelector(97 overloads)](#createselector97-overloads)
+-   [Early Access](#early-access)
+-   [Getting Started](#getting-started)
+-   [Introduction](#introduction)
+-   [Usage](#usage)
+    -   [Initial State](#initial-state)
+    -   [Selectors](#selectors)
+    -   [Computed Properties](#computed-properties)
+    -   [Read State](#read-state)
+    -   [Set State](#set-state)
+    -   [Actions](#actions)
+    -   [Effects](#effects)
+    -   [Feature Modules](#feature-modules)
+    -   [Redux Devtools](#redux-devtools)
+-   [Api](#api)
+    -   [Store](#store)
+        -   [state](#state)
+        -   [dispatch(action)](#dispatchaction)
+        -   [setState(setter)](#setstatesetter)
+        -   [select(selector)](#selectselector)
+        -   [subscribe(2 overloads)](#subscribe2-overloads)
+    -   [StoreDirective](#storedirective)
+        -   [StoreContext](#storecontext)
+    -   [Operators](#operators)
+        -   [dispatch(store, setter)](#dispatchstore-setter)
+        -   [setState(store, setter)](#setstatestore-setter)
+        -   [select(selector)](#selectselectorspan-stylecolor-transparent2span)
+        -   [ofAction(action)](#ofactionaction)
+        -   [ofEffect(effect)](#ofeffecteffect)
+        -   [withLatestState(store)](#withlateststatestore)
+    -   [Utils](#utils)
+        -   [@OfType(type)](#oftypetype)
+        -   [createConnector\<T\>()](#createconnectort)
+        -   [createFeatureSelector()](#createfeatureselector)
+        -   [createSelector(97 overloads)](#createselector97-overloads)
 
 ## Early Access
 
@@ -303,14 +303,14 @@ const someEffect = AppEffects.connect((store, ctx) => {
 React to actions
 
 ```ts
-const loadTodos = AppEffects.connect((ctx) => (
+const loadTodos = AppEffects.connect(ctx =>
     ctx.actions(GetTodos).pipe(
-        switchMap((action) => ctx.http.get(action.payload)),
+        switchMap(action => ctx.http.get(action.payload)),
         setState(ctx.store, (state, todos) => {
             state.todos = todos
-        })
-    )
-))
+        }),
+    ),
+)
 ```
 
 React to effects
@@ -369,7 +369,7 @@ export class FeatureEffects {
 
 FeatureEffects.connect(ctx => {
     return interval(1000).pipe(
-        setState(ctx.store, (state) => {
+        setState(ctx.store, state => {
             state.count = Math.max(0, state.count - 1)
         }),
     )
@@ -534,10 +534,10 @@ A number of useful operators are included for composing reactive streams
 
 Taps a store to immediately dispatch an action. Returns the source Observable for further chaining.
 
-| Param                                      | Description                                                                                                              |
-| :----------------------------------------- | :----------------------------------------------------------------------------------------------------------------------- |
-| `store: StoreLike<T>`                      | An object that implements the `StoreLike` interface                                                                      |
-| `setter: any`  | An action to dispatch, usually with a `type` and optional `payload` |
+| Param                                | Description                                                                                    |
+| :----------------------------------- | :--------------------------------------------------------------------------------------------- |
+| `store: StoreLike<T>`                | An object that implements the `StoreLike` interface                                            |
+| `setter: any`                        | An action to dispatch, usually with a `type` and optional `payload`                            |
 | `setter: (context: inferred) => any` | A function that returns an action, with the upstream observable value passed in as a paramater |
 
 | Returns                |

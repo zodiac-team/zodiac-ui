@@ -5,14 +5,9 @@ import { MatSelectModule } from "@angular/material"
 import { ReactiveFormsModule } from "@angular/forms"
 
 @NgModule({
-    imports: [
-        CommonModule,
-        MatSelectModule,
-        ReactiveFormsModule
-    ],
+    imports: [CommonModule, MatSelectModule, ReactiveFormsModule],
     declarations: [SelectComponent],
     entryComponents: [SelectComponent],
     exports: [SelectComponent],
 })
-export class SelectModule {
-}
+export class SelectModule {}

@@ -23,9 +23,7 @@ describe("operators", () => {
         it("should filter a stream of actions", async(() => {
             const spy = jest.fn()
             const result = { type: "Fake Action" }
-            const sub = stream.pipe(
-                ofAction(FakeAction)
-            ).subscribe(spy)
+            const sub = stream.pipe(ofAction(FakeAction)).subscribe(spy)
 
             expect(spy).toBeCalledTimes(1)
             expect(spy).toBeCalledWith(result)
@@ -34,10 +32,12 @@ describe("operators", () => {
 
         it("should throw if it can't determine the action type", () => {
             const spy = jest.fn().mockReturnValue(EMPTY)
-            const sub = stream.pipe(
-                ofAction({} as any),
-                catchError(spy)
-            ).subscribe()
+            const sub = stream
+                .pipe(
+                    ofAction({} as any),
+                    catchError(spy),
+                )
+                .subscribe()
 
             expect(spy).toBeCalledTimes(1)
             expect(sub.closed).toBe(true)
@@ -51,19 +51,17 @@ describe("operators", () => {
         const stream = from(connect[connections]).pipe(
             mergeMap((fn: () => Observable<any>) =>
                 fn().pipe(
-                    map((value) => ({
+                    map(value => ({
                         source: fn,
-                        value
-                    }))
-                )
-            )
+                        value,
+                    })),
+                ),
+            ),
         )
 
         it("should filter a stream of effects", async(() => {
             const spy = jest.fn()
-            const sub = stream.pipe(
-                ofEffect(effect)
-            ).subscribe(spy)
+            const sub = stream.pipe(ofEffect(effect)).subscribe(spy)
 
             expect(spy).toBeCalledTimes(1)
             expect(spy).toBeCalledWith(true)
@@ -77,9 +75,7 @@ describe("operators", () => {
 
         it("should dispatch an action immediately without modifying the stream", async(() => {
             const spy = jest.fn()
-            const sub = stream.pipe(
-                dispatch(store, new FakeAction())
-            ).subscribe(spy)
+            const sub = stream.pipe(dispatch(store, new FakeAction())).subscribe(spy)
 
             expect(spy).toBeCalledTimes(3)
             expect(store.dispatch).toBeCalledTimes(3)
@@ -91,13 +87,11 @@ describe("operators", () => {
         const stream = of(true)
         const store = new FakeStore()
 
-        beforeEach(() => store.state = 1)
+        beforeEach(() => (store.state = 1))
 
         it("should return an array with the store state as the last value", async(() => {
             const spy = jest.fn()
-            const sub = stream.pipe(
-                withLatestState(store)
-            ).subscribe(spy)
+            const sub = stream.pipe(withLatestState(store)).subscribe(spy)
 
             expect(spy).toBeCalledWith([true, 1])
             expect(sub.closed).toBe(true)
