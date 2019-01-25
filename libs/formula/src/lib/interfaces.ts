@@ -22,8 +22,12 @@ export interface FormulaData {
     [key: string]: any
 }
 
-export interface FormulaResolveData {
+export interface FormulaResolve {
     [key: string]: Type<any>
+}
+
+export interface FormulaResolveData {
+    [key: string]: any
 }
 
 export type FormulaLoadChildrenCallback = () =>
@@ -47,7 +51,7 @@ export interface FormulaControlOptions {
     canLoad?: any[]
     canActivate?: any[]
     canDeactivate?: any[]
-    resolve?: FormulaResolveData
+    resolve?: FormulaResolve
     validators?: any[]
     asyncValidators?: any[]
 }
@@ -68,7 +72,7 @@ export interface FormulaGroupOptions {
     canLoad?: any[]
     canActivateChild?: any[]
     loadChildren?: FormulaLoadChildren
-    resolve?: FormulaResolveData
+    resolve?: FormulaResolve
     validators?: any[]
     asyncValidators?: any[]
 }
@@ -88,7 +92,7 @@ export interface FormulaArrayOptions {
     canActivateChild?: any[]
     component?: Type<any>
     loadChildren?: FormulaLoadChildren
-    resolve?: FormulaResolveData
+    resolve?: FormulaResolve
     validators?: any[]
     asyncValidators?: any[]
 }
@@ -108,7 +112,7 @@ export interface FormulaContainerOptions {
     canLoad?: any[]
     canActivateChild?: any[]
     loadChildren?: FormulaLoadChildren
-    resolve?: FormulaResolveData
+    resolve?: FormulaResolve
 }
 
 export type FormulaContainer = FormulaContainerBase & FormulaContainerOptions

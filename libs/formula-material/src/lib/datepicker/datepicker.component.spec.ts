@@ -10,7 +10,6 @@ import {
 import { DatepickerModule } from "./datepicker.module"
 
 describe("DatepickerComponent", () => {
-
     beforeEach(configureFormulaContext())
 
     beforeEach(configureTestModule(DatepickerModule))

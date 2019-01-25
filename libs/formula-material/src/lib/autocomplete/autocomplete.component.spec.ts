@@ -4,7 +4,6 @@ import { configureFormulaContext, configureTestModule } from "../../test/utils"
 import { AutocompleteModule } from "./autocomplete.module"
 
 describe("AutocompleteComponent", () => {
-
     beforeEach(configureFormulaContext())
 
     beforeEach(configureTestModule(AutocompleteModule))

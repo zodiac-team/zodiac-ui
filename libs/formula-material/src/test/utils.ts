@@ -7,7 +7,7 @@ import { NoopAnimationsModule } from "@angular/platform-browser/animations"
 export const defaultContext = {
     model: new FormControl(""),
     resolve: {},
-    data: {}
+    data: {},
 }
 
 export function configureTestModule(module) {
@@ -19,22 +19,27 @@ export function configureTestModule(module) {
 }
 
 export function configureFormulaContext(value: FormulaContext = defaultContext) {
-    return () => TestBed.configureTestingModule({
-        providers: [{
-            provide: FormulaContext,
-            useValue: value
-        }]
-    })
+    return () =>
+        TestBed.configureTestingModule({
+            providers: [
+                {
+                    provide: FormulaContext,
+                    useValue: value,
+                },
+            ],
+        })
 }
 
 export function configureDateAdapter(adapterModule = MatNativeDateModule) {
-    return () => TestBed.configureTestingModule({
-        imports: [adapterModule]
-    })
+    return () =>
+        TestBed.configureTestingModule({
+            imports: [adapterModule],
+        })
 }
 
 export function configureAnimations() {
-    return () => TestBed.configureTestingModule({
-        imports: [NoopAnimationsModule]
-    })
+    return () =>
+        TestBed.configureTestingModule({
+            imports: [NoopAnimationsModule],
+        })
 }

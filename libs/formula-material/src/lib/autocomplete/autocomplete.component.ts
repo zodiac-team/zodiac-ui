@@ -14,7 +14,10 @@ import { AbstractControl } from "@angular/forms"
             [matAutocomplete]="auto"
         />
         <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of (data.options || (resolve.options | async))" [value]="option">
+            <mat-option
+                *ngFor="let option of data.options || (resolve.options | async)"
+                [value]="option"
+            >
                 {{ option }}
             </mat-option>
         </mat-autocomplete>

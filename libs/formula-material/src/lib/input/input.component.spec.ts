@@ -4,7 +4,6 @@ import { InputModule } from "./input.module"
 import { TestBed } from "@angular/core/testing"
 
 describe("InputComponent", () => {
-
     beforeEach(configureFormulaContext())
 
     beforeEach(configureTestModule(InputModule))
