@@ -10,7 +10,3 @@ indent_size=4
 indent_style=space
 indent_size=2
 
-[{.clang-format,.analysis_options,*.yml,*.yaml}]
-indent_style=space
-indent_size=2
-
