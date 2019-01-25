@@ -18,6 +18,5 @@ describe("TextareaComponent", () => {
         fixture.detectChanges()
 
         expect(fixture.componentInstance).toBeTruthy()
-        expect(fixture.componentInstance).toMatchSnapshot()
     })
 })
