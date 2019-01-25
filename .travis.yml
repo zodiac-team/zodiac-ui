@@ -5,4 +5,4 @@ node_js:
     - "8.9.4"
 cache: npm
 after_script:
-    - cat ./coverage/*/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+    - cat ./coverage/libs/*/lcov.info | ./node_modules/coveralls/bin/coveralls.js
