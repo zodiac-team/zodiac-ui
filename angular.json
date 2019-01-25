@@ -165,43 +165,6 @@
               "**/node_modules/**"
             ]
           }
-        },
-        "test": {
-          "builder": "@nrwl/builders:jest",
-          "options": {
-            "jestConfig": "apps/formula-example/jest.config.js",
-            "tsConfig": "apps/formula-example/tsconfig.spec.json",
-            "setupFile": "apps/formula-example/src/test-setup.ts"
-          }
-        }
-      }
-    },
-    "formula-example-e2e": {
-      "root": "apps/formula-example-e2e",
-      "projectType": "application",
-      "prefix": "",
-      "architect": {
-        "e2e": {
-          "builder": "@nrwl/builders:cypress",
-          "options": {
-            "cypressConfig": "apps/formula-example-e2e/cypress.json",
-            "tsConfig": "apps/formula-example-e2e/tsconfig.e2e.json",
-            "devServerTarget": "formula-example:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "formula-example:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "apps/formula-example-e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     },
@@ -284,43 +247,6 @@
               "apps/store-example/tsconfig.app.json",
               "apps/store-example/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/builders:jest",
-          "options": {
-            "jestConfig": "apps/store-example/jest.config.js",
-            "tsConfig": "apps/store-example/tsconfig.spec.json",
-            "setupFile": "apps/store-example/src/test-setup.ts"
-          }
-        }
-      }
-    },
-    "store-example-e2e": {
-      "root": "apps/store-example-e2e",
-      "projectType": "application",
-      "prefix": "",
-      "architect": {
-        "e2e": {
-          "builder": "@nrwl/builders:cypress",
-          "options": {
-            "cypressConfig": "apps/store-example-e2e/cypress.json",
-            "tsConfig": "apps/store-example-e2e/tsconfig.e2e.json",
-            "devServerTarget": "store-example:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "store-example:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "apps/store-example-e2e/tsconfig.e2e.json",
             "exclude": [
               "**/node_modules/**"
             ]

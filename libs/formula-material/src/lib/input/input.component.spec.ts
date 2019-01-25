@@ -1,24 +1,23 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing"
-
 import { InputComponent } from "./input.component"
+import { configureAnimations, configureFormulaContext, configureTestModule } from "../../test/utils"
+import { InputModule } from "./input.module"
+import { TestBed } from "@angular/core/testing"
 
 describe("InputComponent", () => {
-    let component: InputComponent
-    let fixture: ComponentFixture<InputComponent>
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [InputComponent],
-        }).compileComponents()
-    }))
+    beforeEach(configureFormulaContext())
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(InputComponent)
-        component = fixture.componentInstance
+    beforeEach(configureTestModule(InputModule))
+
+    beforeEach(configureAnimations())
+
+    it("should create", async () => {
+        await TestBed.compileComponents()
+        const fixture = TestBed.createComponent(InputComponent)
+
         fixture.detectChanges()
-    })
 
-    it("should create", () => {
-        expect(component).toBeTruthy()
+        expect(fixture.componentInstance).toBeTruthy()
+        expect(fixture.componentInstance).toMatchSnapshot()
     })
 })

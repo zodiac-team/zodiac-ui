@@ -1,24 +1,23 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing"
+import { TestBed } from "@angular/core/testing"
 
 import { SelectComponent } from "./select.component"
+import { configureAnimations, configureFormulaContext, configureTestModule } from "../../test/utils"
+import { SelectModule } from "./select.module"
 
 describe("SelectComponent", () => {
-    let component: SelectComponent
-    let fixture: ComponentFixture<SelectComponent>
+    beforeEach(configureFormulaContext())
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [SelectComponent],
-        }).compileComponents()
-    }))
+    beforeEach(configureTestModule(SelectModule))
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(SelectComponent)
-        component = fixture.componentInstance
+    beforeEach(configureAnimations())
+
+    it("should create", async () => {
+        await TestBed.compileComponents()
+        const fixture = TestBed.createComponent(SelectComponent)
+
         fixture.detectChanges()
-    })
 
-    it("should create", () => {
-        expect(component).toBeTruthy()
+        expect(fixture.componentInstance).toBeTruthy()
+        expect(fixture.componentInstance).toMatchSnapshot()
     })
 })

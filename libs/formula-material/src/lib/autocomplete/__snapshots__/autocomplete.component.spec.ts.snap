@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AutocompleteComponent should create 1`] = `
+AutocompleteComponent {
+  "data": Object {},
+  "model": FormControl {
+    "_onChange": Array [
+      [Function],
+    ],
+    "_onCollectionChange": [Function],
+    "_onDisabledChange": Array [
+      [Function],
+    ],
+    "_pendingValue": "",
+    "asyncValidator": null,
+    "errors": null,
+    "pristine": true,
+    "status": "VALID",
+    "statusChanges": EventEmitter {
+      "__isAsync": false,
+      "_isScalar": false,
+      "closed": false,
+      "hasError": false,
+      "isStopped": false,
+      "observers": Array [],
+      "thrownError": null,
+    },
+    "touched": false,
+    "validator": null,
+    "value": "",
+    "valueChanges": EventEmitter {
+      "__isAsync": false,
+      "_isScalar": false,
+      "closed": false,
+      "hasError": false,
+      "isStopped": false,
+      "observers": Array [],
+      "thrownError": null,
+    },
+  },
+  "resolve": Object {},
+}
+`;
