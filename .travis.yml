@@ -2,7 +2,7 @@ sudo: required
 dist: trusty
 language: node_js
 node_js:
-    - "node"
+    - "8.9.4"
 cache: npm
 after_script:
     - cat ./coverage/*/lcov.info | ./node_modules/coveralls/bin/coveralls.js
