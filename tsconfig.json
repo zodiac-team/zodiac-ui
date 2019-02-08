@@ -24,6 +24,9 @@
       ],
       "@zodiac-ui/formula-material": [
         "libs/formula-material/src/index.ts"
+      ],
+      "@zodiac-ui/blog": [
+        "libs/blog/src/index.ts"
       ]
     },
     "plugins": [

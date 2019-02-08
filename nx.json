@@ -22,6 +22,15 @@
     },
     "formula-material": {
       "tags": []
+    },
+    "blog": {
+      "tags": []
+    },
+    "blog-example": {
+      "tags": []
+    },
+    "blog-example-e2e": {
+      "tags": []
     }
   }
 }
