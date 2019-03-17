@@ -3,7 +3,8 @@ import { Component } from "@angular/core"
 @Component({
     selector: "z-root",
     template: `
-        <z-blog></z-blog>
+        <z-editor-toolbar [editor]="editor"></z-editor-toolbar>
+        <z-editor #editor></z-editor>
     `,
     styleUrls: ["./app.component.scss"],
 })

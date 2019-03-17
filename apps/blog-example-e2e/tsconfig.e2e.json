@@ -1,5 +1,5 @@
 {
-    "extends": "../../tsconfig.json",
+    "extends": "./tsconfig.json",
     "compilerOptions": {
         "sourceMap": false,
         "outDir": "../../dist/out-tsc/apps/blog-example-e2e/src",

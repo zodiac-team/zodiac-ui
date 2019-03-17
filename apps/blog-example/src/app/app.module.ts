@@ -2,11 +2,11 @@ import { BrowserModule } from "@angular/platform-browser"
 import { NgModule } from "@angular/core"
 
 import { AppComponent } from "./app.component"
-import { BlogModule } from "@zodiac-ui/blog"
+import { BlogModule, EditorModule, EditorToolbarModule } from "@zodiac-ui/blog"
 
 @NgModule({
     declarations: [AppComponent],
-    imports: [BrowserModule, BlogModule],
+    imports: [BrowserModule, BlogModule, EditorModule, EditorToolbarModule],
     providers: [],
     bootstrap: [AppComponent],
 })

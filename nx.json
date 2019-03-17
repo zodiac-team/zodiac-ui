@@ -1,36 +1,42 @@
 {
-  "npmScope": "zodiac-ui",
-  "implicitDependencies": {
-    "angular.json": "*",
-    "package.json": "*",
-    "tsconfig.json": "*",
-    "tslint.json": "*",
-    "nx.json": "*"
-  },
-  "projects": {
-    "store": {
-      "tags": []
+    "npmScope": "zodiac-ui",
+    "implicitDependencies": {
+        "angular.json": "*",
+        "package.json": "*",
+        "tsconfig.json": "*",
+        "tslint.json": "*",
+        "nx.json": "*"
     },
-    "formula": {
-      "tags": []
-    },
-    "formula-example": {
-      "tags": []
-    },
-    "store-example": {
-      "tags": []
-    },
-    "formula-material": {
-      "tags": []
-    },
-    "blog": {
-      "tags": []
-    },
-    "blog-example": {
-      "tags": []
-    },
-    "blog-example-e2e": {
-      "tags": []
+    "projects": {
+        "store": {
+            "tags": []
+        },
+        "formula": {
+            "tags": []
+        },
+        "formula-example": {
+            "tags": []
+        },
+        "store-example": {
+            "tags": []
+        },
+        "formula-material": {
+            "tags": []
+        },
+        "blog": {
+            "tags": []
+        },
+        "blog-example": {
+            "tags": []
+        },
+        "blog-example-e2e": {
+            "tags": []
+        },
+        "editor": {
+            "tags": []
+        },
+        "editor-example": {
+            "tags": []
+        }
     }
-  }
 }

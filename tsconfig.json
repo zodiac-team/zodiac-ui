@@ -1,42 +1,29 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2017",
-      "dom"
-    ],
-    "baseUrl": ".",
-    "paths": {
-      "@zodiac-ui/store": [
-        "libs/store/src/index.ts"
-      ],
-      "@zodiac-ui/formula": [
-        "libs/formula/src/index.ts"
-      ],
-      "@zodiac-ui/formula-material": [
-        "libs/formula-material/src/index.ts"
-      ],
-      "@zodiac-ui/blog": [
-        "libs/blog/src/index.ts"
-      ]
+    "compileOnSave": false,
+    "compilerOptions": {
+        "importHelpers": true,
+        "sourceMap": true,
+        "declaration": false,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "target": "es5",
+        "typeRoots": ["node_modules/@types"],
+        "lib": ["es2017", "dom"],
+        "baseUrl": ".",
+        "paths": {
+            "@zodiac-ui/store": ["libs/store/src/index.ts"],
+            "@zodiac-ui/formula": ["libs/formula/src/index.ts"],
+            "@zodiac-ui/formula-material": ["libs/formula-material/src/index.ts"],
+            "@zodiac-ui/blog": ["libs/blog/src/index.ts"],
+            "@zodiac-ui/editor": ["libs/editor/src/index.ts"]
+        },
+        "plugins": [
+            {
+                "name": "@angular/language-service"
+            }
+        ],
+        "module": "es2015"
     },
-    "plugins": [
-      {
-        "name": "@angular/language-service"
-      }
-    ]
-  },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+    "exclude": ["node_modules", "tmp"]
 }
