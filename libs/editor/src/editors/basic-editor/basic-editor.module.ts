@@ -6,10 +6,11 @@ import { TextModule } from "../../plugins/text/text.module"
 import { AlignmentModule } from "../../plugins/alignment/alignment.module"
 import { HardBreakModule } from "../../plugins/hard-break/hard-break.module"
 import { BlockTypeModule } from "../../plugins/block-type/block-type.module"
+import { BaseModule } from "../../plugins/base/base.module"
 
 @NgModule({
     declarations: [],
-    imports: [EditorModule, DocModule, ParagraphModule, TextModule, AlignmentModule, HardBreakModule, BlockTypeModule],
+    imports: [EditorModule, DocModule, ParagraphModule, TextModule, AlignmentModule, HardBreakModule, BlockTypeModule, BaseModule],
     exports: [EditorModule],
 })
 export class BasicEditorModule {
