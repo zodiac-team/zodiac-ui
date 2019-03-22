@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { AlignmentToolComponent } from "./alignment-tool/alignment-tool.component"
 import { EDITOR_PLUGIN } from "../../lib/constants"
-import { alignmentPlugin } from "./plugin"
+import { alignmentPlugin } from "./alignment.plugin"
 
 @NgModule({
     declarations: [AlignmentToolComponent],

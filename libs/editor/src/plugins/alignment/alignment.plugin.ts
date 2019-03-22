@@ -1,9 +1,9 @@
 import { EditorPlugin } from "../../lib/interfaces/editor-plugin"
 import { EditorState, Plugin, PluginKey } from "prosemirror-state"
-import { alignment } from "./marks"
+import { alignment } from "./alignment.mark"
 import { AlignmentPluginState } from "./interfaces"
 import { getActiveAlignment} from "./utils"
-import { isAlignable } from "./commands"
+import { isAlignable } from "./alignment.command"
 
 export const pluginKey = new PluginKey("alignmentPlugin")
 

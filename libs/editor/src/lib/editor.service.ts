@@ -11,7 +11,7 @@ import { createDispatch } from "./utils/create-dispatch"
 import { createConfig } from "./utils/create-config"
 import { EDITOR_PLUGIN } from "./constants"
 import { EditorPlugin } from "./interfaces/editor-plugin"
-import { changeAlignment } from "../plugins/alignment/commands"
+import { changeAlignment } from "../plugins/alignment/alignment.command"
 
 @Injectable()
 export class EditorService implements Editor {

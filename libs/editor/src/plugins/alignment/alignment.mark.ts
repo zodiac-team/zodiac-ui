@@ -1,5 +1,5 @@
 import { MarkSpec } from 'prosemirror-model';
-import { ALIGNMENT, INDENTATION } from "./groups"
+import { ALIGNMENT, INDENTATION } from "./constants"
 
 /** TODO: Flip these positions for RTL */
 export const alignmentPositionMap: { [key: string]: string } = {

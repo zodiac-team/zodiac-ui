@@ -1,10 +1,9 @@
 import { EditorProps } from "prosemirror-view"
-import { MarkConfig, NodeConfig } from "./editor-config"
+import { MarkConfig, NodeConfig, PMPluginFactory } from "./editor-config"
 
 declare type QuickInsertHandler = any
 declare type TypeAheadHandler = any
 declare type FloatingToolbarHandler = any
-declare type PMPluginFactory = any
 
 export interface PluginsOptions {
     [pluginName: string]: any;

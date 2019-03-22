@@ -1,5 +1,5 @@
 import { EditorPlugin } from "../../lib/interfaces/editor-plugin"
-import { paragraphNode } from "./paragraph.mark"
+import { paragraphNode } from "./paragraph.node"
 
 
 export const PARAGRAPH = "paragraph"
