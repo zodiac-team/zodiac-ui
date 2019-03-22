@@ -1,6 +1,6 @@
 import { EditorPlugin } from "../../lib/interfaces/editor-plugin"
 import { EditorState, Plugin, PluginKey } from "prosemirror-state"
-import { alignment } from "./schema"
+import { alignment } from "./marks"
 import { AlignmentPluginState } from "./interfaces"
 import { getActiveAlignment} from "./utils"
 import { isAlignable } from "./commands"

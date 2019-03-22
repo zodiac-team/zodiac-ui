@@ -6,7 +6,6 @@ import { AlignmentModule } from "../plugins/alignment/alignment.module"
 @NgModule({
     imports: [
         CommonModule,
-        AlignmentModule
     ],
     declarations: [EditorComponent],
     exports: [EditorComponent],

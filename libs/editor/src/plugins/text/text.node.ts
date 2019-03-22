@@ -12,7 +12,7 @@ export interface TextDefinition {
     marks?: Array<any>;
 }
 
-export const text: NodeSpec & { toDebugString?: () => string } = {
+export const textNode: NodeSpec & { toDebugString?: () => string } = {
     group: 'inline',
     // toDebugString:
     // // @ts-ignore

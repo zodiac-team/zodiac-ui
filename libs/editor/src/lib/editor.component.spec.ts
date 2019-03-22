@@ -18,12 +18,8 @@ describe("EditorComponent", () => {
         fixture.detectChanges()
     })
 
-    it("should create", () => {
-        expect(component).toBeTruthy()
-    })
-
     describe('how to create the editor', () => {
-        it('should render the template', () => {
+        it('should configure the editor state', () => {
 
         })
     })

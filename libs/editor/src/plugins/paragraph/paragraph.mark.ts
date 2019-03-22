@@ -47,7 +47,7 @@ import { NodeSpec, DOMOutputSpec } from 'prosemirror-model';
 //     | ParagraphWithIndentationDefinition;
 
 const pDOM: DOMOutputSpec = ['p', 0];
-export const paragraph: NodeSpec = {
+export const paragraphNode: NodeSpec = {
     content: 'inline*',
     group: 'block',
     marks:

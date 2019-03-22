@@ -26,9 +26,6 @@ export const toggleBlockMark = <T = object>(
             return false;
         }
 
-
-        console.log('allowed!', markType)
-
         if (
             (!allowedBlocks ||
                 (Array.isArray(allowedBlocks)

@@ -154,7 +154,7 @@ export interface DocNode {
     content: any;
 }
 
-export const doc: NodeSpec = {
+export const docNode: NodeSpec = {
     content: '(block|layoutSection)+',
     marks: 'alignment breakout indentation link',
 };
