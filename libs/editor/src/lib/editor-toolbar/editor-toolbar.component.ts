@@ -1,57 +1,41 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core"
+import { ChangeDetectionStrategy, Component, Input, OnInit } from "@angular/core"
 import { Editor } from "../interfaces"
+import { EditorTool, EditorToolbar } from "./interfaces"
+import { Subject } from "rxjs"
 
 @Component({
     selector: "z-editor-toolbar",
     template: `
-        <button mat-icon-button *ngFor="let command of commands" (click)="sendCommand(command)">
-            <mat-icon [innerText]="command.icon"></mat-icon>
-        </button>
+        <ng-content></ng-content>
     `,
     styleUrls: ["./editor-toolbar.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [{
+        provide: EditorToolbar,
+        useExisting: EditorToolbarComponent
+    }]
 })
-export class EditorToolbarComponent {
-
-    public commands = [
-        {
-            icon: 'format_bold'
-        },
-        {
-            icon: 'format_italic'
-        },
-        {
-            icon: 'format_underline'
-        },
-        {
-            icon: 'format_list_bulleted'
-        },
-        {
-            icon: 'format_list_numbered'
-        },
-        {
-            icon: 'format_quote'
-        },
-        {
-            icon: 'title'
-        },
-        {
-            icon: 'format_size'
-        },
-        {
-            icon: 'link'
-        },
-        {
-            icon: 'format_clear'
-        },
-    ]
+export class EditorToolbarComponent implements OnInit, EditorToolbar {
 
     @Input()
     public editor: Editor
 
-    constructor() {}
+    public docChange: Subject<any>
+    public stateChange: Subject<any>
 
-    public sendCommand(command) {
-        this.editor.sendCommand(command)
+    constructor() {
+        this.docChange = new Subject()
+        this.stateChange = new Subject()
+    }
+
+    public ngOnInit() {
+        this.editor.docChange.subscribe(this.docChange)
+        this.editor.stateChange.subscribe(this.stateChange)
+    }
+
+    public runTool(tool: EditorTool) {
+        if (this.editor) {
+            this.editor.runTool(tool)
+        }
     }
 }

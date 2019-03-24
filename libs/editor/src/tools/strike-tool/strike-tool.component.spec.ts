@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BasicComponent } from './basic.component';
+import { StrikeToolComponent } from './strike-tool.component';
 
-describe('BasicComponent', () => {
-  let component: BasicComponent;
-  let fixture: ComponentFixture<BasicComponent>;
+describe('StrikeToolComponent', () => {
+  let component: StrikeToolComponent;
+  let fixture: ComponentFixture<StrikeToolComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BasicComponent ]
+      declarations: [ StrikeToolComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BasicComponent);
+    fixture = TestBed.createComponent(StrikeToolComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,15 +1,16 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-  selector: 'z-basic',
+  selector: 'z-editor-toolbar-group',
   template: `
-      <h1>Basic</h1>
-      <z-editor></z-editor>
+    <p>
+      editor-toolbar-group works!
+    </p>
   `,
-  styleUrls: ['./basic.component.scss'],
+  styleUrls: ['./editor-toolbar-group.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BasicComponent implements OnInit {
+export class EditorToolbarGroupComponent implements OnInit {
 
   constructor() { }
 

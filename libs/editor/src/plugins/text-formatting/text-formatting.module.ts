@@ -1,12 +1,12 @@
 import { NgModule } from "@angular/core"
 import { EDITOR_PLUGIN } from "../../lib/constants"
-import { alignmentPlugin } from "./alignment.plugin"
+import { textFormattingPlugin } from "./text-formatting.plugin"
 
 @NgModule({
     providers: [{
         provide: EDITOR_PLUGIN,
-        useValue: alignmentPlugin,
+        useValue: textFormattingPlugin,
         multi: true
     }],
 })
-export class AlignmentModule {}
+export class TextFormattingModule {}

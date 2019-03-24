@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@angular/core"
+import { EventEmitter, Inject, Injectable } from "@angular/core"
 import { Editor } from "./interfaces"
 import { EditorView } from "prosemirror-view"
 import { EditorState, Transaction } from "prosemirror-state"
@@ -11,7 +11,8 @@ import { createDispatch } from "./utils/create-dispatch"
 import { createConfig } from "./utils/create-config"
 import { EDITOR_PLUGIN } from "./constants"
 import { EditorPlugin } from "./interfaces/editor-plugin"
-import { changeAlignment } from "../plugins/alignment/alignment.command"
+import { EditorTool } from "./editor-toolbar/interfaces"
+import { BehaviorSubject, ReplaySubject } from "rxjs"
 
 @Injectable()
 export class EditorService implements Editor {
@@ -21,13 +22,18 @@ export class EditorService implements Editor {
     private readonly eventDispatcher
     private readonly plugins
 
+    public docChange: EventEmitter<any>
+    public stateChange: ReplaySubject<any>
+
     constructor(@Inject(EDITOR_PLUGIN) plugins: EditorPlugin[]) {
         this.eventDispatcher = new EventDispatcher();
+        this.docChange = new EventEmitter()
+        this.stateChange = new ReplaySubject()
         this.plugins = plugins
     }
 
-    sendCommand(event) {
-        changeAlignment('end')(this.state, this.view.dispatch)
+    runTool(tool: EditorTool) {
+        tool.run(this.state, this.view.dispatch, this.view)
     }
 
     createEditorState(doc) {
@@ -102,10 +108,18 @@ export class EditorService implements Editor {
                         // go ahead and update the state now we know the transaction is good
                         const editorState = this.view.state.apply(transaction);
                         this.view.updateState(editorState);
-                        // if (this.props.editorProps.onChange && transaction.docChanged) {
-                        //     this.props.editorProps.onChange(this.view);
-                        // }
+                        if (transaction.docChanged) {
+                            this.docChange.emit({
+                                view: this.view,
+                                state: editorState
+                            });
+                        }
                         this.state = editorState;
+
+                        this.stateChange.next({
+                            view: this.view,
+                            state: this.state
+                        })
                     }
                     // else {
                     //     const documents = {
@@ -119,5 +133,15 @@ export class EditorService implements Editor {
                 attributes: { 'data-gramm': 'false' },
             },
         );
+
+        this.docChange.emit({
+            view: this.view,
+            state: this.state
+        });
+
+        this.stateChange.next({
+            view: this.view,
+            state: this.state
+        })
     }
 }

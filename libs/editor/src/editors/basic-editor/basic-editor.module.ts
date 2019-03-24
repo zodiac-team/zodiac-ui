@@ -7,11 +7,23 @@ import { AlignmentModule } from "../../plugins/alignment/alignment.module"
 import { HardBreakModule } from "../../plugins/hard-break/hard-break.module"
 import { BlockTypeModule } from "../../plugins/block-type/block-type.module"
 import { BaseModule } from "../../plugins/base/base.module"
+import { EditorToolbarModule } from "../../lib/editor-toolbar/editor-toolbar.module"
+import { TextFormattingModule } from "../../plugins/text-formatting/text-formatting.module"
 
 @NgModule({
     declarations: [],
-    imports: [EditorModule, DocModule, ParagraphModule, TextModule, AlignmentModule, HardBreakModule, BlockTypeModule, BaseModule],
-    exports: [EditorModule],
+    imports: [
+        EditorModule,
+        EditorToolbarModule,
+        DocModule,
+        ParagraphModule,
+        TextModule,
+        AlignmentModule,
+        HardBreakModule,
+        BlockTypeModule,
+        BaseModule,
+        TextFormattingModule,
+    ],
+    exports: [EditorModule, EditorToolbarModule],
 })
-export class BasicEditorModule {
-}
+export class BasicEditorModule {}

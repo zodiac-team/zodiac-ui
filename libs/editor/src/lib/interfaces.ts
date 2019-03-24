@@ -1,5 +1,8 @@
+import { EditorTool } from "./editor-toolbar/interfaces"
+import { Observable } from "rxjs"
+
 export interface Editor {
-    sendCommand(event)
-    createEditorState(plugins)
-    createEditorView(node)
+    docChange: Observable<any>
+    stateChange: Observable<any>
+    runTool(tool: EditorTool)
 }

@@ -52,15 +52,11 @@ export const changeAlignment = (align?: AlignmentState): Command => (
         marks: { alignment },
     } = state.schema;
 
-    console.log('state.schema', state.schema)
-
     return cascadeCommands([
         changeImageAlignment(align),
         toggleBlockMark(
             alignment,
             () => {
-                console.log('toggle!')
-
                 return (!align ? undefined : align === 'start' ? false : { align })
             },
             [paragraph, heading],

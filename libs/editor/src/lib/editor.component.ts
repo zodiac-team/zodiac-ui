@@ -1,5 +1,17 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core"
+import {
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+    ViewEncapsulation,
+} from "@angular/core"
 import { EditorService } from "./editor.service"
+import { Editor } from "./interfaces"
+import { EditorTool } from "./editor-toolbar/interfaces"
+import { Observable } from "rxjs"
 
 const defaultDoc = {
     "content": [
@@ -20,16 +32,22 @@ const defaultDoc = {
 @Component({
     selector: "z-editor",
     template: `
-        <button (click)="sendCommand()">Align Right</button>
         <div #editorRef></div>
     `,
     styleUrls: ["./editor.component.scss"],
     viewProviders: [EditorService],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None
 })
-export class EditorComponent implements OnInit {
+export class EditorComponent implements OnInit, Editor {
     @Input()
     public doc: any
+
+    @Output()
+    public docChange: Observable<any>
+
+    @Output()
+    public stateChange: Observable<any>
 
     @ViewChild("editorRef")
     public editorRef: ElementRef<HTMLDivElement>
@@ -39,6 +57,8 @@ export class EditorComponent implements OnInit {
     constructor(editor: EditorService) {
         this.editor = editor
         this.doc = defaultDoc
+        this.docChange = editor.docChange
+        this.stateChange = editor.stateChange
     }
 
     public ngOnInit() {
@@ -46,7 +66,7 @@ export class EditorComponent implements OnInit {
         this.editor.createEditorView(this.editorRef.nativeElement)
     }
 
-    public sendCommand(command) {
-        this.editor.sendCommand(command)
+    public runTool(command: EditorTool) {
+        this.editor.runTool(command)
     }
 }
