@@ -39,6 +39,7 @@ export function transformToCodeBlockAction(
         }
         return tr.setNodeMarkup(parentPos, codeBlock, attrs);
     }
+
     return state.tr;
 }
 

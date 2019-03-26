@@ -9,6 +9,7 @@ import { BlockTypeModule } from "../../plugins/block-type/block-type.module"
 import { BaseModule } from "../../plugins/base/base.module"
 import { EditorToolbarModule } from "../../lib/editor-toolbar/editor-toolbar.module"
 import { TextFormattingModule } from "../../plugins/text-formatting/text-formatting.module"
+import { CodeModule } from "../../plugins/code/code.module"
 
 @NgModule({
     declarations: [],
@@ -23,6 +24,7 @@ import { TextFormattingModule } from "../../plugins/text-formatting/text-formatt
         BlockTypeModule,
         BaseModule,
         TextFormattingModule,
+        CodeModule
     ],
     exports: [EditorModule, EditorToolbarModule],
 })

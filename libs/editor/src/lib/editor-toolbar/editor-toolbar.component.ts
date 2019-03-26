@@ -29,7 +29,7 @@ export class EditorToolbarComponent implements OnInit, EditorToolbar {
     }
 
     public ngOnInit() {
-        this.editor.docChange.subscribe(this.docChange)
+        this.editor.viewChange.subscribe(this.docChange)
         this.editor.stateChange.subscribe(this.stateChange)
     }
 

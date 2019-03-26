@@ -1,10 +1,9 @@
 import { Component } from "@angular/core"
-import { of } from "rxjs"
 
 @Component({
     selector: "z-root",
     template: `
-        <z-basic></z-basic>
+        <z-basic-editor></z-basic-editor>
     `,
     styleUrls: ["./app.component.scss"],
 })

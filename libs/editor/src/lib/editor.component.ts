@@ -2,68 +2,59 @@ import {
     ChangeDetectionStrategy,
     Component,
     ElementRef,
-    Input,
+    Input, OnChanges,
     OnInit,
-    Output,
+    Output, SimpleChange, SimpleChanges,
     ViewChild,
     ViewEncapsulation,
 } from "@angular/core"
 import { EditorService } from "./editor.service"
-import { Editor } from "./interfaces"
+import { Editor, EditorEvent } from "./interfaces"
 import { EditorTool } from "./editor-toolbar/interfaces"
 import { Observable } from "rxjs"
 
-const defaultDoc = {
-    "content": [
-        {
-            "content":
-                [
-                    {
-                        "text": "This area is dedicated to my personal book notes that Im electing to publicly share via Project AMPLE.",
-                        "type": "text",
-                    },
-                ],
-            "type": "paragraph",
-        },
-    ],
-    "type": "doc",
+export function hasChanges(change: SimpleChange) {
+    return change && change.previousValue !== change.currentValue
 }
 
 @Component({
     selector: "z-editor",
-    template: `
-        <div #editorRef></div>
-    `,
+    template: `<!-- use host -->`,
     styleUrls: ["./editor.component.scss"],
     viewProviders: [EditorService],
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None
 })
-export class EditorComponent implements OnInit, Editor {
+export class EditorComponent implements OnInit, OnChanges, Editor {
     @Input()
-    public doc: any
+    public state: any
 
     @Output()
-    public docChange: Observable<any>
+    public viewChange: Observable<EditorEvent>
 
     @Output()
-    public stateChange: Observable<any>
+    public stateChange: Observable<EditorEvent>
 
-    @ViewChild("editorRef")
-    public editorRef: ElementRef<HTMLDivElement>
+    private editorRef: ElementRef<HTMLElement>
 
     private editor: EditorService
 
-    constructor(editor: EditorService) {
+    constructor(editor: EditorService, editorRef: ElementRef<HTMLElement>) {
         this.editor = editor
-        this.doc = defaultDoc
-        this.docChange = editor.docChange
+        this.viewChange = editor.viewChange
         this.stateChange = editor.stateChange
+        this.editorRef = editorRef
     }
 
     public ngOnInit() {
-        this.editor.createEditorState(this.doc)
+        this.editor.createEditorState(this.state)
         this.editor.createEditorView(this.editorRef.nativeElement)
+    }
+
+    public ngOnChanges(changes: SimpleChanges) {
+        if (hasChanges(changes.state)) {
+            this.editor.updateState(this.state)
+        }
     }
 
     public runTool(command: EditorTool) {
