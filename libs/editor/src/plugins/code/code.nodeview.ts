@@ -1,10 +1,10 @@
 import CodeMirror from "codemirror"
-import { createParagraphNear, exitCode } from "prosemirror-commands"
-import {undo, redo} from "prosemirror-history"
-import { TextSelection, Selection } from "prosemirror-state"
+import { exitCode } from "prosemirror-commands"
+import { redo, undo } from "prosemirror-history"
+import { Selection, TextSelection } from "prosemirror-state"
 import { keymap } from "prosemirror-keymap"
 import { NodeView } from "prosemirror-view"
-import "codemirror/mode/javascript/javascript.js";
+import "codemirror/mode/javascript/javascript.js"
 
 function computeChange(oldVal, newVal) {
     if (oldVal === newVal) return null

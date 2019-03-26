@@ -6,6 +6,7 @@ import { EditorState } from "prosemirror-state"
     template: `
         <h1>Basic</h1>
         <z-editor-toolbar [editor]="editor">
+            <z-heading-tool></z-heading-tool>
             <z-strong-tool></z-strong-tool>
             <z-emphasis-tool></z-emphasis-tool>
             <z-underline-tool></z-underline-tool>

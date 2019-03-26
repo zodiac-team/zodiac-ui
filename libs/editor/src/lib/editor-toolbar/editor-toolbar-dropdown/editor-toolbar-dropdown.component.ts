@@ -5,11 +5,13 @@ import { EditorTool, EditorToolbar, EditorToolGroup } from "../interfaces"
     selector: "z-editor-toolbar-dropdown",
     template: `
         <button mat-icon-button [matMenuTriggerFor]="dropdown" [matTooltip]="group.tooltip">
-            <mat-icon [textContent]="menu.icon"></mat-icon>
+            <span *ngIf="menu.label" [textContent]="menu.label"></span>
+            <mat-icon *ngIf="menu.icon" [textContent]="menu.icon"></mat-icon>
         </button>
         <mat-menu #dropdown>
             <button mat-icon-button *ngFor="let tool of group.tools" (click)="runTool(tool)" [matTooltip]="tool.tooltip">
-                <mat-icon [textContent]="tool.icon"></mat-icon>
+                <span *ngIf="menu.label" [textContent]="menu.label"></span>
+                <mat-icon *ngIf="menu.icon" [textContent]="tool.icon"></mat-icon>
             </button>
         </mat-menu>
     `,

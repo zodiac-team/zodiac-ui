@@ -20,7 +20,6 @@ import {
     WRAPPER_BLOCK_TYPES,
 } from "./interfaces"
 import { getSelectedWrapperNodes } from "../../lib/utils/get-selected-wrapper-nodes"
-import { hardBreakNode } from "../hard-break/hard-break.node"
 import { inputRulePlugin } from "./block-type.inputrule"
 import { keymapPlugin } from "./keymap"
 
@@ -184,19 +183,6 @@ export interface BlockTypeNode {
 }
 
 export const blockTypePlugin: EditorPlugin = {
-    nodes() {
-        // if (allowBlockType) {
-        //     const exclude = allowBlockType.exclude ? allowBlockType.exclude : [];
-        //     return nodes.filter(node => exclude.indexOf(node.name) === -1);
-        // }
-
-        return [
-            // { name: 'heading', node: heading },
-            // { name: 'blockquote', node: blockquote },
-            { name: 'hardBreak', node: hardBreakNode },
-        ];
-    },
-
     pmPlugins() {
         return [
             {

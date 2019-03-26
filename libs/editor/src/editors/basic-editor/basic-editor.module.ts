@@ -10,6 +10,8 @@ import { BaseModule } from "../../plugins/base/base.module"
 import { EditorToolbarModule } from "../../lib/editor-toolbar/editor-toolbar.module"
 import { TextFormattingModule } from "../../plugins/text-formatting/text-formatting.module"
 import { CodeModule } from "../../plugins/code/code.module"
+import { HeadingModule } from "../../plugins/heading/heading.module"
+import { BlockquoteModule } from "../../plugins/blockquote/blockquote.module"
 
 @NgModule({
     declarations: [],
@@ -18,6 +20,8 @@ import { CodeModule } from "../../plugins/code/code.module"
         EditorToolbarModule,
         DocModule,
         ParagraphModule,
+        HeadingModule,
+        BlockquoteModule,
         TextModule,
         AlignmentModule,
         HardBreakModule,

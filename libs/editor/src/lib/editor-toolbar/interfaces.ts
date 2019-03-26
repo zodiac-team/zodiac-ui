@@ -3,8 +3,9 @@ import { Command } from "../interfaces/command"
 import { Observable } from "rxjs"
 
 export interface EditorTool {
-    tooltip: string
-    icon: string
+    tooltip?: string
+    label?: string
+    icon?: string
     run: Command
     select?(state: EditorState): boolean
     enable?(state: EditorState): boolean
@@ -13,8 +14,9 @@ export interface EditorTool {
 }
 
 export interface EditorToolGroup {
-    tooltip: string
-    icon: string
+    tooltip?: string
+    label?: string
+    icon?: string
     tools: EditorTool[]
 }
 

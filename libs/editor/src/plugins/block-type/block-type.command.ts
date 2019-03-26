@@ -2,6 +2,56 @@ import { EditorState, Selection, Transaction } from 'prosemirror-state';
 import { Node } from "prosemirror-model";
 import { mapSlice } from "../../lib/utils/map-slice"
 import { Command } from "../../lib/interfaces/command"
+import { HeadingLevels, HEADINGS_BY_NAME, NORMAL_TEXT } from "./interfaces"
+
+export function setNormalText(): Command {
+    return function(state, dispatch) {
+        const {
+            tr,
+            selection: { $from, $to },
+            schema,
+        } = state;
+        if (dispatch) {
+            dispatch(tr.setBlockType($from.pos, $to.pos, schema.nodes.paragraph));
+        }
+        return true;
+    };
+}
+
+export function setHeading(level: number): Command {
+    return function(state, dispatch) {
+        const {
+            tr,
+            selection: { $from, $to },
+            schema,
+        } = state;
+        if (dispatch) {
+            dispatch(
+                tr.setBlockType($from.pos, $to.pos, schema.nodes.heading, { level }),
+            );
+        }
+        return true;
+    };
+}
+
+export function setBlockType(name: string): Command {
+    return (state, dispatch) => {
+        const { nodes } = state.schema;
+        if (name === NORMAL_TEXT.name && nodes.paragraph) {
+            return setNormalText()(state, dispatch);
+        }
+
+        const headingBlockType = HEADINGS_BY_NAME[name];
+        if (headingBlockType && nodes.heading && headingBlockType.level) {
+            return setHeading(headingBlockType.level as HeadingLevels)(
+                state,
+                dispatch,
+            );
+        }
+
+        return false;
+    };
+}
 
 export function transformToCodeBlockAction(
     state: EditorState,
