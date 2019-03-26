@@ -43,7 +43,6 @@ export class EditorService implements Editor {
 
     updateState(state) {
         if (this.view) {
-            console.log('state', state)
             this.createEditorState(state)
             this.view.updateState(this.state)
         }

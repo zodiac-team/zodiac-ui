@@ -57,7 +57,10 @@ export class CodeBlockView implements NodeView {
             value: this.node.textContent,
             lineNumbers: true,
             extraKeys: this.codeMirrorKeymap(),
-            mode: "text/typescript"
+            mode: "text/typescript",
+            indentWithTabs: false,
+            smartIndent: false,
+            viewportMargin: Infinity
         })
 
         // The editor's outer node is our DOM representation

@@ -4,17 +4,18 @@ import { EditorState } from "prosemirror-state"
 @Component({
     selector: "z-basic-editor",
     template: `
-        <h1>Basic</h1>
-        <z-editor-toolbar [editor]="editor">
-            <z-heading-tool></z-heading-tool>
-            <z-strong-tool></z-strong-tool>
-            <z-emphasis-tool></z-emphasis-tool>
-            <z-underline-tool></z-underline-tool>
-            <z-alignment-tool></z-alignment-tool>
-            <z-superscript-tool></z-superscript-tool>
-            <z-subscript-tool></z-subscript-tool>
-            <z-strike-tool></z-strike-tool>
-        </z-editor-toolbar>
+        <div class="toolbar">
+            <z-editor-toolbar [editor]="editor">
+                <z-heading-tool></z-heading-tool>
+                <z-strong-tool></z-strong-tool>
+                <z-emphasis-tool></z-emphasis-tool>
+                <z-underline-tool></z-underline-tool>
+                <z-alignment-tool></z-alignment-tool>
+                <z-superscript-tool></z-superscript-tool>
+                <z-subscript-tool></z-subscript-tool>
+                <z-strike-tool></z-strike-tool>
+            </z-editor-toolbar>
+        </div>
         <z-editor #editor [state]="state" (stateChange)="save($event.state)"></z-editor>
     `,
     styleUrls: ["./basic-editor.component.scss"],

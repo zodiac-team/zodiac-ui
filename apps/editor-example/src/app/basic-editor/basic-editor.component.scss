@@ -1,0 +1,22 @@
+:host {
+    display: block;
+}
+
+.toolbar {
+    display: flex;
+    padding: 0.5rem 1rem 0;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
+}
+
+z-editor-toolbar {
+    margin: 0 auto;
+}
+
+z-editor {
+    display: block;
+    width: 21cm;
+    min-height: 29.7cm;
+    padding: 2cm;
+    margin: 4rem auto;
+    box-shadow: 0 0 4rem rgba(0, 0, 0, 0.1);
+}

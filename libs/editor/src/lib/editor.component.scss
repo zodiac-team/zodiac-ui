@@ -1,7 +1,20 @@
 .ProseMirror {
     display: block;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.fabric-editor-align-center {
+    text-align: center;
 }
 
 .fabric-editor-align-end {
     text-align: right;
+}
+
+.CodeMirror {
+    border: 1px solid #eee;
+    height: auto;
 }

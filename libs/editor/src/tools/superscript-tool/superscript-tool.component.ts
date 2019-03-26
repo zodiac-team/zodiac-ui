@@ -17,7 +17,7 @@ export class SuperscriptToolComponent {
 
     constructor() {
         this.tool = {
-            tooltip: "Toggle Subscript",
+            tooltip: "Toggle Superscript",
             icon: "format_size",
             run: toggleSuperscript(),
             active(state) {
