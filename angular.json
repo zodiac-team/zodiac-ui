@@ -10,7 +10,8 @@
             "styleext": "scss"
         },
         "@nrwl/schematics:library": {
-            "unitTestRunner": "karma"
+            "unitTestRunner": "karma",
+            "framework": "angular"
         },
         "@nrwl/schematics:application": {
             "unitTestRunner": "karma",
@@ -505,9 +506,7 @@
                             "node_modules/codemirror/lib/codemirror.css",
                             "apps/editor-example/src/styles.scss"
                         ],
-                        "scripts": [
-                            "node_modules/hammerjs/hammer.min.js"
-                        ],
+                        "scripts": ["node_modules/hammerjs/hammer.min.js"],
                         "es5BrowserSupport": true
                     },
                     "configurations": {
