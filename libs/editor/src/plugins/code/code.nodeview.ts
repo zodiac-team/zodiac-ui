@@ -4,7 +4,6 @@ import { redo, undo } from "prosemirror-history"
 import { Selection, TextSelection } from "prosemirror-state"
 import { keymap } from "prosemirror-keymap"
 import { NodeView } from "prosemirror-view"
-import "codemirror/mode/javascript/javascript.js"
 
 function computeChange(oldVal, newVal) {
     if (oldVal === newVal) return null
@@ -27,6 +26,42 @@ function arrowHandler(dir) {
         }
         return false
     }
+}
+
+export interface CodeLanguage {
+    source: string
+    mode: string
+    label: string
+}
+
+export const codeLanguages: CodeLanguage[] = [{
+    source: 'cm-javascript.js',
+    mode: 'text/javascript',
+    label: 'JavaScript'
+}, {
+    source: 'cm-javascript.js',
+    mode: 'text/typescript',
+    label: 'TypeScript'
+}]
+
+export const loadedModes: { [key: string]: boolean } = {}
+
+export async function loadExternalScript(scriptUrl) {
+    return new Promise(resolve => {
+        if (loadedModes[scriptUrl]) {
+            return resolve()
+        }
+
+        const scriptElement = document.createElement('script');
+        scriptElement.src = scriptUrl;
+        scriptElement.onload = () => {
+            resolve()
+            loadedModes[scriptUrl] = true
+            delete (<any>window).CodeMirror
+        };
+        (<any>window).CodeMirror = CodeMirror;
+        document.body.appendChild(scriptElement);
+    });
 }
 
 export const arrowHandlers = keymap({
@@ -57,7 +92,6 @@ export class CodeBlockView implements NodeView {
             value: this.node.textContent,
             lineNumbers: true,
             extraKeys: this.codeMirrorKeymap(),
-            mode: "text/typescript",
             indentWithTabs: false,
             smartIndent: false,
             viewportMargin: Infinity
@@ -67,6 +101,8 @@ export class CodeBlockView implements NodeView {
         this.dom = this.cm.getWrapperElement()
         // CodeMirror needs to be in the DOM to properly initialize, so
         // schedule it to update itself
+
+        void this.loadMode(node.attrs.language)
         setTimeout(() => this.cm.refresh(), 20)
 
         // This flag is used to avoid an update loop between the outer and
@@ -86,6 +122,20 @@ export class CodeBlockView implements NodeView {
             this.incomingChanges = false
         })
         this.cm.on("focus", () => this.forwardSelection())
+    }
+
+    async loadMode(mode) {
+        try {
+            if (mode) {
+                const lang = codeLanguages.find((codeLang) => codeLang.mode === mode)
+                await loadExternalScript(lang.source)
+                await Promise.resolve()
+            }
+            this.cm.setOption("mode", mode);
+            this.cm.refresh()
+        } catch(e) {
+            console.log(e)
+        }
     }
 
     forwardSelection() {
@@ -159,7 +209,6 @@ export class CodeBlockView implements NodeView {
 
     update(node) {
         if (node.type !== this.node.type) return false
-        this.node = node
         const change = computeChange(this.cm.getValue(), node.textContent)
         if (change) {
             this.updating = true
@@ -167,6 +216,13 @@ export class CodeBlockView implements NodeView {
                 this.cm.posFromIndex(change.to))
             this.updating = false
         }
+
+        if (node.attrs.language !== this.node.attrs.language) {
+            void this.loadMode(node.attrs.language)
+        }
+
+        this.node = node
+
         return true
     }
 

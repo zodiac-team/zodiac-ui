@@ -1,7 +1,6 @@
 import { EditorState, Plugin, PluginKey } from "prosemirror-state"
 import { EditorView } from "prosemirror-view"
 import { findParentDomRefOfType, findParentNodeOfType } from "prosemirror-utils"
-import { keymap } from "prosemirror-keymap"
 import { EditorPlugin } from "../../lib/interfaces/editor-plugin"
 import { codeBlock } from "./code.node"
 import { arrowHandlers, codeBlockFactory } from "./code.nodeview"
@@ -10,6 +9,7 @@ import { code } from "./code.mark"
 export interface CodeBlockState {
     element?: HTMLElement
     toolbarVisible?: boolean | undefined
+    language?: string
 }
 
 export const getPluginState = (state: EditorState): CodeBlockState => pluginKey.getState(state)
@@ -66,10 +66,17 @@ export const createPlugin = ({ dispatch }) =>
                     const parentDOM = findParentDomRefOfType(codeBlock, view.domAtPos.bind(view))(
                         selection,
                     )
-                    if (parentDOM !== pluginState.element) {
-                        const parent = findParentNodeOfType(codeBlock)(selection)
+                    const parent = findParentNodeOfType(codeBlock)(selection)
+                    let language
+
+                    if (parent) {
+                        language = parent.node.attrs.language
+                    }
+
+                    if (parentDOM !== pluginState.element || pluginState.language !== language) {
                         const newState: CodeBlockState = {
                             element: parentDOM as HTMLElement,
+                            language,
                             toolbarVisible: !!parent,
                         }
                         setPluginState(newState)(view.state, view.dispatch)
@@ -79,6 +86,7 @@ export const createPlugin = ({ dispatch }) =>
                     /** Plugin dispatch needed to reposition the toolbar */
                     dispatch(pluginKey, {
                         ...pluginState,
+                        language
                     })
                 },
             }
@@ -94,6 +102,7 @@ export const createPlugin = ({ dispatch }) =>
                         setPluginState({
                             toolbarVisible: false,
                             element: null,
+                            language: null
                         })(view.state, view.dispatch)
                         return true
                     }

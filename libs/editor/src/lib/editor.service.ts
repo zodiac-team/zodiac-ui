@@ -34,7 +34,7 @@ export class EditorService implements Editor {
     constructor(@Inject(EDITOR_PLUGIN) plugins: EditorPlugin[], @Optional() @Inject(STATE_HANDLER) handlers?: any[]) {
         this.eventDispatcher = new EventDispatcher();
         this.viewChange = new EventEmitter()
-        this.stateChange = new ReplaySubject()
+        this.stateChange = new ReplaySubject(1)
         this.plugins = plugins
         this.handlers = handlers
     }
@@ -133,10 +133,8 @@ export class EditorService implements Editor {
         this.stateChange.next(this)
 
         if (this.handlers) {
-            requestAnimationFrame(() => {
-                this.stateChange.subscribe((editor) => {
-                    this.handlers.forEach(handler => handler(editor))
-                })
+            this.stateChange.subscribe((editor) => {
+                this.handlers.forEach(handler => handler(editor))
             })
         }
     }

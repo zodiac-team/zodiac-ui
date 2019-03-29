@@ -506,7 +506,18 @@
                             "node_modules/codemirror/lib/codemirror.css",
                             "apps/editor-example/src/styles.scss"
                         ],
-                        "scripts": ["node_modules/hammerjs/hammer.min.js"],
+                        "scripts": [
+                            "node_modules/hammerjs/hammer.min.js",
+                            {
+                                "bundleName": "cm-javascript",
+                                "input": "node_modules/codemirror/mode/javascript/javascript.js",
+                                "lazy": true
+                            }, {
+                                "bundleName": "cm-typescript",
+                                "input": "node_modules/codemirror/mode/javascript/javascript.js",
+                                "lazy": true
+                            }
+                        ],
                         "es5BrowserSupport": true
                     },
                     "configurations": {

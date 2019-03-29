@@ -80,6 +80,7 @@ export const codeBlock: NodeSpec = {
             preserveWhitespace: 'full',
             getAttrs: domNode => {
                 let dom = domNode as HTMLElement;
+
                 const language =
                     getLanguageFromBitbucketStyle(dom.parentElement) ||
                     getLanguageFromEditorStyle(dom.parentElement) ||
