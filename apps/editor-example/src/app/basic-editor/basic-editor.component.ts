@@ -14,6 +14,7 @@ import { EditorState } from "prosemirror-state"
                 <z-superscript-tool></z-superscript-tool>
                 <z-subscript-tool></z-subscript-tool>
                 <z-strike-tool></z-strike-tool>
+                <z-link-tool></z-link-tool>
             </z-editor-toolbar>
         </div>
         <z-editor #editor [state]="state" (stateChange)="save($event.state)"></z-editor>

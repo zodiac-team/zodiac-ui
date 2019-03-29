@@ -1,5 +1,7 @@
 .ProseMirror {
     display: block;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
 
     &:focus {
         outline: none;

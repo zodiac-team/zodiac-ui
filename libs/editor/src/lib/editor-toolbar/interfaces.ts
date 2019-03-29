@@ -1,6 +1,7 @@
 import { EditorState } from "prosemirror-state"
 import { Command } from "../interfaces/command"
 import { Observable } from "rxjs"
+import { EditorEvent } from "../interfaces"
 
 export interface EditorTool {
     tooltip?: string
@@ -21,7 +22,7 @@ export interface EditorToolGroup {
 }
 
 export abstract class EditorToolbar {
-    abstract docChange: Observable<any>
-    abstract stateChange: Observable<any>
+    abstract viewChange: Observable<EditorEvent>
+    abstract stateChange: Observable<EditorEvent>
     abstract runTool(command: EditorTool): void
 }

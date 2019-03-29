@@ -6,12 +6,12 @@ import { EditorTool, EditorToolbar, EditorToolGroup } from "../interfaces"
     template: `
         <button mat-icon-button [matMenuTriggerFor]="dropdown" [matTooltip]="group.tooltip">
             <span *ngIf="menu.label" [textContent]="menu.label"></span>
-            <mat-icon *ngIf="menu.icon" [textContent]="menu.icon"></mat-icon>
+            <mat-icon *ngIf="menu.icon" fontSet="fa" [fontIcon]="menu.icon"></mat-icon>
         </button>
         <mat-menu #dropdown>
             <button mat-icon-button *ngFor="let tool of group.tools" (click)="runTool(tool)" [matTooltip]="tool.tooltip">
                 <span *ngIf="menu.label" [textContent]="menu.label"></span>
-                <mat-icon *ngIf="menu.icon" [textContent]="tool.icon"></mat-icon>
+                <mat-icon *ngIf="menu.icon" fontSet="fa" [fontIcon]="tool.icon"></mat-icon>
             </button>
         </mat-menu>
     `,

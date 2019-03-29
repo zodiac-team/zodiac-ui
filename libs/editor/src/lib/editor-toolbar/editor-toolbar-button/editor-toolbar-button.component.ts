@@ -5,7 +5,7 @@ import { EditorTool, EditorToolbar } from "../interfaces"
     selector: "z-editor-toolbar-button",
     template: `
         <button mat-icon-button [matTooltip]="tool.tooltip" (click)="runTool(tool)">
-            <mat-icon [textContent]="tool.icon"></mat-icon>
+            <mat-icon fontSet="fa" [fontIcon]="tool.icon"></mat-icon>
         </button>
     `,
     styleUrls: ["./editor-toolbar-button.component.scss"],

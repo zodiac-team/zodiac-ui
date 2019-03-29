@@ -19,7 +19,7 @@ export class SubscriptToolComponent {
     constructor() {
         this.tool = {
             tooltip: "Toggle Subscript",
-            icon: "text_fields",
+            icon: "fa-subscript",
             run: toggleSubscript(),
             active(state) {
                 const { subsup } = state.schema.marks;

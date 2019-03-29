@@ -2,7 +2,9 @@ import { NgModule } from "@angular/core"
 import {
     AlignmentToolModule,
     BasicEditorModule as Editor,
-    EmphasisToolModule, HeadingToolModule,
+    EmphasisToolModule,
+    HeadingToolModule,
+    LinkToolModule,
     StrikeToolModule,
     StrongToolModule,
     SubscriptToolModule,
@@ -21,7 +23,8 @@ import { BasicEditorComponent } from "./basic-editor.component"
         SuperscriptToolModule,
         SubscriptToolModule,
         StrikeToolModule,
-        HeadingToolModule
+        LinkToolModule,
+        HeadingToolModule,
     ],
     exports: [BasicEditorComponent],
     declarations: [BasicEditorComponent],

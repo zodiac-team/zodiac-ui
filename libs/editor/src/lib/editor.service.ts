@@ -1,4 +1,4 @@
-import { EventEmitter, Inject, Injectable } from "@angular/core"
+import { EventEmitter, Inject, Injectable, Optional } from "@angular/core"
 import { Editor } from "./interfaces"
 import { EditorView } from "prosemirror-view"
 import { EditorState, Transaction, Selection } from "prosemirror-state"
@@ -9,7 +9,7 @@ import { createPMPlugins } from "./utils/create-plugins"
 import { createSchema } from "./utils/create-schema"
 import { createDispatch } from "./utils/create-dispatch"
 import { createConfig } from "./utils/create-config"
-import { EDITOR_PLUGIN } from "./constants"
+import { EDITOR_PLUGIN, STATE_HANDLER } from "./constants"
 import { EditorPlugin } from "./interfaces/editor-plugin"
 import { EditorTool } from "./editor-toolbar/interfaces"
 import { ReplaySubject } from "rxjs"
@@ -21,20 +21,22 @@ export const defaultState = {
 
 @Injectable()
 export class EditorService implements Editor {
-    private state: EditorState
-    private view: EditorView
+    public state: EditorState
+    public view: EditorView
     private config
     private readonly eventDispatcher
     private readonly plugins
+    private readonly handlers?: any[]
 
     public viewChange: EventEmitter<any>
     public stateChange: ReplaySubject<any>
 
-    constructor(@Inject(EDITOR_PLUGIN) plugins: EditorPlugin[]) {
+    constructor(@Inject(EDITOR_PLUGIN) plugins: EditorPlugin[], @Optional() @Inject(STATE_HANDLER) handlers?: any[]) {
         this.eventDispatcher = new EventDispatcher();
         this.viewChange = new EventEmitter()
         this.stateChange = new ReplaySubject()
         this.plugins = plugins
+        this.handlers = handlers
     }
 
     runTool(tool: EditorTool) {
@@ -109,17 +111,11 @@ export class EditorService implements Editor {
                         const editorState = this.view.state.apply(transaction);
                         this.view.updateState(editorState);
                         if (transaction.docChanged) {
-                            this.viewChange.emit({
-                                view: this.view,
-                                state: editorState
-                            });
+                            this.viewChange.emit(this);
                         }
                         this.state = editorState;
 
-                        this.stateChange.next({
-                            view: this.view,
-                            state: this.state
-                        })
+                        this.stateChange.next(this)
                     }
                     // else {
                     //     const documents = {
@@ -133,14 +129,15 @@ export class EditorService implements Editor {
             },
         );
 
-        this.viewChange.emit({
-            view: this.view,
-            state: this.state
-        });
+        this.viewChange.emit(this)
+        this.stateChange.next(this)
 
-        this.stateChange.next({
-            view: this.view,
-            state: this.state
-        })
+        if (this.handlers) {
+            requestAnimationFrame(() => {
+                this.stateChange.subscribe((editor) => {
+                    this.handlers.forEach(handler => handler(editor))
+                })
+            })
+        }
     }
 }

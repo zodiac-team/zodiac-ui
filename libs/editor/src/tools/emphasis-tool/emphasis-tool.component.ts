@@ -18,7 +18,7 @@ export class EmphasisToolComponent {
     constructor() {
         this.tool = {
             tooltip: "Italic Text",
-            icon: "format_italic",
+            icon: "fa-italic",
             run: toggleEm(),
             enable(state) {
                 return toggleEm()(state)

@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import { EditorComponent } from "./editor.component"
-import { AlignmentModule } from "../plugins/alignment/alignment.module"
+import { EditorComponent } from "./editor.component";
 
 @NgModule({
     imports: [
@@ -10,5 +9,4 @@ import { AlignmentModule } from "../plugins/alignment/alignment.module"
     declarations: [EditorComponent],
     exports: [EditorComponent],
 })
-export class EditorModule {
-}
+export class EditorModule {}

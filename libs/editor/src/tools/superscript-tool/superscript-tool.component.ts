@@ -18,7 +18,7 @@ export class SuperscriptToolComponent {
     constructor() {
         this.tool = {
             tooltip: "Toggle Superscript",
-            icon: "format_size",
+            icon: "fa-superscript",
             run: toggleSuperscript(),
             active(state) {
                 const { subsup } = state.schema.marks

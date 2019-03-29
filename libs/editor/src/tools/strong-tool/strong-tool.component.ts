@@ -19,7 +19,7 @@ export class StrongToolComponent {
     constructor() {
         this.tool = {
             tooltip: "Bold Text",
-            icon: "format_bold",
+            icon: "fa-bold",
             run: toggleStrong(),
             enable(state) {
                 return toggleStrong()(state)

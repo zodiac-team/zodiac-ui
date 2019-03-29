@@ -2,7 +2,7 @@ import { Command } from "../interfaces/command"
 import { EditorState } from "prosemirror-state"
 import { EditorView } from "prosemirror-view"
 
-type Predicate = (state: EditorState, view?: EditorView) => boolean;
+export type Predicate = (state: EditorState, view?: EditorView) => boolean;
 
 export const filterCommands = (predicates: Predicate[] | Predicate, cmd: Command): Command => {
     return function(state, dispatch, view): boolean {

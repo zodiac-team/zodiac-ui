@@ -2,10 +2,12 @@ import {
     ChangeDetectionStrategy,
     Component,
     ElementRef,
-    Input, OnChanges,
+    Input,
+    OnChanges,
     OnInit,
-    Output, SimpleChange, SimpleChanges,
-    ViewChild,
+    Output,
+    SimpleChange,
+    SimpleChanges,
     ViewEncapsulation,
 } from "@angular/core"
 import { EditorService } from "./editor.service"
@@ -25,7 +27,7 @@ export function hasChanges(change: SimpleChange) {
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None
 })
-export class EditorComponent implements OnInit, OnChanges, Editor {
+export class EditorComponent implements OnInit, OnChanges {
     @Input()
     public state: any
 

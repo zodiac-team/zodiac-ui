@@ -1,7 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core"
+import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core"
 import { EditorTool } from "../../lib/editor-toolbar/interfaces"
 import { toggleStrike } from "../../plugins/text-formatting/strike/strike.command"
-import { toggleStrong } from "../../plugins/text-formatting/strong/strong.command"
 import { isMarkTypeActive } from "../../plugins/text-formatting/utils"
 
 @Component({
@@ -18,7 +17,7 @@ export class StrikeToolComponent implements OnInit {
     constructor() {
         this.tool = {
             tooltip: "Toggle Strikthrough",
-            icon: 'format_strikethrough',
+            icon: 'fa-strikethrough',
             run: toggleStrike(),
             enable(state) {
                 return toggleStrike()(state)

@@ -20,16 +20,16 @@ export class EditorToolbarComponent implements OnInit, EditorToolbar {
     @Input()
     public editor: Editor
 
-    public docChange: Subject<any>
+    public viewChange: Subject<any>
     public stateChange: Subject<any>
 
     constructor() {
-        this.docChange = new Subject()
+        this.viewChange = new Subject()
         this.stateChange = new Subject()
     }
 
     public ngOnInit() {
-        this.editor.viewChange.subscribe(this.docChange)
+        this.editor.viewChange.subscribe(this.viewChange)
         this.editor.stateChange.subscribe(this.stateChange)
     }
 

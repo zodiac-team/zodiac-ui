@@ -7,6 +7,9 @@ describe('EditorService', () => {
 
   it('should be created', () => {
     const service: EditorService = TestBed.get(EditorService);
+
+    jest.fn()
+
     expect(service).toBeTruthy();
   });
 });

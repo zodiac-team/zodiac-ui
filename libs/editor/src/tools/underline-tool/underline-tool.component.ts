@@ -19,7 +19,7 @@ export class UnderlineToolComponent {
     constructor() {
         this.tool = {
             tooltip: 'Underline Text',
-            icon: 'format_underline',
+            icon: 'fa-underline',
             run: toggleUnderline(),
             enable(state) {
                 return toggleUnderline()(state)

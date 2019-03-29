@@ -12,6 +12,7 @@ import { TextFormattingModule } from "../../plugins/text-formatting/text-formatt
 import { CodeModule } from "../../plugins/code/code.module"
 import { HeadingModule } from "../../plugins/heading/heading.module"
 import { BlockquoteModule } from "../../plugins/blockquote/blockquote.module"
+import { LinkModule } from "../../plugins/link/link.module"
 
 @NgModule({
     declarations: [],
@@ -20,6 +21,7 @@ import { BlockquoteModule } from "../../plugins/blockquote/blockquote.module"
         EditorToolbarModule,
         DocModule,
         ParagraphModule,
+        LinkModule,
         HeadingModule,
         BlockquoteModule,
         TextModule,
@@ -28,7 +30,7 @@ import { BlockquoteModule } from "../../plugins/blockquote/blockquote.module"
         BlockTypeModule,
         BaseModule,
         TextFormattingModule,
-        CodeModule
+        CodeModule,
     ],
     exports: [EditorModule, EditorToolbarModule],
 })

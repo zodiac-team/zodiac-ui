@@ -18,10 +18,10 @@ export class AlignmentToolComponent {
     constructor() {
         this.group = {
             tooltip: "Alignment",
-            icon: "format_align_left",
+            icon: "fa-align-left",
             tools: [{
                 tooltip: "Align Left",
-                icon: "format_align_left",
+                icon: "fa-align-left",
                 run: changeAlignment("start"),
                 active(state) {
                     return getActiveAlignment(state) === "start"
@@ -31,7 +31,7 @@ export class AlignmentToolComponent {
                 }
             },{
                 tooltip: "Align Center",
-                icon: "format_align_center",
+                icon: "fa-align-center",
                 run: changeAlignment("center"),
                 active(state) {
                     return getActiveAlignment(state) === "center"
@@ -41,7 +41,7 @@ export class AlignmentToolComponent {
                 }
             },{
                 tooltip: "Align Right",
-                icon: "format_align_right",
+                icon: "fa-align-right",
                 run: changeAlignment("end"),
                 active(state) {
                     return getActiveAlignment(state) === "end"
