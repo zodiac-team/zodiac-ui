@@ -13,6 +13,7 @@ import { CodeModule } from "../../plugins/code/code.module"
 import { HeadingModule } from "../../plugins/heading/heading.module"
 import { BlockquoteModule } from "../../plugins/blockquote/blockquote.module"
 import { LinkModule } from "../../plugins/link/link.module"
+import { HorizontalRuleModule } from "../../plugins/horizontal-rule/horizontal-rule.module"
 
 @NgModule({
     declarations: [],
@@ -31,6 +32,7 @@ import { LinkModule } from "../../plugins/link/link.module"
         BaseModule,
         TextFormattingModule,
         CodeModule,
+        HorizontalRuleModule
     ],
     exports: [EditorModule, EditorToolbarModule],
 })

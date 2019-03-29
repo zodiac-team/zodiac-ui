@@ -13,6 +13,7 @@ import { EditorState, Plugin, PluginKey } from "prosemirror-state"
 import { Dispatch } from "../../lib/interfaces/editor-config"
 import { TextFormattingState } from "./interfaces"
 import { deepEqual, getTextFormattingState } from "./utils"
+import { inputRulePlugin } from "./text.formatting.inputrule"
 
 export const TEXT_FORMATTING = "textFormatting"
 export const pluginKey = new PluginKey('textFormatting');
@@ -83,6 +84,9 @@ export const textFormattingPlugin: EditorPlugin = {
             }, {
                 name: "subsupKeymap",
                 plugin: supsubKeymap
+            }, {
+                name: "textFormattingInputRule",
+                plugin: ({schema}) => inputRulePlugin(schema)
             }
         ]
     },

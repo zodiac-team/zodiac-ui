@@ -29,7 +29,6 @@ fieldset {
     border: 0;
 }
 
-
 body,
 html {
     height: 100%;
@@ -38,14 +37,15 @@ html {
 
 body {
     background-color: #fff;
-    color: #172B4D;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    color: #172b4d;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+        "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: 1.42857142857143;
     -ms-overflow-style: -ms-autohiding-scrollbar;
-    text-decoration-skip-ink: auto
+    text-decoration-skip-ink: auto;
 }
 
 /* Default margins */
@@ -69,93 +69,75 @@ table,
 
 /* Links */
 a {
-    color: #0052CC;
+    color: #0052cc;
     text-decoration: none;
 }
 a:hover {
-    color: #0065FF;
+    color: #0065ff;
     text-decoration: underline;
 }
 a:active {
-    color: #0747A6;
+    color: #0747a6;
 }
 a:focus {
-    outline: 2px solid #4C9AFF;
+    outline: 2px solid #4c9aff;
     outline-offset: 2px;
 }
 
 /* Headings */
 h1 {
-
-
     font-size: 2.0714285714285716em;
     font-style: inherit;
     line-height: 1.103448275862069;
-    color: #172B4D;
+    color: #172b4d;
     font-weight: 600;
     letter-spacing: -0.01em;
     margin-top: 40px;
-
 }
 h2 {
-
-
     font-size: 1.7142857142857142em;
     font-style: inherit;
     line-height: 1.1666666666666667;
-    color: #172B4D;
+    color: #172b4d;
     font-weight: 500;
     letter-spacing: -0.01em;
     margin-top: 40px;
-
 }
 h3 {
-
-
     font-size: 1.4285714285714286em;
     font-style: inherit;
     line-height: 1.2;
-    color: #172B4D;
+    color: #172b4d;
     font-weight: 500;
     letter-spacing: -0.008em;
     margin-top: 28px;
-
 }
 h4 {
-
-
     font-size: 1.1428571428571428em;
     font-style: inherit;
     line-height: 1.25;
-    color: #172B4D;
+    color: #172b4d;
     font-weight: 600;
     letter-spacing: -0.006em;
     margin-top: 24px;
-
 }
 h5 {
-
-
     font-size: 1em;
     font-style: inherit;
     line-height: 1.1428571428571428;
-    color: #172B4D;
+    color: #172b4d;
     font-weight: 600;
     letter-spacing: -0.003em;
     margin-top: 16px;
-
 }
 h6 {
-
-
     font-size: 0.8571428571428571em;
     font-style: inherit;
     line-height: 1.3333333333333333;
-    color: #172B4D;
+    color: #172b4d;
     font-weight: 600;
     margin-top: 20px;
     text-transform: uppercase;
-
 }
 
 /* Lists */
@@ -164,9 +146,9 @@ ol,
 dl {
     padding-left: 40px;
 }
-[dir='rtl']ul,
-[dir='rtl']ol,
-[dir='rtl']dl {
+[dir="rtl"]ul,
+[dir="rtl"]ol,
+[dir="rtl"]dl {
     padding-left: 0;
     padding-right: 40px;
 }
@@ -211,19 +193,19 @@ blockquote {
     border: none;
     padding-left: 40px;
 }
-[dir='rtl'] blockquote {
+[dir="rtl"] blockquote {
     padding-left: 0;
     padding-right: 40px;
 }
 
 blockquote::before,
 q::before {
-    content: '\201C';
+    content: "\201C";
 }
 
 blockquote::after,
 q::after {
-    content: '\201D';
+    content: "\201D";
 }
 
 blockquote::before {
@@ -233,7 +215,7 @@ blockquote::before {
     text-align: right;
     width: 1em;
 }
-[dir='rtl'] blockquote::before {
+[dir="rtl"] blockquote::before {
     float: right;
     margin-right: -1em;
     text-align: left;
@@ -245,20 +227,18 @@ blockquote > :last-child {
 
 /* Other typographical elements */
 small {
-
-
     font-size: 0.7857142857142857em;
     font-style: inherit;
     line-height: 1.4545454545454546;
-    color: #6B778C;
+    color: #6b778c;
     font-weight: 700;
     margin-top: 16px;
-
 }
 
 code,
 kbd {
-    font-family: 'SFMono-Medium', 'SF Mono', 'Segoe UI Mono', 'Roboto Mono', 'Ubuntu Mono', Menlo, Consolas, Courier, monospace;
+    font-family: "SFMono-Medium", "SF Mono", "Segoe UI Mono", "Roboto Mono", "Ubuntu Mono", Menlo,
+        Consolas, Courier, monospace;
 }
 
 var,
@@ -273,7 +253,6 @@ abbr {
     cursor: help;
 }
 
-
 table {
     border-collapse: collapse;
     width: 100%;
@@ -282,7 +261,7 @@ table {
 thead,
 tbody,
 tfoot {
-    border-bottom: 2px solid #DFE1E6;
+    border-bottom: 2px solid #dfe1e6;
 }
 
 td,
@@ -307,12 +286,10 @@ th:last-child {
 }
 
 caption {
-
-
     font-size: 1.4285714285714286em;
     font-style: inherit;
     line-height: 1.2;
-    color: #172B4D;
+    color: #172b4d;
     font-weight: 500;
     letter-spacing: -0.008em;
     margin-top: 28px;
@@ -320,7 +297,6 @@ caption {
     margin-bottom: 8px;
     text-align: left;
 }
-
 
 /* IE11 doesn't support <template> elements which shouldn't be displayed */
 template {
@@ -353,7 +329,6 @@ section {
     }
 }
 
-
 .assistive {
     border: 0 !important;
     clip: rect(1px, 1px, 1px, 1px) !important;
@@ -365,3 +340,36 @@ section {
     white-space: nowrap !important;
 }
 
+.ProseMirror .code {
+    background-color: rgba(9, 30, 66, 0.08);
+    border-bottom-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    border-radius: 3px;
+    border-top-style: none;
+    box-shadow: rgba(9, 30, 66, 0.08) -4px 0px 0px 0px, rgba(9, 30, 66, 0.08) 4px 0px 0px 0px;
+    color: rgb(23, 43, 77);
+    display: inline;
+    font-family: SFMono-Medium, "SF Mono", "Segoe UI Mono", "Roboto Mono", "Ubuntu Mono", Menlo,
+        Consolas, Courier, monospace;
+    font-style: normal;
+    font-weight: 400;
+    height: auto;
+    margin: 0px 4px;
+    overflow-wrap: break-word;
+    padding: 2px 0px;
+    white-space: pre-wrap;
+    width: auto;
+    -webkit-box-decoration-break: clone;
+}
+
+.ProseMirror hr {
+    background-color: rgba(9, 30, 66, 0.08);
+    height: 2px;
+    border-width: initial;
+    border-style: none;
+    border-color: initial;
+    border-image: initial;
+    margin: 1.714em 0;
+    border-radius: 1px;
+}
