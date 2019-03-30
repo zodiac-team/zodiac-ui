@@ -1,6 +1,8 @@
 import { Slice, Node, Schema } from 'prosemirror-model';
-import * as LinkifyIt from 'linkify-it';
+import * as LinkifyItNs from 'linkify-it';
 import { mapSlice } from "../../lib/utils/map-slice"
+
+const LinkifyIt = LinkifyItNs
 
 export const LINK_REGEXP = /(https?|ftp):\/\/[^\s]+/;
 

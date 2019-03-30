@@ -160,8 +160,9 @@ export class LinkPanelComponent implements OnDestroy {
         this.sub.unsubscribe()
     }
 
-    @HostListener('keydown.enter', ['$event.preventDefault()'])
-    handleEnter() {
+    @HostListener('keydown.enter', ['$event'])
+    handleEnter(event) {
+        event.preventDefault()
         this.setLink()
         this.toolbar.returnFocusToEditor()
     }

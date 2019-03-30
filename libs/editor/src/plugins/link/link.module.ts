@@ -2,7 +2,6 @@ import { ComponentFactoryResolver, InjectionToken, Injector, NgModule } from "@a
 import { EDITOR_PLUGIN } from "../../lib/constants"
 import { hyperlinkPlugin } from "./link.plugin"
 
-export const NG_NODE_VIEW = new InjectionToken("NG_NODE_VIEW")
 
 @NgModule({
     providers: [{

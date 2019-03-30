@@ -1,4 +1,6 @@
-import * as LinkifyIt from 'linkify-it';
+import * as LinkifyItNs from 'linkify-it';
+
+const LinkifyIt = LinkifyItNs
 
 const whitelistedURLPatterns = [
     /^https?:\/\//im,
