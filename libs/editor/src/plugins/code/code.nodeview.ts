@@ -1,17 +1,20 @@
-import CodeMirror from "codemirror"
 import { exitCode } from "prosemirror-commands"
 import { redo, undo } from "prosemirror-history"
 import { Selection, TextSelection } from "prosemirror-state"
 import { keymap } from "prosemirror-keymap"
 import { NodeView } from "prosemirror-view"
+import { CodeMirror, getMode } from "./codemirror"
 
 function computeChange(oldVal, newVal) {
     if (oldVal === newVal) return null
     let start = 0, oldEnd = oldVal.length, newEnd = newVal.length
     while (start < oldEnd && oldVal.charCodeAt(start) === newVal.charCodeAt(start)) ++start
     while (oldEnd > start && newEnd > start &&
-    oldVal.charCodeAt(oldEnd - 1) === newVal.charCodeAt(newEnd - 1)) { oldEnd--; newEnd-- }
-    return {from: start, to: oldEnd, text: newVal.slice(start, newEnd)}
+    oldVal.charCodeAt(oldEnd - 1) === newVal.charCodeAt(newEnd - 1)) {
+        oldEnd--
+        newEnd--
+    }
+    return { from: start, to: oldEnd, text: newVal.slice(start, newEnd) }
 }
 
 function arrowHandler(dir) {
@@ -28,47 +31,23 @@ function arrowHandler(dir) {
     }
 }
 
-export interface CodeLanguage {
-    source: string
-    mode: string
-    label: string
-}
-
-export const codeLanguages: CodeLanguage[] = [{
-    source: 'cm-javascript.js',
-    mode: 'text/javascript',
-    label: 'JavaScript'
-}, {
-    source: 'cm-javascript.js',
-    mode: 'text/typescript',
-    label: 'TypeScript'
-}]
-
-export const loadedModes: { [key: string]: boolean } = {}
-
-export async function loadExternalScript(scriptUrl) {
-    return new Promise(resolve => {
-        if (loadedModes[scriptUrl]) {
-            return resolve()
-        }
-
-        const scriptElement = document.createElement('script');
-        scriptElement.src = scriptUrl;
-        scriptElement.onload = () => {
-            resolve()
-            loadedModes[scriptUrl] = true
-            delete (<any>window).CodeMirror
-        };
-        (<any>window).CodeMirror = CodeMirror;
-        document.body.appendChild(scriptElement);
-    });
+function matchAll(str, regexp) {
+    const matches = []
+    str.replace(regexp, function() {
+        const arr = ([]).slice.call(arguments, 0)
+        const extras = arr.splice(-2)
+        arr.index = extras[0]
+        arr.input = extras[1]
+        matches.push(arr)
+    })
+    return matches.length ? matches : null
 }
 
 export const arrowHandlers = keymap({
     ArrowLeft: arrowHandler("left"),
     ArrowRight: arrowHandler("right"),
     ArrowUp: arrowHandler("up"),
-    ArrowDown: arrowHandler("down")
+    ArrowDown: arrowHandler("down"),
 })
 
 export class CodeBlockView implements NodeView {
@@ -94,7 +73,8 @@ export class CodeBlockView implements NodeView {
             extraKeys: this.codeMirrorKeymap(),
             indentWithTabs: false,
             smartIndent: false,
-            viewportMargin: Infinity
+            viewportMargin: Infinity,
+            theme: "default",
         })
 
         // The editor's outer node is our DOM representation
@@ -103,6 +83,7 @@ export class CodeBlockView implements NodeView {
         // schedule it to update itself
 
         void this.loadMode(node.attrs.language)
+        void this.maybeLoadFencedModes()
         setTimeout(() => this.cm.refresh(), 20)
 
         // This flag is used to avoid an update loop between the outer and
@@ -118,23 +99,41 @@ export class CodeBlockView implements NodeView {
             if (!this.updating) {
                 this.valueChanged()
                 this.forwardSelection()
+                this.maybeLoadFencedModes()
             }
             this.incomingChanges = false
         })
         this.cm.on("focus", () => this.forwardSelection())
     }
 
-    async loadMode(mode) {
+    async loadMode(key) {
         try {
-            if (mode) {
-                const lang = codeLanguages.find((codeLang) => codeLang.mode === mode)
-                await loadExternalScript(lang.source)
-                await Promise.resolve()
+            if (key) {
+                const spec = getMode(key)
+                await CodeMirror.autoLoadMode(this.cm, spec.mode)
+                setTimeout(() => this.cm.refresh(), 20)
+                this.cm.setOption("mode", spec.mime || spec.mimes[0])
             }
-            this.cm.setOption("mode", mode);
-            this.cm.refresh()
-        } catch(e) {
+        } catch (e) {
             console.log(e)
+        }
+    }
+
+    maybeLoadFencedModes() {
+        const value = this.cm.getValue()
+        const fencedModes = matchAll(value, /(~~~+|```+)[ \t]*([\w+#-]*)[^\n`]*/g)
+
+        if (fencedModes) {
+            const modes = fencedModes
+                .map(match => getMode(match[2]))
+                .filter(Boolean)
+
+            modes.forEach((spec) => {
+                CodeMirror.requireMode(spec.mode, (didLoad) => {
+                    this.cm.setOption("mode", this.cm.getOption("mode"))
+                    setTimeout(() => this.cm.refresh(), 20)
+                })
+            })
         }
     }
 
@@ -189,7 +188,7 @@ export class CodeBlockView implements NodeView {
             [`${mod}-Y`]: () => redo(view.state, view.dispatch),
             "Ctrl-Enter": () => {
                 if (exitCode(view.state, view.dispatch)) view.focus()
-            }
+            },
         })
     }
 
@@ -226,9 +225,13 @@ export class CodeBlockView implements NodeView {
         return true
     }
 
-    selectNode() { this.cm.focus() }
+    selectNode() {
+        this.cm.focus()
+    }
 
-    stopEvent() { return true }
+    stopEvent() {
+        return true
+    }
 }
 
 export function codeBlockFactory(node, view, getPos) {

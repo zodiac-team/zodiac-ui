@@ -498,7 +498,12 @@
                         "tsConfig": "apps/editor-example/tsconfig.app.json",
                         "assets": [
                             "apps/editor-example/src/favicon.ico",
-                            "apps/editor-example/src/assets"
+                            "apps/editor-example/src/assets",
+                            {
+                                "input": "node_modules/codemirror",
+                                "glob": "**/*.js",
+                                "output": "/"
+                            }
                         ],
                         "styles": [
                             "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
@@ -507,16 +512,7 @@
                             "apps/editor-example/src/styles.scss"
                         ],
                         "scripts": [
-                            "node_modules/hammerjs/hammer.min.js",
-                            {
-                                "bundleName": "cm-javascript",
-                                "input": "node_modules/codemirror/mode/javascript/javascript.js",
-                                "lazy": true
-                            }, {
-                                "bundleName": "cm-typescript",
-                                "input": "node_modules/codemirror/mode/javascript/javascript.js",
-                                "lazy": true
-                            }
+                            "node_modules/hammerjs/hammer.min.js"
                         ],
                         "es5BrowserSupport": true
                     },

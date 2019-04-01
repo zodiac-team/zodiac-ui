@@ -1,9 +1,10 @@
 import {
-    ChangeDetectionStrategy, ChangeDetectorRef,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     ComponentFactoryResolver,
-    Injector, OnDestroy,
-    OnInit,
+    Injector,
+    OnDestroy,
 } from "@angular/core"
 import { FloatingToolbar } from "../../link-tool/link-panel/link-panel.component"
 import { ConnectionPositionPair, Overlay } from "@angular/cdk/overlay"
@@ -13,7 +14,7 @@ import { ComponentPortal } from "@angular/cdk/portal"
 import { CodeBlockState, pluginKey } from "../../../plugins/code/code.plugin"
 import { changeLanguage, removeCodeBlock } from "../../../plugins/code/code.command"
 import { Subscription } from "rxjs"
-import { CodeLanguage, codeLanguages } from "../../../plugins/code/code.nodeview"
+import { ModeInfo, modeInfo } from "../../../plugins/code/codemirror"
 
 @Component({
     selector: "z-code-panel",
@@ -23,8 +24,8 @@ import { CodeLanguage, codeLanguages } from "../../../plugins/code/code.nodeview
                 <mat-option>
                     <span>Plain Text</span>
                 </mat-option>
-                <mat-option *ngFor="let option of options" [value]="option.mode">
-                    <span [textContent]="option.label"></span>
+                <mat-option *ngFor="let option of options" [value]="option.name">
+                    <span [textContent]="option.name"></span>
                 </mat-option>
             </mat-select>
         </mat-form-field>
@@ -34,14 +35,14 @@ import { CodeLanguage, codeLanguages } from "../../../plugins/code/code.nodeview
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CodePanelComponent implements OnDestroy {
-    options: CodeLanguage[]
+    options: ModeInfo[]
     toolbar: FloatingToolbar
     mode: string
     sub: Subscription
     deleteCode: EditorTool
 
     constructor(toolbar: FloatingToolbar, cdr: ChangeDetectorRef) {
-        this.options = codeLanguages
+        this.options = modeInfo
         this.toolbar = toolbar
         this.deleteCode = {
             tooltip: "Remove",
