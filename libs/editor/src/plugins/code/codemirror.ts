@@ -1,14 +1,17 @@
 // Hat tip https://github.com/hacdias
 // Most of the code from this file comes from:
 // https://github.com/codemirror/CodeMirror/blob/master/addon/mode/loadmode.js
-import * as BaseCodeMirror from 'codemirror'
+import * as BaseCodeMirrorNs from 'codemirror'
 import "codemirror/addon/mode/overlay"
+import "codemirror/addon/mode/multiplex"
+import "codemirror/addon/mode/simple"
 import "codemirror/mode/meta"
 
-// Make CodeMirror available globally so the modes' can register themselves.
-(<any>window).CodeMirror = BaseCodeMirror
+const BaseCodeMirror = BaseCodeMirrorNs
 
-if (!BaseCodeMirror.modeURL) BaseCodeMirror.modeURL = '../mode/%N/%N.js'
+if(!(<any>window).CodeMirror) {
+    (<any>window).CodeMirror = BaseCodeMirror
+}
 
 const loading = {}
 
@@ -26,12 +29,14 @@ export function getMode(name) {
     return null
 }
 
+export const globalConfig: any = {}
+
 function ensureDeps (mode, cont) {
-    const deps = CodeMirror.modes[mode].dependencies
+    const deps = BaseCodeMirror.modes[mode].dependencies
     if (!deps) return cont(false)
     const missing = []
     for (let i = 0; i < deps.length; ++i) {
-        if (!CodeMirror.modes.hasOwnProperty(deps[i])) missing.push(deps[i])
+        if (!BaseCodeMirror.modes.hasOwnProperty(deps[i])) missing.push(deps[i])
     }
     if (!missing.length) return cont(false)
     const split = splitCallback(cont, missing.length)
@@ -50,22 +55,25 @@ export interface ModeInfo {
 export const modeInfo: ModeInfo[] = BaseCodeMirror.modeInfo
 
 export class CodeMirror extends BaseCodeMirror {
-    static modeURL: string
-    static modes: {[key: string]: any}
 
-    static normalizeKeyMap: any
-    static Pass: any
+    static normalizeKeyMap: any = BaseCodeMirror.normalizeKeyMap
+    static Pass: any = BaseCodeMirror.Pass
 
     constructor(node, opts) {
+        BaseCodeMirror.modeURL = globalConfig.modeURL ? globalConfig.modeURL : 'assets/mode/%N/%N.js'
+
+        if (!(<any>window).CodeMirror) {
+            // Make CodeMirror available globally so the modes' can register themselves.
+        }
         super(node, opts)
     }
 
     static requireMode(mode, cont) {
         if (typeof mode !== 'string') mode = mode.name
-        if (CodeMirror.modes.hasOwnProperty(mode)) return ensureDeps(mode, cont)
+        if (BaseCodeMirror.modes.hasOwnProperty(mode)) return ensureDeps(mode, cont)
         if (loading.hasOwnProperty(mode)) return loading[mode].push(cont)
 
-        const file = CodeMirror.modeURL.replace(/%N/g, mode)
+        const file = BaseCodeMirror.modeURL.replace(/%N/g, mode)
 
         const script = document.createElement('script')
         script.src = file
@@ -82,12 +90,10 @@ export class CodeMirror extends BaseCodeMirror {
     }
 
     static autoLoadMode(instance, mode) {
-        if (CodeMirror.modes.hasOwnProperty(mode)) return
+        if (BaseCodeMirror.modes.hasOwnProperty(mode)) return
 
         CodeMirror.requireMode(mode, function () {
             instance.setOption('mode', instance.getOption('mode'))
         })
     }
 }
-
-Object.assign(CodeMirror, BaseCodeMirror)

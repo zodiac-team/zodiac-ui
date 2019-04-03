@@ -1,6 +1,9 @@
-import { NgModule } from "@angular/core"
+import { Inject, ModuleWithProviders, NgModule, Optional } from "@angular/core"
 import { EDITOR_PLUGIN } from "../../lib/constants"
 import { codeBlockPlugin } from "./code.plugin"
+import { globalConfig, modeInfo } from "./codemirror"
+import { CodeModuleConfig } from "./interfaces"
+import { CODE_CONFIG } from "./constants"
 
 @NgModule({
     providers: [{
@@ -9,4 +12,23 @@ import { codeBlockPlugin } from "./code.plugin"
         multi: true
     }],
 })
-export class CodeModule { }
+export class CodeModule {
+    constructor(@Optional() @Inject(CODE_CONFIG) config: any) {
+        if (config.extraModes) {
+            modeInfo.push(...config.extraModes)
+        }
+        if (config.modeURL) {
+            Object.assign(globalConfig, config)
+        }
+    }
+
+    static configure(config: CodeModuleConfig): ModuleWithProviders {
+        return {
+            ngModule: CodeModule,
+            providers: [{
+                provide: CODE_CONFIG,
+                useValue: config
+            }]
+        }
+    }
+}

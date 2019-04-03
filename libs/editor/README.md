@@ -14,7 +14,7 @@ npm install @zodiac-ui/editor
 
 Zodiac Editor has a number of peer dependencies depending on which features are needed.
 
-Core peer dependencies
+#### Core Dependencies
 
 ```
 npm install 
@@ -32,11 +32,15 @@ npm install
     prosemirror-view@^1.8.3
 ```
 
+#### LinkModule Dependencies
+
 `LinkModule` requires `LinkifyIt` to be installed
 
 ```
 npm install linkify-it@^2.1.0
 ```
+
+#### CodeModule Dependencies
 
 `CodeModule` requires `CodeMirror` to be installed
 
@@ -44,9 +48,22 @@ npm install linkify-it@^2.1.0
 npm install codemirror@^5.45.0
 ```
 
-For CodeMirror mode support, add the following styles and scripts to your `angular.json`
+For CodeMirror mode support, add the following styles and assets to your project in `angular.json`
 
-TBA
+```json
+{
+    "assets": [
+        {
+            "input": "node_modules/codemirror",
+            "glob": "**/*.js",
+            "output": "/assets"
+        }
+    ],
+    "styles": [
+        "node_modules/codemirror/lib/codemirror.css"
+    ]
+}
+```
 
 ### CSS
 
@@ -197,8 +214,28 @@ To create your own tools, toolbars or floating panels, refer to Advanced Usage.
 
 ## Advanced Usage
 
-TBA
+
 
 ## API
 
-TBA
+
+## CodeModule
+
+> Ensure you've installed [peer dependencies](#codemodule-dependencies) before using this module
+
+```ts
+imports: [
+    CodeModule.configure(config)
+]
+```
+
+> config: [CodeModuleConfig](/libs/editor/src/plugins/code/interfaces.ts)
+
+| Option | Description | 
+|---|---|
+| modeURL | File pattern to load mode dependencies from
+| extraModes | Additional metadata to append to modeInfo
+
+
+Support for Angular language mode is [available here](/libs/editor/src/plugins/code/mode/angular.js). Copy this file to
+your assets folder (eg. `assets/modes/angular/angular.js`)

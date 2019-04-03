@@ -42,7 +42,15 @@ export class CodePanelComponent implements OnDestroy {
     deleteCode: EditorTool
 
     constructor(toolbar: FloatingToolbar, cdr: ChangeDetectorRef) {
-        this.options = modeInfo
+        this.options = modeInfo.sort((a, b) => {
+            if (a.name < b.name) {
+                return -1
+            }
+            if (a.name > b.name) {
+                return 1
+            }
+            return 0
+        })
         this.toolbar = toolbar
         this.deleteCode = {
             tooltip: "Remove",

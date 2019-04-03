@@ -502,7 +502,7 @@
                             {
                                 "input": "node_modules/codemirror",
                                 "glob": "**/*.js",
-                                "output": "/"
+                                "output": "/assets"
                             }
                         ],
                         "styles": [
