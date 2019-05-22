@@ -15,7 +15,7 @@ import { FORMULA_OUTLET } from "../constants"
 @Component({
     selector: "z-form",
     template: `
-        <ng-container *ngIf="parent; then: ngForm; else: form"></ng-container>
+        <ng-container *ngIf="parent; then ngForm; else form"></ng-container>
         <ng-template #form>
             <form [ngFormOptions]="ngFormOptions">
                 <ng-container [ngTemplateOutlet]="content"></ng-container>

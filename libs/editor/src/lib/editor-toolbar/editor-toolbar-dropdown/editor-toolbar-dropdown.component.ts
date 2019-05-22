@@ -9,7 +9,12 @@ import { EditorTool, EditorToolbar, EditorToolGroup } from "../interfaces"
             <mat-icon *ngIf="menu.icon" fontSet="fa" [fontIcon]="menu.icon"></mat-icon>
         </button>
         <mat-menu #dropdown>
-            <button mat-icon-button *ngFor="let tool of group.tools" (click)="runTool(tool)" [matTooltip]="tool.tooltip">
+            <button
+                mat-icon-button
+                *ngFor="let tool of group.tools"
+                (click)="runTool(tool)"
+                [matTooltip]="tool.tooltip"
+            >
                 <span *ngIf="menu.label" [textContent]="menu.label"></span>
                 <mat-icon *ngIf="menu.icon" fontSet="fa" [fontIcon]="tool.icon"></mat-icon>
             </button>

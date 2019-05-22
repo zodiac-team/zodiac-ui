@@ -13,7 +13,6 @@ import { toggleMark } from "prosemirror-commands"
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubscriptToolComponent {
-
     public tool: EditorTool
 
     constructor() {
@@ -22,19 +21,19 @@ export class SubscriptToolComponent {
             icon: "fa-subscript",
             run: toggleSubscript(),
             active(state) {
-                const { subsup } = state.schema.marks;
+                const { subsup } = state.schema.marks
                 if (subsup) {
-                    return isMarkActive(state, subsup.create({ type: 'sub' }))
+                    return isMarkActive(state, subsup.create({ type: "sub" }))
                 }
                 return false
             },
             enable(state) {
-                const { subsup } = state.schema.marks;
+                const { subsup } = state.schema.marks
                 if (subsup) {
-                    return toggleMark(subsup, { type: 'sub' })(state)
+                    return toggleMark(subsup, { type: "sub" })(state)
                 }
                 return false
-            }
+            },
         }
     }
 }

@@ -18,9 +18,7 @@ describe("EditorComponent", () => {
         fixture.detectChanges()
     })
 
-    describe('how to create the editor', () => {
-        it('should configure the editor state', () => {
-
-        })
+    describe("how to create the editor", () => {
+        it("should configure the editor state", () => {})
     })
 })

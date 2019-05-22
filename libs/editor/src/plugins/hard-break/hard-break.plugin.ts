@@ -10,7 +10,7 @@ export const HARD_BREAK_KEYMAP = "hardBreakKeymap"
 
 const hardBreakKeymap: PMPluginFactory = () => {
     const list = {}
-    bindKeymapWithCommand('Shift-Enter', insertNewLine(), list)
+    bindKeymapWithCommand("Shift-Enter", insertNewLine(), list)
     return keymap(list)
 }
 
@@ -18,16 +18,20 @@ export const hardBreakPlugin: EditorPlugin = {
     name: HARD_BREAK,
 
     nodes() {
-        return [{
-            name: HARD_BREAK,
-            node: hardBreakNode
-        }]
+        return [
+            {
+                name: HARD_BREAK,
+                node: hardBreakNode,
+            },
+        ]
     },
 
     pmPlugins() {
-        return [{
-            name: HARD_BREAK_KEYMAP,
-            plugin: hardBreakKeymap
-        }]
-    }
+        return [
+            {
+                name: HARD_BREAK_KEYMAP,
+                plugin: hardBreakKeymap,
+            },
+        ]
+    },
 }

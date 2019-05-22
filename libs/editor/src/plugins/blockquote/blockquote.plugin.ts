@@ -7,9 +7,11 @@ export const blockquotePlugin: EditorPlugin = {
     name: BLOCKQUOTE,
 
     nodes() {
-        return [{
-            name: BLOCKQUOTE,
-            node: blockquoteNode
-        }]
-    }
+        return [
+            {
+                name: BLOCKQUOTE,
+                node: blockquoteNode,
+            },
+        ]
+    },
 }

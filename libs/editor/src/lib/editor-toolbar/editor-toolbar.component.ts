@@ -10,13 +10,14 @@ import { Subject } from "rxjs"
     `,
     styleUrls: ["./editor-toolbar.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [{
-        provide: EditorToolbar,
-        useExisting: EditorToolbarComponent
-    }]
+    providers: [
+        {
+            provide: EditorToolbar,
+            useExisting: EditorToolbarComponent,
+        },
+    ],
 })
 export class EditorToolbarComponent implements OnInit, EditorToolbar {
-
     @Input()
     public editor: Editor
 

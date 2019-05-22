@@ -1,7 +1,7 @@
-import { PluginKey, Plugin } from 'prosemirror-state';
+import { PluginKey, Plugin } from "prosemirror-state"
 import { Dispatch } from "../../../lib/interfaces/editor-config"
 
-export const focusStateKey = new PluginKey('focusStatePlugin');
+export const focusStateKey = new PluginKey("focusStatePlugin")
 
 export const focusHandlerPlugin = (dispatch: Dispatch) =>
     new Plugin({
@@ -9,41 +9,39 @@ export const focusHandlerPlugin = (dispatch: Dispatch) =>
         state: {
             init: () => true,
             apply: (tr, wasEditorFocused: boolean) => {
-                const meta = tr.getMeta(focusStateKey) as boolean;
-                if (typeof meta === 'boolean') {
+                const meta = tr.getMeta(focusStateKey) as boolean
+                if (typeof meta === "boolean") {
                     if (meta !== wasEditorFocused) {
-                        dispatch(focusStateKey, meta);
-                        return meta;
+                        dispatch(focusStateKey, meta)
+                        return meta
                     }
                 }
-                return wasEditorFocused;
+                return wasEditorFocused
             },
         },
         props: {
             handleDOMEvents: {
                 click: view => {
-                    const isEditorFocused = focusStateKey.getState(view.state);
+                    const isEditorFocused = focusStateKey.getState(view.state)
                     if (!isEditorFocused) {
-                        view.dispatch(
-                            view.state.tr.setMeta(focusStateKey, view.hasFocus()),
-                        );
+                        view.dispatch(view.state.tr.setMeta(focusStateKey, view.hasFocus()))
                     }
-                    return false;
+                    return false
                 },
                 focus: view => {
-                    const isEditorFocused = focusStateKey.getState(view.state);
+                    const isEditorFocused = focusStateKey.getState(view.state)
                     if (!isEditorFocused) {
-                        view.dispatch(view.state.tr.setMeta(focusStateKey, true));
+                        view.dispatch(view.state.tr.setMeta(focusStateKey, true))
                     }
-                    return false;
+                    return false
                 },
                 blur: view => {
-                    const isEditorFocused = focusStateKey.getState(view.state);
+                    const isEditorFocused = focusStateKey.getState(view.state)
                     if (isEditorFocused) {
-                        view.dispatch(view.state.tr.setMeta(focusStateKey, false));
+                        view.dispatch(view.state.tr.setMeta(focusStateKey, false))
                     }
-                    return false;
+                    return false
                 },
             },
         },
-    });
+    })

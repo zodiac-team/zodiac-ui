@@ -47,7 +47,7 @@ export class HeadingToolComponent {
                     label: "Normal Text",
                     run: setBlockType("normal"),
                     enable: blockTypesEnabled,
-                    select: currentBlockSelected("normal")
+                    select: currentBlockSelected("normal"),
                 },
                 ...headingTools,
             ],

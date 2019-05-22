@@ -7,12 +7,7 @@ import { EditorToolbarModule } from "../../lib/editor-toolbar/editor-toolbar.mod
 
 @NgModule({
     declarations: [],
-    imports: [
-        EditorModule,
-        DocModule,
-        ParagraphModule,
-        TextModule,
-    ],
+    imports: [EditorModule, DocModule, ParagraphModule, TextModule],
     exports: [EditorModule, EditorToolbarModule],
 })
 export class BasicEditorModule {}

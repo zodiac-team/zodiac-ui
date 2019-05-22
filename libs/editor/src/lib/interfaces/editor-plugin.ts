@@ -6,39 +6,37 @@ declare type TypeAheadHandler = any
 declare type FloatingToolbarHandler = any
 
 export interface PluginsOptions {
-    [pluginName: string]: any;
-    quickInsert?: QuickInsertHandler;
-    typeAhead?: TypeAheadHandler;
-    floatingToolbar?: FloatingToolbarHandler;
+    [pluginName: string]: any
+    quickInsert?: QuickInsertHandler
+    typeAhead?: TypeAheadHandler
+    floatingToolbar?: FloatingToolbarHandler
 }
 
 export interface EditorPlugin {
     /**
      * Name of a plugin, that other plugins can use to provide options to it.
      */
-    name?: string;
+    name?: string
 
     /**
      * Options that will be passed to a plugin with a corresponding name if it exists and enabled.
      */
-    pluginsOptions?: PluginsOptions;
+    pluginsOptions?: PluginsOptions
 
     /**
      * List of ProseMirror-plugins. This is where we define which plugins will be added to EditorView (main-plugin, keybindings, input-rules, etc.).
      */
-    pmPlugins?: (
-        pluginOptions?: any,
-    ) => { name: string; plugin: PMPluginFactory }[];
+    pmPlugins?: (pluginOptions?: any) => { name: string; plugin: PMPluginFactory }[]
 
     /**
      * List of Nodes to add to the schema.
      */
-    nodes?: (editorProps: EditorProps) => NodeConfig[];
+    nodes?: (editorProps: EditorProps) => NodeConfig[]
 
     /**
      * List of Marks to add to the schema.
      */
-    marks?: (editorProps: EditorProps) => MarkConfig[];
+    marks?: (editorProps: EditorProps) => MarkConfig[]
 
     /**
      * Optional UI-component that lives inside the actual content-area (like mention-picker, floating toolbar for links, etc.)

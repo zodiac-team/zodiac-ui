@@ -1,4 +1,4 @@
-import * as LinkifyItNs from 'linkify-it';
+import * as LinkifyItNs from "linkify-it"
 
 const LinkifyIt = LinkifyItNs
 
@@ -35,42 +35,34 @@ const whitelistedURLPatterns = [
     /^slack:/im,
     /^sips?:/im,
     /^magnet:/im,
-];
+]
 
 export const isSafeUrl = (url: string): boolean => {
-    return whitelistedURLPatterns.some(p => p.test(url.trim()) === true);
-};
-
-export interface Match {
-    schema: any;
-    index: number;
-    lastIndex: number;
-    raw: string;
-    text: string;
-    url: string;
-    length?: number;
+    return whitelistedURLPatterns.some(p => p.test(url.trim()) === true)
 }
 
-const linkify = LinkifyIt();
-linkify.add('sourcetree:', 'http:');
+export interface Match {
+    schema: any
+    index: number
+    lastIndex: number
+    raw: string
+    text: string
+    url: string
+    length?: number
+}
 
-export function getLinkMatch(str: string): '' | Match | null {
-    const match = str && linkify.match(str);
-    return match && match[0];
+const linkify = LinkifyIt()
+linkify.add("sourcetree:", "http:")
+
+export function getLinkMatch(str: string): "" | Match | null {
+    const match = str && linkify.match(str)
+    return match && match[0]
 }
 
 /**
  * Adds protocol to url if needed.
  */
 export function normalizeUrl(url: string) {
-    const match = getLinkMatch(url);
-    return (match && match.url) || url;
+    const match = getLinkMatch(url)
+    return (match && match.url) || url
 }
-
-
-
-
-
-
-
-

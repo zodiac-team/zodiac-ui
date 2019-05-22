@@ -1,7 +1,7 @@
-import { inputRules, InputRule } from 'prosemirror-inputrules';
-import { Schema } from 'prosemirror-model';
-import { Plugin, EditorState } from 'prosemirror-state';
-import { Match, LinkMatcher, normalizeUrl } from '../utils';
+import { inputRules, InputRule } from "prosemirror-inputrules"
+import { Schema } from "prosemirror-model"
+import { Plugin, EditorState } from "prosemirror-state"
+import { Match, LinkMatcher, normalizeUrl } from "../utils"
 import { createInputRule } from "../../../lib/utils/input-rules"
 import { queueCards } from "../../card/pm-plugins/actions"
 
@@ -12,14 +12,14 @@ export function createLinkInputRule(
     return createInputRule(
         regexp,
         (state: EditorState, match: Match[], start: number, end: number) => {
-            const { schema } = state;
+            const { schema } = state
 
             if (state.doc.rangeHasMark(start, end, schema.marks.link)) {
-                return null;
+                return null
             }
-            const [link] = match;
+            const [link] = match
 
-            const markType = schema.mark('link', { href: link.url });
+            const markType = schema.mark("link", { href: link.url })
 
             const tr = state.tr
                 .addMark(
@@ -27,50 +27,49 @@ export function createLinkInputRule(
                     end - (link.input.length - link.lastIndex),
                     markType,
                 )
-                .insertText(' ');
+                .insertText(" ")
 
             return queueCards([
                 {
                     url: link.url,
                     pos: start - (link.input.length - link.lastIndex),
-                    appearance: 'inline',
+                    appearance: "inline",
                 },
-            ])(tr);
+            ])(tr)
         },
-    );
+    )
 }
 
 export function createInputRulePlugin(schema: Schema): Plugin | undefined {
     if (!schema.marks.link) {
-        return;
+        return
     }
 
-    const urlWithASpaceRule = createLinkInputRule(
-        new LinkMatcher() as unknown as RegExp,
-        match => (match[3] ? match[1] : `https?://${match[1]}`),
-    );
+    const urlWithASpaceRule = createLinkInputRule((new LinkMatcher() as unknown) as RegExp, match =>
+        match[3] ? match[1] : `https?://${match[1]}`,
+    )
 
     // [something](link) should convert to a hyperlink
     const markdownLinkRule = createInputRule(
         /(^|[^])\[(.*?)\]\((\S+)\)$/,
         (state, match, start, end) => {
             // tslint:disable-next-line:no-shadowed-variable
-            const { schema } = state;
-            const [, prefix, linkText, linkUrl] = match;
-            const url = normalizeUrl(linkUrl);
-            const markType = schema.mark('link', { href: url });
+            const { schema } = state
+            const [, prefix, linkText, linkUrl] = match
+            const url = normalizeUrl(linkUrl)
+            const markType = schema.mark("link", { href: url })
 
-            console.log('match?')
+            console.log("match?")
 
             return state.tr.replaceWith(
                 start + prefix.length,
                 end,
                 schema.text(linkText, [markType]),
-            );
+            )
         },
-    );
+    )
 
     return inputRules({
         rules: [urlWithASpaceRule, markdownLinkRule],
-    });
+    })
 }

@@ -4,11 +4,8 @@ import { Directive, Input } from "@angular/core"
     selector: "[zEditorToolbarButton]",
 })
 export class EditorToolbarButtonDirective {
-
     @Input()
     public zEditorToolbarButton
 
-    constructor() {
-    }
-
+    constructor() {}
 }

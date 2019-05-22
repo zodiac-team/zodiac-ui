@@ -47,7 +47,7 @@ export const enum INPUT_METHOD {
     TYPEAHEAD = "typeAhead",
 }
 
-const not = <T>(fn: ((args: T) => boolean)) => (arg: T) => !fn(arg)
+const not = <T>(fn: (args: T) => boolean) => (arg: T) => !fn(arg)
 const tryUndoInputRuleElseUndoHistory = chainCommands(undoInputRule, undoCmd)
 
 export const removeBlockMarks = (

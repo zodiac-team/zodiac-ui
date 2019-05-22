@@ -3,10 +3,10 @@ import { Command } from "../../../lib/interfaces/command"
 
 export const toggleUnderline = (): Command => {
     return (state, dispatch) => {
-        const { underline } = state.schema.marks;
+        const { underline } = state.schema.marks
         if (underline) {
-            return toggleMark(underline)(state, dispatch);
+            return toggleMark(underline)(state, dispatch)
         }
-        return false;
-    };
-};
+        return false
+    }
+}

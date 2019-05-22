@@ -7,9 +7,11 @@ export const headingPlugin: EditorPlugin = {
     name: HEADING,
 
     nodes() {
-        return [{
-            name: HEADING,
-            node: headingNode
-        }]
+        return [
+            {
+                name: HEADING,
+                node: headingNode,
+            },
+        ]
     },
 }

@@ -21,11 +21,13 @@ export function hasChanges(change: SimpleChange) {
 
 @Component({
     selector: "z-editor",
-    template: `<!-- use host -->`,
+    template: `
+        <!-- use host -->
+    `,
     styleUrls: ["./editor.component.scss"],
     viewProviders: [EditorService],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
 })
 export class EditorComponent implements OnInit, OnChanges {
     @Input()

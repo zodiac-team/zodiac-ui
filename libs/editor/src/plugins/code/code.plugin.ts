@@ -86,7 +86,7 @@ export const createPlugin = ({ dispatch }) =>
                     /** Plugin dispatch needed to reposition the toolbar */
                     dispatch(pluginKey, {
                         ...pluginState,
-                        language
+                        language,
                     })
                 },
             }
@@ -102,7 +102,7 @@ export const createPlugin = ({ dispatch }) =>
                         setPluginState({
                             toolbarVisible: false,
                             element: null,
-                            language: null
+                            language: null,
                         })(view.state, view.dispatch)
                         return true
                     }
@@ -123,10 +123,12 @@ export function codeBlockPlugin(options: CodeBlockOptions = {}): EditorPlugin {
         },
 
         marks() {
-            return [{
-                name: 'code',
-                mark: code
-            }]
+            return [
+                {
+                    name: "code",
+                    mark: code,
+                },
+            ]
         },
 
         pmPlugins() {
@@ -134,8 +136,8 @@ export function codeBlockPlugin(options: CodeBlockOptions = {}): EditorPlugin {
                 { name: "codeBlock", plugin: createPlugin },
                 {
                     name: "codeBlockKeyHandlers",
-                    plugin: () => arrowHandlers
-                }
+                    plugin: () => arrowHandlers,
+                },
                 // {
                 //     name: "codeBlockIDEKeyBindings",
                 //     plugin: () => (options.enableKeybindingsForIDE ? ideUX : undefined),

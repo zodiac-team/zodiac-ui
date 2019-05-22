@@ -4,114 +4,108 @@ import { Dispatch } from "../../../lib/interfaces/editor-config"
 import { ComponentFactoryResolver } from "@angular/core"
 
 export enum LinkAction {
-    SHOW_INSERT_TOOLBAR = 'SHOW_INSERT_TOOLBAR',
-    HIDE_TOOLBAR = 'HIDE_TOOLBAR',
-    SELECTION_CHANGE = 'SELECTION_CHANGE',
+    SHOW_INSERT_TOOLBAR = "SHOW_INSERT_TOOLBAR",
+    HIDE_TOOLBAR = "HIDE_TOOLBAR",
+    SELECTION_CHANGE = "SELECTION_CHANGE",
 }
 export enum InsertStatus {
-    EDIT_LINK_TOOLBAR = 'EDIT',
-    INSERT_LINK_TOOLBAR = 'INSERT',
+    EDIT_LINK_TOOLBAR = "EDIT",
+    INSERT_LINK_TOOLBAR = "INSERT",
 }
 export type LinkToolbarState =
     | {
-    type: InsertStatus.EDIT_LINK_TOOLBAR;
-    node: Node;
-    pos: number;
-}
+          type: InsertStatus.EDIT_LINK_TOOLBAR
+          node: Node
+          pos: number
+      }
     | {
-    type: InsertStatus.INSERT_LINK_TOOLBAR;
-    from: number;
-    to: number;
-}
-    | undefined;
+          type: InsertStatus.INSERT_LINK_TOOLBAR
+          from: number
+          to: number
+      }
+    | undefined
 
-export const canLinkBeCreatedInRange = (from: number, to: number) => (
-    state: EditorState,
-) => {
+export const canLinkBeCreatedInRange = (from: number, to: number) => (state: EditorState) => {
     if (!state.doc.rangeHasMark(from, to, state.schema.marks.link)) {
-        const $from = state.doc.resolve(from);
-        const $to = state.doc.resolve(to);
-        const link = state.schema.marks.link;
+        const $from = state.doc.resolve(from)
+        const $to = state.doc.resolve(to)
+        const link = state.schema.marks.link
         if ($from.parent === $to.parent && $from.parent.isTextblock) {
             if ($from.parent.type.allowsMarkType(link)) {
-                let allowed = true;
+                let allowed = true
                 state.doc.nodesBetween(from, to, node => {
-                    allowed = allowed && !node.marks.some(m => m.type.excludes(link));
-                    return allowed;
-                });
-                return allowed;
+                    allowed = allowed && !node.marks.some(m => m.type.excludes(link))
+                    return allowed
+                })
+                return allowed
             }
         }
     }
-    return false;
-};
+    return false
+}
 
 const isSelectionInsideLink = (state: EditorState | Transaction) =>
-    !!state.doc.type.schema.marks.link.isInSet(state.selection.$from.marks());
+    !!state.doc.type.schema.marks.link.isInSet(state.selection.$from.marks())
 
 const isSelectionAroundLink = (state: EditorState | Transaction) => {
-    const { $from, $to } = state.selection;
-    const node = $from.nodeAfter;
+    const { $from, $to } = state.selection
+    const node = $from.nodeAfter
 
     return (
         !!node &&
         $from.textOffset === 0 &&
         $to.pos - $from.pos === node.nodeSize &&
         !!state.doc.type.schema.marks.link.isInSet(node.marks)
-    );
-};
+    )
+}
 
-const mapTransactionToState = (
-    state: LinkToolbarState,
-    tr: Transaction,
-): LinkToolbarState => {
+const mapTransactionToState = (state: LinkToolbarState, tr: Transaction): LinkToolbarState => {
     if (!state) {
-        return undefined;
+        return undefined
     } else if (state.type === InsertStatus.EDIT_LINK_TOOLBAR) {
-        const { pos, deleted } = tr.mapping.mapResult(state.pos, 1);
-        const node = tr.doc.nodeAt(pos) as Node;
+        const { pos, deleted } = tr.mapping.mapResult(state.pos, 1)
+        const node = tr.doc.nodeAt(pos) as Node
         // If the position was not deleted & it is still a link
         if (!deleted && !!node.type.schema.marks.link.isInSet(node.marks)) {
             if (node === state.node && pos === state.pos) {
-                return state;
+                return state
             }
-            return { ...state, pos, node };
+            return { ...state, pos, node }
         }
         // If the position has been deleted, then require a navigation to show the toolbar again
-        return undefined;
+        return undefined
     } else if (state.type === InsertStatus.INSERT_LINK_TOOLBAR) {
         return {
             ...state,
             from: tr.mapping.map(state.from),
             to: tr.mapping.map(state.to),
-        };
+        }
     }
-};
+}
 
 const toState = (
     state: LinkToolbarState,
     action: LinkAction,
     editorState: EditorState,
 ): LinkToolbarState => {
-
     // Show insert or edit toolbar
     if (!state) {
         switch (action) {
             case LinkAction.SHOW_INSERT_TOOLBAR:
-                const { from, to } = editorState.selection;
+                const { from, to } = editorState.selection
                 if (canLinkBeCreatedInRange(from, to)(editorState)) {
-                    return { type: InsertStatus.INSERT_LINK_TOOLBAR, from, to };
+                    return { type: InsertStatus.INSERT_LINK_TOOLBAR, from, to }
                 }
-                return undefined;
+                return undefined
             case LinkAction.SELECTION_CHANGE:
                 // If the user has moved their cursor, see if they're in a link
-                const link = getActiveLinkMark(editorState);
+                const link = getActiveLinkMark(editorState)
                 if (link) {
-                    return { ...link, type: InsertStatus.EDIT_LINK_TOOLBAR };
+                    return { ...link, type: InsertStatus.EDIT_LINK_TOOLBAR }
                 }
-                return undefined;
+                return undefined
             default:
-                return undefined;
+                return undefined
         }
     }
 
@@ -119,19 +113,19 @@ const toState = (
     if (state.type === InsertStatus.EDIT_LINK_TOOLBAR) {
         switch (action) {
             case LinkAction.SELECTION_CHANGE:
-                const link = getActiveLinkMark(editorState);
+                const link = getActiveLinkMark(editorState)
                 if (link) {
                     if (link.pos === state.pos && link.node === state.node) {
                         // Make sure we return the same object, if it's the same link
-                        return state;
+                        return state
                     }
-                    return { ...link, type: InsertStatus.EDIT_LINK_TOOLBAR };
+                    return { ...link, type: InsertStatus.EDIT_LINK_TOOLBAR }
                 }
-                return undefined;
+                return undefined
             case LinkAction.HIDE_TOOLBAR:
-                return undefined;
+                return undefined
             default:
-                return state;
+                return state
         }
     }
 
@@ -140,37 +134,34 @@ const toState = (
         switch (action) {
             case LinkAction.SELECTION_CHANGE:
             case LinkAction.HIDE_TOOLBAR:
-                return undefined;
+                return undefined
             default:
-                return state;
+                return state
         }
     }
-};
+}
 
 const getActiveLinkMark = (
     state: EditorState | Transaction,
 ): { node: Node; pos: number } | undefined => {
     const {
         selection: { $from },
-    } = state;
+    } = state
 
     if (isSelectionInsideLink(state) || isSelectionAroundLink(state)) {
-        const pos = $from.pos - $from.textOffset;
-        const node = state.doc.nodeAt(pos);
-        return node && node.isText ? { node, pos } : undefined;
+        const pos = $from.pos - $from.textOffset
+        const node = state.doc.nodeAt(pos)
+        return node && node.isText ? { node, pos } : undefined
     }
 
-    return undefined;
-};
+    return undefined
+}
 
-const getActiveText = (
-    schema: Schema,
-    selection: Selection,
-): string | undefined => {
-    const currentSlice = selection.content();
+const getActiveText = (schema: Schema, selection: Selection): string | undefined => {
+    const currentSlice = selection.content()
 
     if (currentSlice.size === 0) {
-        return;
+        return
     }
 
     if (
@@ -179,17 +170,17 @@ const getActiveText = (
             currentSlice.content.firstChild.type,
         ) !== -1
     ) {
-        return currentSlice.content.firstChild.textContent;
+        return currentSlice.content.firstChild.textContent
     }
-};
-
-export interface HyperlinkState {
-    activeText?: string;
-    activeLinkMark?: LinkToolbarState;
-    canInsertLink: boolean;
 }
 
-export const pluginKey = new PluginKey('hyperlinkPlugin');
+export interface HyperlinkState {
+    activeText?: string
+    activeLinkMark?: LinkToolbarState
+    canInsertLink: boolean
+}
+
+export const pluginKey = new PluginKey("hyperlinkPlugin")
 
 export const plugin = (dispatch: Dispatch, componentFactoryResolver: ComponentFactoryResolver) => {
     return new Plugin({
@@ -198,25 +189,16 @@ export const plugin = (dispatch: Dispatch, componentFactoryResolver: ComponentFa
                 const canInsertLink = canLinkBeCreatedInRange(
                     state.selection.from,
                     state.selection.to,
-                )(state);
+                )(state)
                 return {
                     activeText: getActiveText(state.schema, state.selection),
                     canInsertLink,
-                    activeLinkMark: toState(
-                        undefined,
-                        LinkAction.SELECTION_CHANGE,
-                        state,
-                    ),
-                };
+                    activeLinkMark: toState(undefined, LinkAction.SELECTION_CHANGE, state),
+                }
             },
-            apply(
-                tr,
-                pluginState: HyperlinkState,
-                oldState,
-                newState,
-            ): HyperlinkState {
-                let state = pluginState;
-                const action = tr.getMeta(pluginKey) as LinkAction;
+            apply(tr, pluginState: HyperlinkState, oldState, newState): HyperlinkState {
+                let state = pluginState
+                const action = tr.getMeta(pluginKey) as LinkAction
 
                 if (tr.docChanged) {
                     state = {
@@ -226,7 +208,7 @@ export const plugin = (dispatch: Dispatch, componentFactoryResolver: ComponentFa
                             newState.selection.to,
                         )(newState),
                         activeLinkMark: mapTransactionToState(state.activeLinkMark, tr),
-                    };
+                    }
                 }
 
                 if (action) {
@@ -234,7 +216,7 @@ export const plugin = (dispatch: Dispatch, componentFactoryResolver: ComponentFa
                         activeText: state.activeText,
                         canInsertLink: state.canInsertLink,
                         activeLinkMark: toState(state.activeLinkMark, action, newState),
-                    };
+                    }
                 }
 
                 if (tr.selectionSet) {
@@ -249,15 +231,15 @@ export const plugin = (dispatch: Dispatch, componentFactoryResolver: ComponentFa
                             LinkAction.SELECTION_CHANGE,
                             newState,
                         ),
-                    };
+                    }
                 }
 
                 if (state !== pluginState) {
-                    dispatch(pluginKey, state);
+                    dispatch(pluginKey, state)
                 }
-                return state;
+                return state
             },
         },
-        key: pluginKey
+        key: pluginKey,
     })
 }

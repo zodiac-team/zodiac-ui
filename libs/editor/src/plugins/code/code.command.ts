@@ -6,27 +6,24 @@ export const removeCodeBlock: Command = (state, dispatch) => {
     const {
         schema: { nodes },
         tr,
-    } = state;
+    } = state
     if (dispatch) {
-        dispatch(removeParentNodeOfType(nodes.codeBlock)(tr));
+        dispatch(removeParentNodeOfType(nodes.codeBlock)(tr))
     }
-    return true;
-};
+    return true
+}
 
-export const changeLanguage = (language: string): Command => (
-    state,
-    dispatch,
-) => {
+export const changeLanguage = (language: string): Command => (state, dispatch) => {
     const {
         schema: { nodes },
         tr,
-    } = state;
+    } = state
 
     // setParentNodeMarkup doesn't typecheck the attributes
-    const attrs: CodeBlockAttrs = { language };
+    const attrs: CodeBlockAttrs = { language }
 
     if (dispatch) {
-        dispatch(setParentNodeMarkup(nodes.codeBlock, null, attrs)(tr));
+        dispatch(setParentNodeMarkup(nodes.codeBlock, null, attrs)(tr))
     }
-    return true;
-};
+    return true
+}

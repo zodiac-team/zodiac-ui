@@ -1,6 +1,5 @@
-
-import { EditorState, Selection } from 'prosemirror-state';
-import { Mark, Node } from 'prosemirror-model';
+import { EditorState, Selection } from "prosemirror-state"
+import { Mark, Node } from "prosemirror-model"
 import { filterCommands, Predicate } from "../../lib/utils/filter"
 import { Command } from "../../lib/interfaces/command"
 import { normalizeUrl } from "./utils"
@@ -9,33 +8,32 @@ import { INPUT_METHOD } from "../block-type/keymap"
 
 export function isTextAtPos(pos: number): Predicate {
     return (state: EditorState) => {
-        const node = state.doc.nodeAt(pos);
-        return !!node && node.isText;
-    };
+        const node = state.doc.nodeAt(pos)
+        return !!node && node.isText
+    }
 }
 
 export function isLinkAtPos(pos: number): Predicate {
     return (state: EditorState) => {
-        const node = state.doc.nodeAt(pos);
-        return !!node && state.schema.marks.link.isInSet(node.marks);
-    };
+        const node = state.doc.nodeAt(pos)
+        return !!node && state.schema.marks.link.isInSet(node.marks)
+    }
 }
 
 export function setLinkHref(href: string, pos: number, to?: number): Command {
     return filterCommands(isTextAtPos(pos), (state, dispatch) => {
-        const $pos = state.doc.resolve(pos);
-        const node = state.doc.nodeAt(pos) as Node;
-        const linkMark = state.schema.marks.link;
-        const mark = linkMark.isInSet(node.marks) as Mark | undefined;
-        const url = normalizeUrl(href);
+        const $pos = state.doc.resolve(pos)
+        const node = state.doc.nodeAt(pos) as Node
+        const linkMark = state.schema.marks.link
+        const mark = linkMark.isInSet(node.marks) as Mark | undefined
+        const url = normalizeUrl(href)
         if (mark && mark.attrs.href === url) {
-            return false;
+            return false
         }
 
-        const rightBound =
-            to && pos !== to ? to : pos - $pos.textOffset + node.nodeSize;
+        const rightBound = to && pos !== to ? to : pos - $pos.textOffset + node.nodeSize
 
-        const tr = state.tr.removeMark(pos, rightBound, linkMark);
+        const tr = state.tr.removeMark(pos, rightBound, linkMark)
 
         if (href.trim()) {
             tr.addMark(
@@ -45,77 +43,71 @@ export function setLinkHref(href: string, pos: number, to?: number): Command {
                     ...((mark && mark.attrs) || {}),
                     href: url,
                 }),
-            );
-            tr.setMeta(pluginKey, LinkAction.HIDE_TOOLBAR);
+            )
+            tr.setMeta(pluginKey, LinkAction.HIDE_TOOLBAR)
         }
 
         if (dispatch) {
-            dispatch(tr);
+            dispatch(tr)
         }
-        return true;
-    });
+        return true
+    })
 }
 
 export function setLinkText(text: string, pos: number, to?: number): Command {
     return filterCommands(isLinkAtPos(pos), (state, dispatch) => {
-        const $pos = state.doc.resolve(pos);
-        const node = state.doc.nodeAt(pos) as Node;
-        const mark = state.schema.marks.link.isInSet(node.marks) as Mark;
+        const $pos = state.doc.resolve(pos)
+        const node = state.doc.nodeAt(pos) as Node
+        const mark = state.schema.marks.link.isInSet(node.marks) as Mark
         if (node && text.length > 0 && text !== node.text) {
-            const rightBound =
-                to && pos !== to ? to : pos - $pos.textOffset + node.nodeSize;
-            const tr = state.tr;
+            const rightBound = to && pos !== to ? to : pos - $pos.textOffset + node.nodeSize
+            const tr = state.tr
 
-            tr.insertText(text, pos, rightBound);
-            tr.addMark(pos, pos + text.length, mark);
-            tr.setMeta(pluginKey, LinkAction.HIDE_TOOLBAR);
+            tr.insertText(text, pos, rightBound)
+            tr.addMark(pos, pos + text.length, mark)
+            tr.setMeta(pluginKey, LinkAction.HIDE_TOOLBAR)
 
             if (dispatch) {
-                dispatch(tr);
+                dispatch(tr)
             }
-            return true;
+            return true
         }
-        return false;
-    });
+        return false
+    })
 }
 
-export function insertLink(
-    from: number,
-    to: number,
-    href: string,
-    text?: string,
-): Command {
+export function insertLink(from: number, to: number, href: string, text?: string): Command {
     return filterCommands(canLinkBeCreatedInRange(from, to), (state, dispatch) => {
-        const link = state.schema.marks.link;
+        const link = state.schema.marks.link
         if (href.trim()) {
-            const { tr } = state;
+            const { tr } = state
             if (from === to) {
-                const textContent = text || href;
-                tr.insertText(textContent, from, to);
+                const textContent = text || href
+                tr.insertText(textContent, from, to)
                 tr.addMark(
                     from,
                     from + textContent.length,
                     link.create({ href: normalizeUrl(href) }),
-                );
+                )
             } else {
-                tr.addMark(from, to, link.create({ href: normalizeUrl(href) }));
-                tr.setSelection(Selection.near(tr.doc.resolve(to)));
+                tr.addMark(from, to, link.create({ href: normalizeUrl(href) }))
+                tr.setSelection(Selection.near(tr.doc.resolve(to)))
             }
 
             // queueCardsFromChangedTr(state, tr);
 
             if (dispatch) {
-                tr.setMeta(pluginKey, LinkAction.HIDE_TOOLBAR);
-                dispatch(tr);
+                tr.setMeta(pluginKey, LinkAction.HIDE_TOOLBAR)
+                dispatch(tr)
             }
-            return true;
+            return true
         }
-        return false;
-    });
+        return false
+    })
 }
 
 export function removeLink(pos: number): Command {
-    return setLinkHref('', pos);
+    return setLinkHref("", pos)
 }
 
 export function showLinkToolbar(
@@ -126,18 +118,18 @@ export function showLinkToolbar(
 ): Command {
     return function(state, dispatch) {
         if (dispatch) {
-            const tr = state.tr.setMeta(pluginKey, LinkAction.SHOW_INSERT_TOOLBAR);
-            dispatch(tr);
+            const tr = state.tr.setMeta(pluginKey, LinkAction.SHOW_INSERT_TOOLBAR)
+            dispatch(tr)
         }
-        return true;
-    };
+        return true
+    }
 }
 
 export function hideLinkToolbar(): Command {
     return function(state, dispatch) {
         if (dispatch) {
-            dispatch(state.tr.setMeta(pluginKey, LinkAction.HIDE_TOOLBAR));
+            dispatch(state.tr.setMeta(pluginKey, LinkAction.HIDE_TOOLBAR))
         }
-        return true;
-    };
+        return true
+    }
 }

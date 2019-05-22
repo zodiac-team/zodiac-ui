@@ -11,32 +11,32 @@ export const basePlugin: EditorPlugin = {
     pmPlugins() {
         return [
             {
-                name: 'filterStepsPlugin',
+                name: "filterStepsPlugin",
                 plugin: () => filterStepsPlugin(),
             },
             {
-                name: 'inlineCursorTargetPlugin',
+                name: "inlineCursorTargetPlugin",
                 plugin: () => inlineCursorTargetPlugin(),
             },
             {
-                name: 'focusHandlerPlugin',
+                name: "focusHandlerPlugin",
                 plugin: ({ dispatch }) => focusHandlerPlugin(dispatch),
             },
             {
-                name: 'newlinePreserveMarksPlugin',
+                name: "newlinePreserveMarksPlugin",
                 plugin: newlinePreserveMarksPlugin,
             },
-            { name: 'history', plugin: () => history() },
+            { name: "history", plugin: () => history() },
             // should be last :(
             {
-                name: 'codeBlockIndent',
+                name: "codeBlockIndent",
                 plugin: () =>
                     keymap({
                         ...baseKeymap,
-                        'Mod-[': () => true,
-                        'Mod-]': () => true,
+                        "Mod-[": () => true,
+                        "Mod-]": () => true,
                     }),
             },
-        ];
+        ]
     },
-};
+}

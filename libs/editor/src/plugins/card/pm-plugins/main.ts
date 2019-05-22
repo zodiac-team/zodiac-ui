@@ -1,4 +1,4 @@
-import { Plugin, PluginKey, EditorState } from 'prosemirror-state';
+import { Plugin, PluginKey, EditorState } from "prosemirror-state"
 // import { CardProvider, CardPluginState, Request } from '../types';
 // import reducer from './reducers';
 // import { EditorView } from 'prosemirror-view';
@@ -8,7 +8,7 @@ import { Plugin, PluginKey, EditorState } from 'prosemirror-state';
 // import { replaceQueuedUrlWithCard } from './doc';
 // import { CardNodeView } from '../nodeviews';
 
-export const pluginKey = new PluginKey('cardPlugin');
+export const pluginKey = new PluginKey("cardPlugin")
 //
 // export const getPluginState = (editorState: EditorState) =>
 //   pluginKey.getState(editorState) as CardPluginState | undefined;

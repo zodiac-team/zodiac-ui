@@ -26,7 +26,7 @@ export class EmphasisToolComponent {
             active(state: EditorState) {
                 const { em } = state.schema.marks
                 return isMarkTypeActive(state, em)
-            }
+            },
         }
     }
 }

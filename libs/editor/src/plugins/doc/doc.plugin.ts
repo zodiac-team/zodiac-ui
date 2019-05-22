@@ -7,9 +7,11 @@ export const docPlugin: EditorPlugin = {
     name: DOC,
 
     nodes() {
-        return [{
-            name: DOC,
-            node: docNode
-        }]
-    }
+        return [
+            {
+                name: DOC,
+                node: docNode,
+            },
+        ]
+    },
 }

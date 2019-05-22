@@ -16,79 +16,84 @@ import { deepEqual, getTextFormattingState } from "./utils"
 import { inputRulePlugin } from "./text.formatting.inputrule"
 
 export const TEXT_FORMATTING = "textFormatting"
-export const pluginKey = new PluginKey('textFormatting');
+export const pluginKey = new PluginKey("textFormatting")
 
 export const textFormattingPMPlugin = (dispatch: Dispatch) =>
     new Plugin({
         state: {
             init(config, state: EditorState): TextFormattingState {
-                return getTextFormattingState(state);
+                return getTextFormattingState(state)
             },
-            apply(
-                tr,
-                pluginState: TextFormattingState,
-                oldState,
-                newState,
-            ): TextFormattingState {
-                const state = getTextFormattingState(newState);
+            apply(tr, pluginState: TextFormattingState, oldState, newState): TextFormattingState {
+                const state = getTextFormattingState(newState)
                 if (!deepEqual(pluginState, state)) {
-                    dispatch(pluginKey, state);
-                    return state;
+                    dispatch(pluginKey, state)
+                    return state
                 }
-                return pluginState;
+                return pluginState
             },
         },
-        key: pluginKey
-    });
+        key: pluginKey,
+    })
 
 export const textFormattingPlugin: EditorPlugin = {
     name: TEXT_FORMATTING,
 
     marks() {
-        return [{
-            name: 'strong',
-            mark: strong
-        }, {
-            name: 'em',
-            mark: em
-        }, {
-            name: 'underline',
-            mark: underline
-        }, {
-            name: 'subsup',
-            mark: subsup
-        }, {
-            name: 'strike',
-            mark: strike
-        }]
+        return [
+            {
+                name: "strong",
+                mark: strong,
+            },
+            {
+                name: "em",
+                mark: em,
+            },
+            {
+                name: "underline",
+                mark: underline,
+            },
+            {
+                name: "subsup",
+                mark: subsup,
+            },
+            {
+                name: "strike",
+                mark: strike,
+            },
+        ]
     },
 
     pmPlugins() {
         return [
             {
-                name: 'textFormatting',
+                name: "textFormatting",
                 plugin: ({ dispatch }) => textFormattingPMPlugin(dispatch),
             },
             {
                 name: "underlineKeymap",
-                plugin: underlineKeymap
-            },{
+                plugin: underlineKeymap,
+            },
+            {
                 name: "strongKeymap",
-                plugin: strongKeymap
-            },{
+                plugin: strongKeymap,
+            },
+            {
                 name: "strikeKeymap",
-                plugin: strikeKeymap
-            },{
+                plugin: strikeKeymap,
+            },
+            {
                 name: "emphasisKeymap",
-                plugin: emphasisKeymap
-            }, {
+                plugin: emphasisKeymap,
+            },
+            {
                 name: "subsupKeymap",
-                plugin: supsubKeymap
-            }, {
+                plugin: supsubKeymap,
+            },
+            {
                 name: "textFormattingInputRule",
-                plugin: ({schema}) => inputRulePlugin(schema)
-            }
+                plugin: ({ schema }) => inputRulePlugin(schema),
+            },
         ]
     },
-
 }

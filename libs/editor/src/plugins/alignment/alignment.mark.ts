@@ -1,15 +1,15 @@
-import { MarkSpec } from 'prosemirror-model';
+import { MarkSpec } from "prosemirror-model"
 import { ALIGNMENT, INDENTATION } from "./constants"
 
 /** TODO: Flip these positions for RTL */
 export const alignmentPositionMap: { [key: string]: string } = {
-    end: 'right',
-    right: 'end',
-    center: 'center',
-};
+    end: "right",
+    right: "end",
+    center: "center",
+}
 
 export interface AlignmentAttributes {
-    align: 'center' | 'end';
+    align: "center" | "end"
 }
 
 /**
@@ -17,8 +17,8 @@ export interface AlignmentAttributes {
  * @stage 0
  */
 export interface AlignmentMarkDefinition {
-    type: 'alignment';
-    attrs: AlignmentAttributes;
+    type: "alignment"
+    attrs: AlignmentAttributes
 }
 
 export const alignment: MarkSpec = {
@@ -29,23 +29,21 @@ export const alignment: MarkSpec = {
     },
     parseDOM: [
         {
-            tag: 'div.fabric-editor-block-mark',
-            getAttrs (dom: Element) {
-                const align = dom.getAttribute('data-align');
-                return align ? { align } : false;
+            tag: "div.fabric-editor-block-mark",
+            getAttrs(dom: Element) {
+                const align = dom.getAttribute("data-align")
+                return align ? { align } : false
             },
         },
     ],
     toDOM(mark) {
         return [
-            'div',
+            "div",
             {
-                class: `fabric-editor-block-mark fabric-editor-align-${
-                    mark.attrs.align
-                    }`,
-                'data-align': mark.attrs.align,
+                class: `fabric-editor-block-mark fabric-editor-align-${mark.attrs.align}`,
+                "data-align": mark.attrs.align,
             },
             0,
-        ];
+        ]
     },
-};
+}

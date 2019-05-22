@@ -1,4 +1,4 @@
-import { NodeSpec, DOMOutputSpec } from 'prosemirror-model';
+import { NodeSpec, DOMOutputSpec } from "prosemirror-model"
 // import { Inline, MarksObject, NoMark } from './doc';
 // import { AlignmentMarkDefinition, IndentationMarkDefinition } from '../marks';
 
@@ -46,14 +46,14 @@ import { NodeSpec, DOMOutputSpec } from 'prosemirror-model';
 //     | ParagraphWithAlignmentDefinition
 //     | ParagraphWithIndentationDefinition;
 
-const pDOM: DOMOutputSpec = ['p', 0];
+const pDOM: DOMOutputSpec = ["p", 0]
 export const paragraphNode: NodeSpec = {
-    content: 'inline*',
-    group: 'block',
+    content: "inline*",
+    group: "block",
     marks:
-        'strong code em link strike subsup textColor typeAheadQuery underline mentionQuery emojiQuery confluenceInlineComment action annotation',
-    parseDOM: [{ tag: 'p' }],
+        "strong code em link strike subsup textColor typeAheadQuery underline mentionQuery emojiQuery confluenceInlineComment action annotation",
+    parseDOM: [{ tag: "p" }],
     toDOM() {
-        return pDOM;
+        return pDOM
     },
-};
+}

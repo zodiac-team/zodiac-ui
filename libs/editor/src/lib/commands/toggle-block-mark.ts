@@ -7,23 +7,21 @@
  */
 import { MarkType, NodeType, Schema } from "prosemirror-model"
 import { Command } from "../interfaces/command"
-import { Node } from 'prosemirror-model';
+import { Node } from "prosemirror-model"
 
 export const toggleBlockMark = <T = object>(
     markType: MarkType,
-    getAttrs: ((prevAttrs?: T, node?: Node) => T | undefined | false),
-    allowedBlocks?:
-        | Array<NodeType>
-        | ((schema: Schema, node: Node, parent: Node) => boolean),
+    getAttrs: (prevAttrs?: T, node?: Node) => T | undefined | false,
+    allowedBlocks?: Array<NodeType> | ((schema: Schema, node: Node, parent: Node) => boolean),
 ): Command => (state, dispatch) => {
-    const { from, to } = state.selection;
+    const { from, to } = state.selection
 
-    let markApplied = false;
-    const tr = state.tr;
+    let markApplied = false
+    const tr = state.tr
 
     state.doc.nodesBetween(from, to, (node, pos, parent) => {
         if (!node.type.isBlock) {
-            return false;
+            return false
         }
 
         if (
@@ -33,10 +31,10 @@ export const toggleBlockMark = <T = object>(
                     : allowedBlocks(state.schema, node, parent))) &&
             parent.type.allowsMarkType(markType)
         ) {
-            const oldMarks = node.marks.filter(mark => mark.type === markType);
+            const oldMarks = node.marks.filter(mark => mark.type === markType)
 
-            const prevAttrs = oldMarks.length ? (oldMarks[0].attrs as T) : undefined;
-            const newAttrs = getAttrs(prevAttrs, node);
+            const prevAttrs = oldMarks.length ? (oldMarks[0].attrs as T) : undefined
+            const newAttrs = getAttrs(prevAttrs, node)
 
             if (newAttrs !== undefined) {
                 tr.setNodeMarkup(
@@ -46,18 +44,18 @@ export const toggleBlockMark = <T = object>(
                     node.marks
                         .filter(mark => !markType.excludes(mark.type))
                         .concat(newAttrs === false ? [] : markType.create(newAttrs)),
-                );
-                markApplied = true;
+                )
+                markApplied = true
             }
         }
-    });
+    })
 
     if (markApplied && tr.docChanged) {
         if (dispatch) {
-            dispatch(tr.scrollIntoView());
+            dispatch(tr.scrollIntoView())
         }
-        return true;
+        return true
     }
 
-    return false;
-};
+    return false
+}

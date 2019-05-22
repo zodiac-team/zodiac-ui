@@ -7,12 +7,6 @@ import { MatButtonModule, MatIconModule, MatSelectModule } from "@angular/materi
 @NgModule({
     declarations: [EditorToolbarComponent, EditorToolbarButtonDirective],
     exports: [EditorToolbarComponent],
-    imports: [
-        CommonModule,
-        MatButtonModule,
-        MatSelectModule,
-        MatIconModule
-    ],
+    imports: [CommonModule, MatButtonModule, MatSelectModule, MatIconModule],
 })
-export class EditorToolbarModule {
-}
+export class EditorToolbarModule {}

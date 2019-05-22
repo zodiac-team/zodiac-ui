@@ -2,13 +2,14 @@ import { ComponentFactoryResolver, InjectionToken, Injector, NgModule } from "@a
 import { EDITOR_PLUGIN } from "../../lib/constants"
 import { hyperlinkPlugin } from "./link.plugin"
 
-
 @NgModule({
-    providers: [{
-        provide: EDITOR_PLUGIN,
-        useFactory: hyperlinkPlugin,
-        deps: [ComponentFactoryResolver],
-        multi: true
-    }]
+    providers: [
+        {
+            provide: EDITOR_PLUGIN,
+            useFactory: hyperlinkPlugin,
+            deps: [ComponentFactoryResolver],
+            multi: true,
+        },
+    ],
 })
-export class LinkModule { }
+export class LinkModule {}

@@ -5,8 +5,6 @@ import { EditorToolbarButtonModule } from "../../lib/editor-toolbar/editor-toolb
 @NgModule({
     declarations: [StrongToolComponent],
     exports: [StrongToolComponent],
-    imports: [
-        EditorToolbarButtonModule
-    ],
+    imports: [EditorToolbarButtonModule],
 })
 export class StrongToolModule {}

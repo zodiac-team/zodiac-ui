@@ -12,44 +12,47 @@ import { getActiveAlignment } from "../../plugins/alignment/utils"
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlignmentToolComponent {
-
     public group: EditorToolGroup
 
     constructor() {
         this.group = {
             tooltip: "Alignment",
             icon: "fa-align-left",
-            tools: [{
-                tooltip: "Align Left",
-                icon: "fa-align-left",
-                run: changeAlignment("start"),
-                active(state) {
-                    return getActiveAlignment(state) === "start"
+            tools: [
+                {
+                    tooltip: "Align Left",
+                    icon: "fa-align-left",
+                    run: changeAlignment("start"),
+                    active(state) {
+                        return getActiveAlignment(state) === "start"
+                    },
+                    select(state) {
+                        return getActiveAlignment(state) === "start"
+                    },
                 },
-                select(state) {
-                    return getActiveAlignment(state) === "start"
-                }
-            },{
-                tooltip: "Align Center",
-                icon: "fa-align-center",
-                run: changeAlignment("center"),
-                active(state) {
-                    return getActiveAlignment(state) === "center"
+                {
+                    tooltip: "Align Center",
+                    icon: "fa-align-center",
+                    run: changeAlignment("center"),
+                    active(state) {
+                        return getActiveAlignment(state) === "center"
+                    },
+                    select(state) {
+                        return getActiveAlignment(state) === "center"
+                    },
                 },
-                select(state) {
-                    return getActiveAlignment(state) === "center"
-                }
-            },{
-                tooltip: "Align Right",
-                icon: "fa-align-right",
-                run: changeAlignment("end"),
-                active(state) {
-                    return getActiveAlignment(state) === "end"
+                {
+                    tooltip: "Align Right",
+                    icon: "fa-align-right",
+                    run: changeAlignment("end"),
+                    active(state) {
+                        return getActiveAlignment(state) === "end"
+                    },
+                    select(state) {
+                        return getActiveAlignment(state) === "end"
+                    },
                 },
-                select(state) {
-                    return getActiveAlignment(state) === "end"
-                }
-            }]
+            ],
         }
     }
 }

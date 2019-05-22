@@ -17,7 +17,7 @@ Zodiac Editor has a number of peer dependencies depending on which features are 
 #### Core Dependencies
 
 ```
-npm install 
+npm install
     prosemirror-collab@^1.1.1
     prosemirror-commands@^1.0.7
     prosemirror-history@^1.0.4
@@ -59,9 +59,7 @@ For CodeMirror mode support, add the following styles and assets to your project
             "output": "/assets"
         }
     ],
-    "styles": [
-        "node_modules/codemirror/lib/codemirror.css"
-    ]
+    "styles": ["node_modules/codemirror/lib/codemirror.css"]
 }
 ```
 
@@ -75,7 +73,7 @@ Import the editor module
 
 ```ts
 @NgModule({
-    imports: [EditorModule]
+    imports: [EditorModule],
 })
 export class BasicEditorModule {}
 ```
@@ -100,8 +98,8 @@ Features can be added through additional modules
         BlockTypeModule,
         TextFormattingModule,
         CodeModule,
-        HorizontalRuleModule
-    ]
+        HorizontalRuleModule,
+    ],
 })
 export class KitchenSinkEditorModule {}
 ```
@@ -111,6 +109,7 @@ Documents can be loaded by passing in a serialised `ProseMirror` state object
 ```html
 <z-editor [state]="state" (stateChange)="save($event)"></z-editor>
 ```
+
 ```ts
 @Component({ ... })
 export class BasicEditorComponent {
@@ -121,11 +120,11 @@ export class BasicEditorComponent {
         },
         selection: {
             type: "text",
-            anchor: 1, 
+            anchor: 1,
             head: 1
         }
     }
-    
+
     save(event: Editor) {
         console.log(event)
     }
@@ -149,11 +148,9 @@ Add the following project config to `angular.json`
 {
     "styles": [
         "node_modules/@angular/material/prebuilt-themes/indigo-pink.css", // or another theme
-        "node_modules/@fortawesome/fontawesome-free/css/all.css",
+        "node_modules/@fortawesome/fontawesome-free/css/all.css"
     ],
-    "scripts": [
-        "node_modules/hammerjs/hammer.min.js"
-    ]
+    "scripts": ["node_modules/hammerjs/hammer.min.js"]
 }
 ```
 
@@ -168,10 +165,10 @@ Now you can add the toolbar to your app
     ]
 })
 ```
+
 ```html
 <z-editor-toolbar [editor]="editor"></z-editor-toolbar>
 <z-editor #editor></z-editor>
-
 ```
 
 This will render an empty toolbar. Add some tools to it.
@@ -195,6 +192,7 @@ This will render an empty toolbar. Add some tools to it.
     ]
 })
 ```
+
 ```html
 <z-editor-toolbar [editor]="editor">
     <z-heading-tool></z-heading-tool>
@@ -214,28 +212,22 @@ To create your own tools, toolbars or floating panels, refer to Advanced Usage.
 
 ## Advanced Usage
 
-
-
 ## API
-
 
 ## CodeModule
 
 > Ensure you've installed [peer dependencies](#codemodule-dependencies) before using this module
 
 ```ts
-imports: [
-    CodeModule.configure(config)
-]
+imports: [CodeModule.configure(config)]
 ```
 
 > config: [CodeModuleConfig](/libs/editor/src/plugins/code/interfaces.ts)
 
-| Option | Description | 
-|---|---|
-| modeURL | File pattern to load mode dependencies from
-| extraModes | Additional metadata to append to modeInfo
-
+| Option     | Description                                 |
+| ---------- | ------------------------------------------- |
+| modeURL    | File pattern to load mode dependencies from |
+| extraModes | Additional metadata to append to modeInfo   |
 
 Support for Angular language mode is [available here](/libs/editor/src/plugins/code/mode/angular.js). Copy this file to
 your assets folder (eg. `assets/modes/angular/angular.js`)

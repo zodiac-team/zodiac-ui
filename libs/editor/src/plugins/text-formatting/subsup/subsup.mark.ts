@@ -1,31 +1,28 @@
-import { MarkSpec, Mark } from 'prosemirror-model';
+import { MarkSpec, Mark } from "prosemirror-model"
 import { FONT_STYLE } from "../constants"
 
 export interface SubSupAttributes {
-    type: 'sub' | 'sup';
+    type: "sub" | "sup"
 }
 
 /**
  * @name subsup_mark
  */
 export interface SubSupDefinition {
-    type: 'subsup';
-    attrs: SubSupAttributes;
+    type: "subsup"
+    attrs: SubSupAttributes
 }
 
 export interface SubSupMark extends Mark {
-    attrs: SubSupAttributes;
+    attrs: SubSupAttributes
 }
 
 export const subsup: MarkSpec = {
     inclusive: true,
     group: FONT_STYLE,
-    attrs: { type: { default: 'sub' } },
-    parseDOM: [
-        { tag: 'sub', attrs: { type: 'sub' } },
-        { tag: 'sup', attrs: { type: 'sup' } },
-    ],
+    attrs: { type: { default: "sub" } },
+    parseDOM: [{ tag: "sub", attrs: { type: "sub" } }, { tag: "sup", attrs: { type: "sup" } }],
     toDOM(mark) {
-        return [mark.attrs.type];
+        return [mark.attrs.type]
     },
-};
+}
