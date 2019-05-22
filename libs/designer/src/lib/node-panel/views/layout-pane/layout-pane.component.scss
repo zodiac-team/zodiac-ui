@@ -1,0 +1,142 @@
+:host {
+    flex: 1;
+}
+
+.z-position {
+    margin: 1.6rem 0;
+}
+
+.z-box-model {
+    width: 100%;
+    padding-bottom: 100%;
+    position: relative;
+    margin: 0 0 1.6rem;
+    user-select: none;
+
+    input {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        min-width: 2.2rem;
+        height: 2.4rem;
+        background: transparent;
+        border: 0;
+        margin: auto;
+        text-align: center;
+        -webkit-appearance: none;
+
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    }
+}
+
+.z-box-position {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px solid grey;
+}
+
+.z-box-margin {
+    position: absolute;
+    top: 8%;
+    left: 8%;
+    right: 8%;
+    bottom: 8%;
+    border: 1px dashed black;
+    background: rgb(249, 203, 157);
+}
+
+.z-box-border {
+    position: absolute;
+    top: 16%;
+    left: 16%;
+    right: 16%;
+    bottom: 16%;
+    border: 1px solid black;
+    background: rgb(253, 220, 154);
+}
+
+.z-box-padding {
+    position: absolute;
+    top: 24%;
+    left: 24%;
+    right: 24%;
+    bottom: 24%;
+    border: 1px dashed black;
+    background: rgb(195, 207, 138);
+}
+
+.z-box-content {
+    position: absolute;
+    top: 32%;
+    left: 32%;
+    right: 32%;
+    bottom: 32%;
+    border: 1px solid black;
+    background: rgb(140, 180, 191);
+}
+
+.z-grab-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2.4rem;
+    cursor: move;
+}
+
+.z-grab-left {
+    position: absolute;
+    top: 1.2rem;
+    left: 0;
+    bottom: 1.2rem;
+    width: 2.4rem;
+    z-index: 1;
+    cursor: move;
+}
+
+.z-grab-right {
+    position: absolute;
+    top: 1.2rem;
+    right: 0;
+    bottom: 1.2rem;
+    width: 2.4rem;
+    z-index: 1;
+    cursor: move;
+}
+
+.z-grab-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2.4rem;
+    cursor: move;
+}
+
+.z-size {
+    position: relative;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+
+    input {
+        position: static;
+        flex: 0;
+        margin: 0;
+    }
+
+    span {
+        line-height: 3.2rem;
+    }
+}

@@ -1,0 +1,36 @@
+:host {
+    overflow: auto;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.z-canvas {
+    position: absolute;
+    margin: auto;
+    padding: 2rem 2rem 8rem;
+}
+
+.z-preview-window {
+    display: block;
+}
+
+/***/
+
+::ng-deep {
+    .z-editor {
+        display: block;
+        height: 100%;
+        background-color: #ffffff;
+        overflow: hidden;
+    }
+
+    .body {
+        width: calc(100% - 4rem);
+        height: calc(100% - 4rem);
+        overflow: auto;
+        background: #ccc;
+        margin: 2rem;
+    }
+}
