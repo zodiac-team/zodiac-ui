@@ -23,12 +23,13 @@ import {
 } from "@angular/core"
 import { StreamSink } from "./stream-sink"
 import { createMask } from "./internals/create-mask"
+import { unsubscribe } from "./utils"
 
 
 /**
  *
  */
-export class NgObservable<P extends any = any> extends Observable<NgHooksEvent<P>>
+export abstract class NgObservable<Props extends any = any> extends Observable<NgHooksEvent<Props>>
     implements
         OnInit,
         OnChanges,
@@ -47,59 +48,57 @@ export class NgObservable<P extends any = any> extends Observable<NgHooksEvent<P
     )
 
     protected set sink(stream: Sinkable) {
-        this.stream.sink = stream
+        this._stream.sink = stream
     }
 
-    private readonly stream: StreamSink
-    private readonly eventEmitter: Subject<NgHooksEvent>
-    private readonly features: number
+    private readonly _stream: StreamSink
+    private readonly _eventEmitter: Subject<NgHooksEvent>
+    private readonly _features: number
 
-    constructor(...flags: number[]) {
-        super(subscriber => this.eventEmitter.subscribe(subscriber))
+    protected constructor(...flags: number[]) {
+        super(subscriber => this._eventEmitter.subscribe(subscriber))
 
-        this.eventEmitter = new Subject()
-        this.features = flags.length ? createMask(...flags) : NgObservable.DEFAULT_LIFECYCLE_HOOKS
-        this.stream = new StreamSink()
+        this._eventEmitter = new Subject()
+        this._features = flags.length ? createMask(...flags) : NgObservable.DEFAULT_LIFECYCLE_HOOKS
+        this._stream = new StreamSink()
     }
 
     public ngOnChanges(changes: TypedChanges<any>): void {
-        this.emitEvent([ON_CHANGES, changes])
+        this._emitEvent([ON_CHANGES, changes])
     }
 
     public ngOnInit(): void {
-        this.emitEvent([ON_INIT])
+        this._emitEvent([ON_INIT])
     }
 
     public ngDoCheck() {
-        this.emitEvent([DO_CHECK])
+        this._emitEvent([DO_CHECK])
     }
 
     public ngAfterContentInit() {
-        this.emitEvent([AFTER_CONTENT_INIT])
+        this._emitEvent([AFTER_CONTENT_INIT])
     }
 
     public ngAfterContentChecked() {
-        this.emitEvent([AFTER_CONTENT_CHECKED])
+        this._emitEvent([AFTER_CONTENT_CHECKED])
     }
 
     public ngAfterViewInit() {
-        this.emitEvent([AFTER_VIEW_INIT])
+        this._emitEvent([AFTER_VIEW_INIT])
     }
 
     public ngAfterViewChecked() {
-        this.emitEvent([AFTER_VIEW_CHECKED])
+        this._emitEvent([AFTER_VIEW_CHECKED])
     }
 
     public ngOnDestroy() {
-        this.emitEvent([ON_DESTROY])
-        this.eventEmitter.complete()
-        this.eventEmitter.unsubscribe()
-        this.stream.unsubscribe()
+        this._emitEvent([ON_DESTROY])
+        unsubscribe(this._eventEmitter, this._stream)
     }
 
-    private emitEvent(event: NgHooksEvent) {
-        if (this.features & event[0]) {
-            this.eventEmitter.next(event)
+    private _emitEvent(event: NgHooksEvent) {
+        if (this._features & event[0]) {
+            this._eventEmitter.next(event)
         }
     }
 }

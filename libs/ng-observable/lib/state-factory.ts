@@ -22,7 +22,7 @@ export class State<T> extends BehaviorSubject<T> implements OnDestroy {
     private readonly cdr?: ChangeDetectorRef
     private readonly notifier?: Subscription
 
-    constructor(value: T, notifier?: ObservableInput<Partial<T>>, cdr?: ChangeDetectorRef) {
+    constructor(value: T, notifier?: ObservableInput<Partial<T> | void>, cdr?: ChangeDetectorRef) {
         super(value)
 
         this.cdr = cdr
@@ -34,7 +34,7 @@ export class State<T> extends BehaviorSubject<T> implements OnDestroy {
         }
     }
 
-    public next(partialState: Partial<T>) {
+    public next(partialState?: Partial<T>) {
         if (this.cdr) {
             this.cdr.markForCheck()
         }
@@ -51,7 +51,7 @@ export class State<T> extends BehaviorSubject<T> implements OnDestroy {
         this.unsubscribe()
     }
 
-    private patchState(partialState: Partial<T>) {
+    private patchState(partialState: Partial<T> = {}) {
         Object.assign(this.value, partialState)
         super.next(this.value)
     }
@@ -60,7 +60,7 @@ export class State<T> extends BehaviorSubject<T> implements OnDestroy {
 @Injectable()
 export class StateFactory<T> {
     constructor(@Optional() private readonly cdr: ChangeDetectorRef) {}
-    public create(value: T, notifier?: ObservableInput<Partial<T>>): State<T> {
+    public create(value: T, notifier?: ObservableInput<Partial<T> | void>): State<T> {
         return new State(value, notifier, this.cdr)
     }
 }

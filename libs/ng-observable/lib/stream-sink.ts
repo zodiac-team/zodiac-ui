@@ -1,13 +1,13 @@
 import { Injectable, OnDestroy } from "@angular/core"
 import { from, Subscription } from "rxjs"
 import { Sinkable } from "./interfaces"
-import { isTeardownLogic } from "./internals/is-teardown-logic"
+import { isTeardownLogic } from "./internals/type-guards"
 
 @Injectable()
 export class StreamSink implements OnDestroy {
     private sub: Subscription
 
-    public add(...sinkables: Sinkable[]) {
+    public sinkAll(...sinkables: Sinkable[]) {
         for (const stream of sinkables) {
             this.sink = stream
         }
@@ -33,10 +33,10 @@ export class StreamSink implements OnDestroy {
     }
 
     public ngOnDestroy() {
-        this.unsubscribe()
+        this.complete()
     }
 
-    public unsubscribe(): void {
+    public complete(): void {
         this.sub.unsubscribe()
     }
 }

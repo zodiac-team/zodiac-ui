@@ -3,11 +3,9 @@ import { applyMixins, mixins } from "./internals/apply-mixins"
 import { Callable } from "./internals/callable"
 
 export type NextFn<T> = (next: T) => void
-export interface InvokeSubject<T> extends Observable<T> {
-    (): void
+export interface InvokeSubject<T> extends Subject<T> {
     (next: T): void
-    unsubscribe(): void
-    asObservable(): Observable<T>
+    (...next: T extends Array<infer U> ? T : never[]): void
 }
 
 export class InvokeSubject<T> extends Callable<NextFn<T>> {
@@ -19,6 +17,4 @@ export class InvokeSubject<T> extends Callable<NextFn<T>> {
         })
         Object.assign(this, new Subject())
     }
-
-    private next!: NextFn<T>
 }
