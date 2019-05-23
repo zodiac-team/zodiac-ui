@@ -13,7 +13,6 @@ import { isMarkTypeActive } from "../../plugins/text-formatting/utils"
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StrongToolComponent {
-
     public tool: EditorTool
 
     constructor() {
@@ -27,7 +26,7 @@ export class StrongToolComponent {
             active(state: EditorState) {
                 const { strong } = state.schema.marks
                 return isMarkTypeActive(state, strong)
-            }
+            },
         }
     }
 }

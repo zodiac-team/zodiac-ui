@@ -4,18 +4,18 @@ import { NodeSpec } from "prosemirror-model"
  * @name hardBreak_node
  */
 export interface HardBreakDefinition {
-    type: 'hardBreak';
+    type: "hardBreak"
     attrs?: {
-        text?: '\n';
-    };
+        text?: "\n"
+    }
 }
 
 export const hardBreakNode: NodeSpec = {
     inline: true,
-    group: 'inline',
+    group: "inline",
     selectable: false,
-    parseDOM: [{ tag: 'br' }],
+    parseDOM: [{ tag: "br" }],
     toDOM() {
-        return ['br'];
+        return ["br"]
     },
-};
+}

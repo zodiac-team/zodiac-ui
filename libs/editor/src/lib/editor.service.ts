@@ -31,8 +31,11 @@ export class EditorService implements Editor {
     public viewChange: EventEmitter<any>
     public stateChange: ReplaySubject<any>
 
-    constructor(@Inject(EDITOR_PLUGIN) plugins: EditorPlugin[], @Optional() @Inject(STATE_HANDLER) handlers?: any[]) {
-        this.eventDispatcher = new EventDispatcher();
+    constructor(
+        @Inject(EDITOR_PLUGIN) plugins: EditorPlugin[],
+        @Optional() @Inject(STATE_HANDLER) handlers?: any[],
+    ) {
+        this.eventDispatcher = new EventDispatcher()
         this.viewChange = new EventEmitter()
         this.stateChange = new ReplaySubject(1)
         this.plugins = plugins
@@ -53,7 +56,7 @@ export class EditorService implements Editor {
     createEditorState(state) {
         this.config = createConfig(this.plugins, {})
         const schema = createSchema(this.config)
-        const dispatch = createDispatch(this.eventDispatcher);
+        const dispatch = createDispatch(this.eventDispatcher)
         const doc = Node.fromJSON(schema, state ? state.doc : defaultState)
         const selection = state ? Selection.fromJSON(doc, state.selection) : undefined
         // const errorReporter = createErrorReporter(errorReporterHandler);
@@ -89,7 +92,7 @@ export class EditorService implements Editor {
             schema,
             plugins,
             doc,
-            selection
+            selection,
         })
     }
 
@@ -102,18 +105,18 @@ export class EditorService implements Editor {
                 state: this.state,
                 dispatchTransaction: (transaction: Transaction) => {
                     if (!this.view) {
-                        return;
+                        return
                     }
 
-                    const nodes: Node[] = findChangedNodesFromTransaction(transaction);
+                    const nodes: Node[] = findChangedNodesFromTransaction(transaction)
                     if (validateNodes(nodes)) {
                         // go ahead and update the state now we know the transaction is good
-                        const editorState = this.view.state.apply(transaction);
-                        this.view.updateState(editorState);
+                        const editorState = this.view.state.apply(transaction)
+                        this.view.updateState(editorState)
                         if (transaction.docChanged) {
-                            this.viewChange.emit(this);
+                            this.viewChange.emit(this)
                         }
-                        this.state = editorState;
+                        this.state = editorState
 
                         this.stateChange.next(this)
                     }
@@ -127,13 +130,13 @@ export class EditorService implements Editor {
                 // Disables the contentEditable attribute of the editor if the editor is disabled
                 // editable: state => !this.props.editorProps.disabled,
             },
-        );
+        )
 
         this.viewChange.emit(this)
         this.stateChange.next(this)
 
         if (this.handlers) {
-            this.stateChange.subscribe((editor) => {
+            this.stateChange.subscribe(editor => {
                 this.handlers.forEach(handler => handler(editor))
             })
         }

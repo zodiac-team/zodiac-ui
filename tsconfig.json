@@ -16,7 +16,9 @@
             "@zodiac-ui/formula": ["libs/formula/src/index.ts"],
             "@zodiac-ui/formula-material": ["libs/formula-material/src/index.ts"],
             "@zodiac-ui/blog": ["libs/blog/src/index.ts"],
-            "@zodiac-ui/editor": ["libs/editor/src/index.ts"]
+            "@zodiac-ui/editor": ["libs/editor/src/index.ts"],
+            "@zodiac-ui/ng-observable": ["libs/ng-observable/src/index.ts"],
+            "@zodiac-ui/ng-observable/subscription-sink": ["libs/ng-observable/ng-observable/subscription-sink/index.ts"]
         },
         "plugins": [
             {

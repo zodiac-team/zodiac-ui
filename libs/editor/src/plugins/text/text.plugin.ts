@@ -7,9 +7,11 @@ export const textPlugin: EditorPlugin = {
     name: TEXT,
 
     nodes() {
-        return [{
-            name: TEXT,
-            node: textNode
-        }]
-    }
+        return [
+            {
+                name: TEXT,
+                node: textNode,
+            },
+        ]
+    },
 }

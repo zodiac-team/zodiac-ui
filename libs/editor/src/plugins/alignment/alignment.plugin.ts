@@ -2,14 +2,14 @@ import { EditorPlugin } from "../../lib/interfaces/editor-plugin"
 import { EditorState, Plugin, PluginKey } from "prosemirror-state"
 import { alignment } from "./alignment.mark"
 import { AlignmentPluginState } from "./interfaces"
-import { getActiveAlignment} from "./utils"
+import { getActiveAlignment } from "./utils"
 import { isAlignable } from "./alignment.command"
 
 export const pluginKey = new PluginKey("alignmentPlugin")
 
 export const defaultConfig = {
-    align: 'left',
-};
+    align: "left",
+}
 
 export function createInitialPluginState(
     editorState: EditorState,
@@ -18,7 +18,7 @@ export function createInitialPluginState(
     return {
         align: getActiveAlignment(editorState) || pluginConfig.align,
         isEnabled: true,
-    };
+    }
 }
 
 export function createPlugin(dispatch, pluginConfig) {
@@ -26,10 +26,10 @@ export function createPlugin(dispatch, pluginConfig) {
         key: pluginKey,
         state: {
             init(config, editorState) {
-                return createInitialPluginState(editorState, pluginConfig);
+                return createInitialPluginState(editorState, pluginConfig)
             },
             apply(tr, state: AlignmentPluginState, prevState, nextState) {
-                const nextPluginState = getActiveAlignment(nextState);
+                const nextPluginState = getActiveAlignment(nextState)
                 const isEnabled = isAlignable(nextPluginState)(
                     nextState,
                     /**
@@ -37,19 +37,19 @@ export function createPlugin(dispatch, pluginConfig) {
                      * We can remove this once it's merged.
                      */
                     undefined as any,
-                );
+                )
                 const newState = {
                     ...state,
                     align: nextPluginState,
                     isEnabled,
-                };
-                if (nextPluginState !== state.align || isEnabled !== state.isEnabled) {
-                    dispatch(pluginKey, newState);
                 }
-                return newState;
+                if (nextPluginState !== state.align || isEnabled !== state.isEnabled) {
+                    dispatch(pluginKey, newState)
+                }
+                return newState
             },
         },
-    });
+    })
 }
 
 export const alignmentPlugin: EditorPlugin = {
@@ -64,7 +64,7 @@ export const alignmentPlugin: EditorPlugin = {
             {
                 name: "alignmentPlugin",
                 plugin: ({ dispatch }) => createPlugin(dispatch, defaultConfig),
-            }
+            },
         ]
-    }
+    },
 }

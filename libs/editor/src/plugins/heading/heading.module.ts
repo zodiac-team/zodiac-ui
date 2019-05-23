@@ -11,4 +11,4 @@ import { headingPlugin } from "./heading.plugin"
         },
     ],
 })
-export class HeadingModule { }
+export class HeadingModule {}

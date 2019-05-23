@@ -18,8 +18,8 @@ export class UnderlineToolComponent {
 
     constructor() {
         this.tool = {
-            tooltip: 'Underline Text',
-            icon: 'fa-underline',
+            tooltip: "Underline Text",
+            icon: "fa-underline",
             run: toggleUnderline(),
             enable(state) {
                 return toggleUnderline()(state)
@@ -27,7 +27,7 @@ export class UnderlineToolComponent {
             active(state: EditorState) {
                 const { underline } = state.schema.marks
                 return isMarkTypeActive(state, underline)
-            }
+            },
         }
     }
 }

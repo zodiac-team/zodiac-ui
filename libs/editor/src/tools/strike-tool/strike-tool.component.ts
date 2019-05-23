@@ -17,7 +17,7 @@ export class StrikeToolComponent implements OnInit {
     constructor() {
         this.tool = {
             tooltip: "Toggle Strikthrough",
-            icon: 'fa-strikethrough',
+            icon: "fa-strikethrough",
             run: toggleStrike(),
             enable(state) {
                 return toggleStrike()(state)
@@ -25,7 +25,7 @@ export class StrikeToolComponent implements OnInit {
             active(state) {
                 const { strike } = state.schema.marks
                 return isMarkTypeActive(state, strike)
-            }
+            },
         }
     }
 

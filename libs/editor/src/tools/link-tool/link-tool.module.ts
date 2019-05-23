@@ -17,8 +17,8 @@ import { CommonModule } from "@angular/common"
             provide: STATE_HANDLER,
             useFactory: attachLinkPanel,
             deps: [ComponentFactoryResolver, Overlay],
-            multi: true
+            multi: true,
         },
-    ]
+    ],
 })
 export class LinkToolModule {}

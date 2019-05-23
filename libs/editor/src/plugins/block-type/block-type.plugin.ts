@@ -23,82 +23,75 @@ import { getSelectedWrapperNodes } from "../../lib/utils/get-selected-wrapper-no
 import { inputRulePlugin } from "./block-type.inputrule"
 import { keymapPlugin } from "./keymap"
 
-
 export interface BlockTypeState {
-    currentBlockType: BlockType;
-    blockTypesDisabled: boolean;
-    availableBlockTypes: BlockType[];
-    availableWrapperBlockTypes: BlockType[];
+    currentBlockType: BlockType
+    blockTypesDisabled: boolean
+    availableBlockTypes: BlockType[]
+    availableWrapperBlockTypes: BlockType[]
 }
 
 export function areBlockTypesDisabled(state: EditorState): boolean {
-    const nodesTypes: NodeType[] = getSelectedWrapperNodes(state);
-    const { panel } = state.schema.nodes;
-    return nodesTypes.filter(type => type !== panel).length > 0;
+    const nodesTypes: NodeType[] = getSelectedWrapperNodes(state)
+    const { panel } = state.schema.nodes
+    return nodesTypes.filter(type => type !== panel).length > 0
 }
 
 const blockTypeForNode = (node: Node, schema: Schema): BlockType => {
     if (node.type === schema.nodes.heading) {
-        const maybeNode = HEADINGS_BY_LEVEL[node.attrs['level']];
+        const maybeNode = HEADINGS_BY_LEVEL[node.attrs["level"]]
         if (maybeNode) {
-            return maybeNode;
+            return maybeNode
         }
     } else if (node.type === schema.nodes.paragraph) {
-        return NORMAL_TEXT;
+        return NORMAL_TEXT
     }
-    return OTHER;
-};
+    return OTHER
+}
 
-const isBlockTypeSchemaSupported = (
-    blockType: BlockType,
-    state: EditorState,
-) => {
+const isBlockTypeSchemaSupported = (blockType: BlockType, state: EditorState) => {
     switch (blockType) {
         case NORMAL_TEXT:
-            return !!state.schema.nodes.paragraph;
+            return !!state.schema.nodes.paragraph
         case HEADING_1:
         case HEADING_2:
         case HEADING_3:
         case HEADING_4:
         case HEADING_5:
         case HEADING_6:
-            return !!state.schema.nodes.heading;
+            return !!state.schema.nodes.heading
         case BLOCK_QUOTE:
-            return !!state.schema.nodes.blockquote;
+            return !!state.schema.nodes.blockquote
         case CODE_BLOCK:
-            return !!state.schema.nodes.codeBlock;
+            return !!state.schema.nodes.codeBlock
         case PANEL:
-            return !!state.schema.nodes.panel;
+            return !!state.schema.nodes.panel
     }
-};
+}
 
-const detectBlockType = (
-    availableBlockTypes: BlockType[],
-    state: EditorState,
-): BlockType => {
+const detectBlockType = (availableBlockTypes: BlockType[], state: EditorState): BlockType => {
     // Before a document is loaded, there is no selection.
     if (!state.selection) {
-        return NORMAL_TEXT;
+        return NORMAL_TEXT
     }
-    let blockType;
-    const { $from, $to } = state.selection;
+    let blockType
+    const { $from, $to } = state.selection
     state.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
         const nodeBlockType = availableBlockTypes.filter(
             // tslint:disable-next-line:no-shadowed-variable
             blockType => blockType === blockTypeForNode(node, state.schema),
-        );
+        )
         if (nodeBlockType.length > 0) {
             if (!blockType) {
-                blockType = nodeBlockType[0];
+                blockType = nodeBlockType[0]
             } else if (blockType !== OTHER && blockType !== nodeBlockType[0]) {
-                blockType = OTHER;
+                blockType = OTHER
             }
         }
-    });
-    return blockType || OTHER;
-};
+    })
+    return blockType || OTHER
+}
 
-export const pluginKey = new PluginKey('blockTypePlugin');
+export const pluginKey = new PluginKey("blockTypePlugin")
 
 export const createPlugin = (
     dispatch: (eventName: string | PluginKey, data: any) => void,
@@ -127,17 +120,17 @@ export const createPlugin = (
             init(config, state: EditorState) {
                 const availableBlockTypes = TEXT_BLOCK_TYPES.filter(blockType =>
                     isBlockTypeSchemaSupported(blockType, state),
-                );
-                const availableWrapperBlockTypes = WRAPPER_BLOCK_TYPES.filter(
-                    blockType => isBlockTypeSchemaSupported(blockType, state),
-                );
+                )
+                const availableWrapperBlockTypes = WRAPPER_BLOCK_TYPES.filter(blockType =>
+                    isBlockTypeSchemaSupported(blockType, state),
+                )
 
                 return {
                     currentBlockType: detectBlockType(availableBlockTypes, state),
                     blockTypesDisabled: areBlockTypesDisabled(state),
                     availableBlockTypes,
                     availableWrapperBlockTypes,
-                };
+                }
             },
 
             apply(
@@ -148,57 +141,49 @@ export const createPlugin = (
             ) {
                 const newPluginState = {
                     ...oldPluginState,
-                    currentBlockType: detectBlockType(
-                        oldPluginState.availableBlockTypes,
-                        newState,
-                    ),
+                    currentBlockType: detectBlockType(oldPluginState.availableBlockTypes, newState),
                     blockTypesDisabled: areBlockTypesDisabled(newState),
-                };
+                }
 
                 if (
                     newPluginState.currentBlockType !== oldPluginState.currentBlockType ||
-                    newPluginState.blockTypesDisabled !==
-                    oldPluginState.blockTypesDisabled
+                    newPluginState.blockTypesDisabled !== oldPluginState.blockTypesDisabled
                 ) {
-                    dispatch(pluginKey, newPluginState);
+                    dispatch(pluginKey, newPluginState)
                 }
 
-                return newPluginState;
+                return newPluginState
             },
         },
 
         key: pluginKey,
-    });
-};
+    })
+}
 
-export type AllowedBlockTypes =
-    | 'heading'
-    | 'blockquote'
-    | 'hardBreak'
-    | 'codeBlock';
+export type AllowedBlockTypes = "heading" | "blockquote" | "hardBreak" | "codeBlock"
 
 export interface BlockTypeNode {
-    name: AllowedBlockTypes;
-    node: NodeSpec;
+    name: AllowedBlockTypes
+    node: NodeSpec
 }
 
 export const blockTypePlugin: EditorPlugin = {
     pmPlugins() {
         return [
             {
-                name: 'blockType',
+                name: "blockType",
                 plugin: ({ dispatch }) => createPlugin(dispatch),
             },
             {
-                name: 'blockTypeInputRule',
+                name: "blockTypeInputRule",
                 plugin: ({ schema }) => inputRulePlugin(schema),
             },
             // Needs to be lower priority than prosemirror-tables.tableEditing
             // plugin as it is currently swallowing right/down arrow events inside tables
             {
-                name: 'blockTypeKeyMap',
+                name: "blockTypeKeyMap",
                 plugin: ({ schema }) => keymapPlugin(schema),
             },
-        ];
+        ]
     },
 }

@@ -15,9 +15,7 @@ import {
 export type ExtendFn<T extends (...args: Formula[]) => any> = (
     src: Partial<FormulaOptions<ReturnType<T>>>,
 ) => T
-export type FormulaBuildFn<T> = ((
-    ...children: (Formula | ((...children: Formula[]) => any))[]
-) => T)
+export type FormulaBuildFn<T> = (...children: (Formula | ((...children: Formula[]) => any))[]) => T
 
 const mapChildren = child => (typeof child === "function" ? child() : child)
 

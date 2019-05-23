@@ -1,17 +1,17 @@
-import { NodeSpec, DOMOutputSpec } from 'prosemirror-model';
+import { NodeSpec, DOMOutputSpec } from "prosemirror-model"
 
 /**
  * @name rule_node
  */
 export interface RuleDefinition {
-    type: 'rule';
+    type: "rule"
 }
 
-const hrDOM: DOMOutputSpec = ['hr'];
+const hrDOM: DOMOutputSpec = ["hr"]
 export const rule: NodeSpec = {
-    group: 'block',
-    parseDOM: [{ tag: 'hr' }],
+    group: "block",
+    parseDOM: [{ tag: "hr" }],
     toDOM() {
-        return hrDOM;
+        return hrDOM
     },
-};
+}

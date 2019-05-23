@@ -7,10 +7,15 @@ import { CodeMirror, getMode } from "./codemirror"
 
 function computeChange(oldVal, newVal) {
     if (oldVal === newVal) return null
-    let start = 0, oldEnd = oldVal.length, newEnd = newVal.length
+    let start = 0,
+        oldEnd = oldVal.length,
+        newEnd = newVal.length
     while (start < oldEnd && oldVal.charCodeAt(start) === newVal.charCodeAt(start)) ++start
-    while (oldEnd > start && newEnd > start &&
-    oldVal.charCodeAt(oldEnd - 1) === newVal.charCodeAt(newEnd - 1)) {
+    while (
+        oldEnd > start &&
+        newEnd > start &&
+        oldVal.charCodeAt(oldEnd - 1) === newVal.charCodeAt(newEnd - 1)
+    ) {
         oldEnd--
         newEnd--
     }
@@ -20,8 +25,12 @@ function computeChange(oldVal, newVal) {
 function arrowHandler(dir) {
     return (state, dispatch, view) => {
         if (state.selection.empty && view.endOfTextblock(dir)) {
-            const side = dir === "left" || dir === "up" ? -1 : 1, $head = state.selection.$head
-            const nextPos = Selection.near(state.doc.resolve(side > 0 ? $head.after() : $head.before()), side)
+            const side = dir === "left" || dir === "up" ? -1 : 1,
+                $head = state.selection.$head
+            const nextPos = Selection.near(
+                state.doc.resolve(side > 0 ? $head.after() : $head.before()),
+                side,
+            )
             if (nextPos.$head && nextPos.$head.parent.type.name === "codeBlock") {
                 dispatch(state.tr.setSelection(nextPos))
                 return true
@@ -34,7 +43,7 @@ function arrowHandler(dir) {
 function matchAll(str, regexp) {
     const matches = []
     str.replace(regexp, function() {
-        const arr = ([]).slice.call(arguments, 0)
+        const arr = [].slice.call(arguments, 0)
         const extras = arr.splice(-2)
         arr.index = extras[0]
         arr.input = extras[1]
@@ -90,7 +99,7 @@ export class CodeBlockView implements NodeView {
         // inner editor
         this.updating = false
         // Track whether changes are have been made but not yet propagated
-        this.cm.on("beforeChange", () => this.incomingChanges = true)
+        this.cm.on("beforeChange", () => (this.incomingChanges = true))
         // Propagate updates from the code editor to ProseMirror
         this.cm.on("cursorActivity", () => {
             if (!this.updating && !this.incomingChanges) this.forwardSelection()
@@ -124,12 +133,10 @@ export class CodeBlockView implements NodeView {
         const fencedModes = matchAll(value, /(~~~+|```+)[ \t]*([\w+#-]*)[^\n`]*/g)
 
         if (fencedModes) {
-            const modes = fencedModes
-                .map(match => getMode(match[2]))
-                .filter(Boolean)
+            const modes = fencedModes.map(match => getMode(match[2])).filter(Boolean)
 
-            modes.forEach((spec) => {
-                CodeMirror.requireMode(spec.mode, (didLoad) => {
+            modes.forEach(spec => {
+                CodeMirror.requireMode(spec.mode, didLoad => {
                     this.cm.setOption("mode", this.cm.getOption("mode"))
                     setTimeout(() => this.cm.refresh(), 20)
                 })
@@ -141,8 +148,7 @@ export class CodeBlockView implements NodeView {
         if (!this.cm.hasFocus()) return
         const state = this.view.state
         const selection = this.asProseMirrorSelection(state.doc)
-        if (!selection.eq(state.selection))
-            this.view.dispatch(state.tr.setSelection(selection))
+        if (!selection.eq(state.selection)) this.view.dispatch(state.tr.setSelection(selection))
     }
 
     asProseMirrorSelection(doc) {
@@ -156,8 +162,7 @@ export class CodeBlockView implements NodeView {
     setSelection(anchor, head) {
         this.cm.focus()
         this.updating = true
-        this.cm.setSelection(this.cm.posFromIndex(anchor),
-            this.cm.posFromIndex(head))
+        this.cm.setSelection(this.cm.posFromIndex(anchor), this.cm.posFromIndex(head))
         this.updating = false
     }
 
@@ -169,8 +174,10 @@ export class CodeBlockView implements NodeView {
         if (change) {
             const start = this.getPos() + 1
             const tr = this.view.state.tr.replaceWith(
-                start + change.from, start + change.to,
-                change.text ? schema.text(change.text) : null)
+                start + change.from,
+                start + change.to,
+                change.text ? schema.text(change.text) : null,
+            )
             this.view.dispatch(tr)
         }
     }
@@ -194,10 +201,11 @@ export class CodeBlockView implements NodeView {
 
     maybeEscape(unit, dir) {
         const pos = this.cm.getCursor()
-        if (this.cm.somethingSelected() ||
+        if (
+            this.cm.somethingSelected() ||
             pos.line !== (dir < 0 ? this.cm.firstLine() : this.cm.lastLine()) ||
-            (unit === "char" &&
-                pos.ch !== (dir < 0 ? 0 : this.cm.getLine(pos.line).length)))
+            (unit === "char" && pos.ch !== (dir < 0 ? 0 : this.cm.getLine(pos.line).length))
+        )
             return CodeMirror.Pass
         this.view.focus()
         const targetPos = this.getPos() + (dir < 0 ? 0 : this.node.nodeSize)
@@ -211,8 +219,11 @@ export class CodeBlockView implements NodeView {
         const change = computeChange(this.cm.getValue(), node.textContent)
         if (change) {
             this.updating = true
-            this.cm.replaceRange(change.text, this.cm.posFromIndex(change.from),
-                this.cm.posFromIndex(change.to))
+            this.cm.replaceRange(
+                change.text,
+                this.cm.posFromIndex(change.from),
+                this.cm.posFromIndex(change.to),
+            )
             this.updating = false
         }
 

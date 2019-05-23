@@ -3,15 +3,15 @@ import { Schema } from "prosemirror-model"
 import { Plugin } from "prosemirror-state"
 
 export function createPMPlugins({
-                             editorConfig,
-                             schema,
-                             dispatch,
-                             eventDispatcher,
-                             // providerFactory,
-                             // errorReporter,
-                             // portalProviderAPI,
-                             // reactContext,
-                         }: {
+    editorConfig,
+    schema,
+    dispatch,
+    eventDispatcher,
+}: // providerFactory,
+// errorReporter,
+// portalProviderAPI,
+// reactContext,
+{
     editorConfig: EditorConfig
     schema: Schema
     dispatch: Dispatch
@@ -21,18 +21,20 @@ export function createPMPlugins({
     // portalProviderAPI: PortalProviderAPI
     // reactContext: () => { [key: string]: any }
 }): Plugin[] {
-    return editorConfig.pmPlugins
-    // .sort(sortByOrder("plugins"))
-        .map(({ plugin }) =>
-            plugin({
-                schema,
-                dispatch,
-                // providerFactory,
-                // errorReporter,
-                eventDispatcher,
-                // portalProviderAPI,
-                // reactContext,
-            }),
-        )
-        .filter(plugin => !!plugin)
+    return (
+        editorConfig.pmPlugins
+            // .sort(sortByOrder("plugins"))
+            .map(({ plugin }) =>
+                plugin({
+                    schema,
+                    dispatch,
+                    // providerFactory,
+                    // errorReporter,
+                    eventDispatcher,
+                    // portalProviderAPI,
+                    // reactContext,
+                }),
+            )
+            .filter(plugin => !!plugin)
+    )
 }

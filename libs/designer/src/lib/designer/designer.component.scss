@@ -1,0 +1,79 @@
+:host {
+    display: grid;
+    grid-template-areas:
+        "menu  menu  menu"
+        "left  view  right";
+    grid-template-rows: 6.4rem auto;
+    grid-template-columns: 31.2rem auto 31.2rem;
+}
+
+.z-menu {
+    grid-area: menu;
+    position: relative;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+    &:before {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        height: 2.4rem;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0));
+    }
+}
+
+.z-view {
+    grid-area: view;
+    background: radial-gradient(ellipse, #ffffff 50%, rgba(0, 0, 0, 0.05) 100%);
+}
+
+.z-left-panel {
+    grid-area: left;
+    position: relative;
+    background: #ffffff;
+
+    &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 100%;
+        width: 1.6rem;
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0));
+    }
+}
+
+.z-right-panel {
+    grid-area: right;
+    position: relative;
+    padding: 1rem;
+    background: #ffffff;
+
+    &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 100%;
+        width: 0.8rem;
+        background: linear-gradient(to left, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0));
+    }
+}
+
+.z-block {
+    width: 13.6rem;
+    height: 13.6rem;
+    margin: 2.4rem;
+    background: #cccccc;
+    cursor: pointer;
+    position: relative;
+    contain: content;
+
+    img {
+        object-position: center;
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+}

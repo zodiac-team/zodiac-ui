@@ -7,21 +7,16 @@ import { MatFormFieldModule, MatSelectModule } from "@angular/material"
 import { EditorToolbarButtonModule } from "../../lib/editor-toolbar/editor-toolbar-button/editor-toolbar-button.module"
 
 @NgModule({
-  declarations: [CodePanelComponent],
-  entryComponents: [CodePanelComponent],
-    imports: [
-        CommonModule,
-        MatSelectModule,
-        MatFormFieldModule,
-        EditorToolbarButtonModule
-    ],
+    declarations: [CodePanelComponent],
+    entryComponents: [CodePanelComponent],
+    imports: [CommonModule, MatSelectModule, MatFormFieldModule, EditorToolbarButtonModule],
     providers: [
         {
             provide: STATE_HANDLER,
             useFactory: attachCodePanel,
             deps: [ComponentFactoryResolver, Overlay],
-            multi: true
+            multi: true,
         },
-    ]
+    ],
 })
-export class CodeToolModule { }
+export class CodeToolModule {}

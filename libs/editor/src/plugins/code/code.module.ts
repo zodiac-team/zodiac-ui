@@ -6,11 +6,13 @@ import { CodeModuleConfig } from "./interfaces"
 import { CODE_CONFIG } from "./constants"
 
 @NgModule({
-    providers: [{
-        provide: EDITOR_PLUGIN,
-        useValue: codeBlockPlugin(),
-        multi: true
-    }],
+    providers: [
+        {
+            provide: EDITOR_PLUGIN,
+            useValue: codeBlockPlugin(),
+            multi: true,
+        },
+    ],
 })
 export class CodeModule {
     constructor(@Optional() @Inject(CODE_CONFIG) config: any) {
@@ -25,10 +27,12 @@ export class CodeModule {
     static configure(config: CodeModuleConfig): ModuleWithProviders {
         return {
             ngModule: CodeModule,
-            providers: [{
-                provide: CODE_CONFIG,
-                useValue: config
-            }]
+            providers: [
+                {
+                    provide: CODE_CONFIG,
+                    useValue: config,
+                },
+            ],
         }
     }
 }

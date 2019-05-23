@@ -14,9 +14,12 @@ export function hyperlinkPlugin(componentFactoryResolver: ComponentFactoryResolv
 
         pmPlugins() {
             return [
-                { name: "hyperlink", plugin: ({ dispatch }) => plugin(dispatch, componentFactoryResolver) },
                 {
-                    name: 'fakeCursorToolbarPlugin',
+                    name: "hyperlink",
+                    plugin: ({ dispatch }) => plugin(dispatch, componentFactoryResolver),
+                },
+                {
+                    name: "fakeCursorToolbarPlugin",
                     plugin: () => fakeCursorToolbarPlugin,
                 },
                 {

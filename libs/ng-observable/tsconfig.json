@@ -1,0 +1,13 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "types": ["node", "jest"],
+        "downlevelIteration": true,
+        "paths": {
+            "@angular/*": ["node_modules/@angular/*"],
+            "rxjs": ["node_modules/rxjs/*"],
+            "rxjs/operators": ["node_modules/rxjs/operators/*"]
+        }
+    },
+    "include": ["**/*.ts"]
+}

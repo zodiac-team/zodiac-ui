@@ -20,7 +20,11 @@ import { ModeInfo, modeInfo } from "../../../plugins/code/codemirror"
     selector: "z-code-panel",
     template: `
         <mat-form-field>
-            <mat-select [value]="mode" placeholder="Select Language" (selectionChange)="handleSelect($event.value)">
+            <mat-select
+                [value]="mode"
+                placeholder="Select Language"
+                (selectionChange)="handleSelect($event.value)"
+            >
                 <mat-option>
                     <span>Plain Text</span>
                 </mat-option>
@@ -55,7 +59,7 @@ export class CodePanelComponent implements OnDestroy {
         this.deleteCode = {
             tooltip: "Remove",
             icon: "fa-trash-alt",
-            run: removeCodeBlock
+            run: removeCodeBlock,
         }
 
         this.sub = this.toolbar.stateChange.subscribe(editor => {
@@ -75,7 +79,7 @@ export class CodePanelComponent implements OnDestroy {
 
     handleSelect(mode: string) {
         this.toolbar.runTool({
-            run: changeLanguage(mode)
+            run: changeLanguage(mode),
         })
     }
 }

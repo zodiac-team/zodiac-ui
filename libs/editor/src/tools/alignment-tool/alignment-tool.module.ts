@@ -5,8 +5,6 @@ import { EditorToolbarDropdownModule } from "../../lib/editor-toolbar/editor-too
 @NgModule({
     declarations: [AlignmentToolComponent],
     exports: [AlignmentToolComponent],
-    imports: [
-        EditorToolbarDropdownModule
-    ],
+    imports: [EditorToolbarDropdownModule],
 })
 export class AlignmentToolModule {}

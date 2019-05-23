@@ -5,7 +5,11 @@ import { EditorTool, EditorToolbar, EditorToolGroup } from "../interfaces"
     selector: "z-editor-toolbar-select",
     template: `
         <mat-form-field>
-            <mat-select [value]="selected" [placeholder]="group.label" (selectionChange)="runTool($event.value)">
+            <mat-select
+                [value]="selected"
+                [placeholder]="group.label"
+                (selectionChange)="runTool($event.value)"
+            >
                 <mat-select-trigger>
                     <span [textContent]="selected.label"></span>
                 </mat-select-trigger>
@@ -19,7 +23,6 @@ import { EditorTool, EditorToolbar, EditorToolGroup } from "../interfaces"
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditorToolbarSelectComponent implements OnInit {
-
     @Input()
     public group: EditorToolGroup
 
@@ -35,8 +38,9 @@ export class EditorToolbarSelectComponent implements OnInit {
 
     public ngOnInit() {
         this.selected = this.group
-        this.toolbar.stateChange.subscribe((editor) => {
-            this.selected = this.group.tools.find(option => option.select(editor.state)) || this.group;
+        this.toolbar.stateChange.subscribe(editor => {
+            this.selected =
+                this.group.tools.find(option => option.select(editor.state)) || this.group
             this.cdr.detectChanges()
         })
     }

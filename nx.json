@@ -37,6 +37,9 @@
         },
         "editor-example": {
             "tags": []
+        },
+        "ng-observable": {
+            "tags": []
         }
     }
 }

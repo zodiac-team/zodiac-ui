@@ -1,0 +1,19 @@
+{
+    "name": "@zodiac-ui/ng-observable",
+    "license": "MIT",
+    "author": "zodiac-team",
+    "version": "0.0.1",
+    "homepage": "https://github.com/zodiac-team/zodiac-ui/libs/ng-observable",
+    "keywords": [
+        "Angular",
+        "Lifecycle hooks",
+        "State management",
+        "RxJS",
+        "Decorators"
+    ],
+    "peerDependencies": {
+        "@angular/common": ">=7.0.0",
+        "@angular/core": ">=7.0.0",
+        "rxjs": ">=6.0.0"
+    }
+}

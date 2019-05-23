@@ -23,18 +23,17 @@ import { EditorState } from "prosemirror-state"
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasicEditorComponent {
-
     public state: any
 
     constructor() {
-        this.state = JSON.parse(localStorage.getItem('basic-editor-state'))
+        this.state = JSON.parse(localStorage.getItem("basic-editor-state"))
     }
 
     public save(state: EditorState) {
         try {
-            localStorage.setItem('basic-editor-state', JSON.stringify(state.toJSON()))
+            localStorage.setItem("basic-editor-state", JSON.stringify(state.toJSON()))
         } catch (e) {
-            console.error('Document too large to save or contains errors')
+            console.error("Document too large to save or contains errors")
             console.error(e)
         }
     }

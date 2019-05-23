@@ -511,9 +511,7 @@
                             "node_modules/codemirror/lib/codemirror.css",
                             "apps/editor-example/src/styles.scss"
                         ],
-                        "scripts": [
-                            "node_modules/hammerjs/hammer.min.js"
-                        ],
+                        "scripts": ["node_modules/hammerjs/hammer.min.js"],
                         "es5BrowserSupport": true
                     },
                     "configurations": {
@@ -577,6 +575,44 @@
                         "tsConfig": "apps/editor-example/tsconfig.spec.json",
                         "setupFile": "apps/editor-example/src/test-setup.ts"
                     }
+                }
+            }
+        },
+        "ng-observable": {
+            "root": "libs/ng-observable",
+            "sourceRoot": "libs/ng-observable/src",
+            "projectType": "library",
+            "prefix": "zodiac-ui",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-ng-packagr:build",
+                    "options": {
+                        "tsConfig": "libs/ng-observable/tsconfig.lib.json",
+                        "project": "libs/ng-observable/ng-package.json"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "libs/ng-observable/tsconfig.lib.json",
+                            "libs/ng-observable/tsconfig.spec.json"
+                        ],
+                        "exclude": ["**/node_modules/**"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/builders:jest",
+                    "options": {
+                        "jestConfig": "libs/ng-observable/jest.config.js",
+                        "tsConfig": "libs/ng-observable/tsconfig.spec.json",
+                        "setupFile": "libs/ng-observable/src/test-setup.ts"
+                    }
+                }
+            },
+            "schematics": {
+                "@nrwl/schematics:component": {
+                    "styleext": "scss"
                 }
             }
         }

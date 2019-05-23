@@ -10,22 +10,21 @@ import { Command } from "../../lib/interfaces/command"
 export const deepEqual = (obj1, obj2) => {
     for (const key in obj1) {
         if (obj1[key] !== obj2[key]) {
-            return false;
+            return false
         }
     }
-    return true;
-};
+    return true
+}
 
 export const hasCode = (state: EditorState, pos: number): boolean => {
-    const { code } = state.schema.marks;
-    const node = pos >= 0 && state.doc.nodeAt(pos);
+    const { code } = state.schema.marks
+    const node = pos >= 0 && state.doc.nodeAt(pos)
     if (node) {
-        return !!node.marks.filter(mark => mark.type === code).length;
+        return !!node.marks.filter(mark => mark.type === code).length
     }
 
-    return false;
-};
-
+    return false
+}
 
 export const isMarkTypeActive = (state: EditorState, markType: MarkType): boolean => {
     const { $from, from, to, empty } = state.selection

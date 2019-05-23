@@ -27,7 +27,7 @@ export class LinkToolComponent {
             enable(state) {
                 const pluginState = pluginKey.getState(state)
                 return pluginState.canInsertLink
-            }
+            },
         }
     }
 }

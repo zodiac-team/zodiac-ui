@@ -11,7 +11,6 @@ export interface EditorTool {
     select?(state: EditorState): boolean
     enable?(state: EditorState): boolean
     active?(state: EditorState): boolean
-
 }
 
 export interface EditorToolGroup {

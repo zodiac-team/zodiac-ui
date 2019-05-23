@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, Input, OnInit } from "@angular/core"
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    HostBinding,
+    Input,
+    OnInit,
+} from "@angular/core"
 import { EditorTool, EditorToolbar } from "../interfaces"
 
 @Component({
@@ -15,7 +22,7 @@ export class EditorToolbarButtonComponent implements OnInit {
     @Input()
     public tool: EditorTool
 
-    @HostBinding('class.active')
+    @HostBinding("class.active")
     public active: boolean
 
     private toolbar: EditorToolbar
