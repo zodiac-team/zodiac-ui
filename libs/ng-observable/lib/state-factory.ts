@@ -18,17 +18,17 @@ export function mapPropsToState<T extends any = any>(source: Observable<NgHooksE
 }
 
 export class State<T> extends BehaviorSubject<T> implements OnDestroy {
-    public readonly value: T
+    public readonly value!: T
     private readonly cdr?: ChangeDetectorRef
     private readonly notifier?: Subscription
 
-    constructor(value: T, notifier?: ObservableInput<Partial<T> | void>, cdr?: ChangeDetectorRef) {
+    constructor(value: T, notifier?: ObservableInput<Partial<T> | undefined>, cdr?: ChangeDetectorRef) {
         super(value)
 
         this.cdr = cdr
 
         if (notifier) {
-            this.notifier = from(notifier).subscribe((partialState: Partial<T>) => {
+            this.notifier = from(notifier).subscribe((partialState) => {
                 this.patchState(partialState)
             })
         }
@@ -42,7 +42,9 @@ export class State<T> extends BehaviorSubject<T> implements OnDestroy {
     }
 
     public unsubscribe() {
-        this.notifier.unsubscribe()
+        if (this.notifier) {
+            this.notifier.unsubscribe()
+        }
         super.unsubscribe()
     }
 
@@ -60,7 +62,7 @@ export class State<T> extends BehaviorSubject<T> implements OnDestroy {
 @Injectable()
 export class StateFactory<T> {
     constructor(@Optional() private readonly cdr: ChangeDetectorRef) {}
-    public create(value: T, notifier?: ObservableInput<Partial<T> | void>): State<T> {
+    public create(value: T, notifier?: ObservableInput<Partial<T> | undefined>): State<T> {
         return new State(value, notifier, this.cdr)
     }
 }

@@ -165,7 +165,7 @@ With any class
 @Injectable()
 export class MyService implements OnDestroy() {
     constructor() {
-        this.stream = new SteamSink()
+        this.stream = new StreamSink()
         this.stream.sink = stream(noop)(interval(1000))
     }
 
