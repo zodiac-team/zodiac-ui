@@ -1,21 +1,17 @@
+---
+description: >-
+  This is a simple example demonstrating most of the features of this library.
+  Implementation details are extracted from the class definition and omitted for
+  brevity.
+---
+
 # Example
 
-This is a simple example demonstrating most of the features of this library. Implementation details are extracted from
- the class definition and omitted for brevity.
+For the best experience, each component/directive should implement a `Props` and `State` interface that describe the `@Input()` props and mutable state of the class respectively. All template variables should be initialised with defaults in the constructor to prevent undefined state. With this we can minimise or eliminate the usage of `*ngIf` which can clutter the template with unnecessary guards.
 
-For the best experience, each component/directive should implement a `Props` and `State` interface that describe the `@Input()`
-props and mutable state of the class respectively. All template variables should be initialised with defaults in the
-constructor to prevent undefined state. With this we can minimise or eliminate the usage of `*ngIf` which can clutter the template
-with unnecessary guards.
+Another thing to note here is that there is no explicit subscriptions or unsubscriptions to observables. Everything is managed automatically by `StreamSink`. We can set the change detection strategy to `OnPush` and not worry about manually triggering change detection or binding to async pipes thanks to `State`. After binding it to the class instance, `State` patches the properties and triggers change detection whenever it receives a new value. Interfaces are used here to limit what can and can't be set.
 
-Another thing to note here is that there is no explicit subscriptions or unsubscriptions to observables. Everything is
-managed automatically by `StreamSink`. We can set the change detection strategy to `OnPush` and not worry about
-manually triggering change detection or binding to async pipes thanks to `State`. After binding it to the class instance,
-`State` patches the properties and triggers change detection whenever it receives a new value. Interfaces are used here
-to limit what can and can't be set.
-
-The end result is a component that is fully described by observable streams, with the class instance acting as a
-snapshot of the state whenever the template is rendered.
+The end result is a component that is fully described by observable streams, with the class instance acting as a snapshot of the state whenever the template is rendered.
 
 ```typescript
 interface HelloProps {
@@ -94,7 +90,7 @@ export class HelloComponent extends NgObservable<HelloProps> implements HelloSta
 
         // Stream of clicks to template button element
         this.sink = stream(this.state)(setTitle(this.btnClick))
-        
+
         // Stream result of an async service
         this.sink = stream(this.state)(this.someService.getSomething(this.title))
 
@@ -109,3 +105,4 @@ export class HelloComponent extends NgObservable<HelloProps> implements HelloSta
     }
 }
 ```
+

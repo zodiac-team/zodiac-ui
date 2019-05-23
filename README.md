@@ -1,35 +1,18 @@
----
-description: >-
-  Turn Angular directives and components into observable streams. Observable
-  lifecycle hooks, local state management pattern, lifecycle decorators,
-  stream/sink, computed properties and more.
----
+# README
 
-# NgObservable
+ ![Coverage Status](https://travis-ci.com/zodiac-team/zodiac-ui.svg?branch=master) [![Coverage Status](https://coveralls.io/repos/github/zodiac-team/zodiac-ui/badge.svg?branch=master)](https://coveralls.io/github/zodiac-team/zodiac-ui?branch=master) [![License: MIT](https://camo.githubusercontent.com/3ccf4c50a1576b0dd30b286717451fa56b783512/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4c6963656e73652d4d49542d79656c6c6f772e737667)](https://opensource.org/licenses/MIT)
 
-AoT compatible functional reactive utilities and component level state management for Angular.
+## Zodiac UI
 
-* 🚀 Observe lifecycle hooks such as `ngOnInit`, `ngOnChanges` and more
-* 🎉 Convert `HostListener` and template events into observable streams
-* 🍷 Make computed properties with the `@Computed` decorator
-* 💥 Use decorators for all of the builtin lifecycle hooks
-* ✈️ Standardised state management pattern for components and directives with automatic change detection
-* 🚫 Escape async hell and redundant placeholder variables
-* 🚮 Automatically clean up subscriptions with `StreamSink`
-* 🎈 Get strongly typed changes with `TypedChanges<T>`
-* 👉 Extract implementation details into easily testable pure functions
+A collection of useful UI libraries for Angular.
 
-## API
+### Packages
 
-[Read the docs](api.md)
-
-[See an example](example.md)
-
-## Setup
-
-```text
-npm install @zodiac-ui/ng-observable
-```
-
-
+| Package | Version | Description |
+| :--- | :--- | :--- |
+| [@zodiac-ui/ng-observable](libs/ng-observable/) |  | AoT compatible functional reactive utilities and component level state management for Angular |
+| [@zodiac-ui/formula](libs/formula.md) |  | A form generator inspired by Angular Router |
+| [@zodiac-ui/formula-material](libs/formula-material.md) |  | Angular Material components for Formula |
+| [@zodiac-ui/store](libs/store.md) |  | An immutable store implementation based on ngrx |
+| [@zodiac-ui/editor](libs/editor.md) |  | A rich text editor for Angular built on ProseMirror |
 

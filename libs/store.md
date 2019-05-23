@@ -1,43 +1,43 @@
-# @zodiac-ui/store
+# Store
 
 An immutable store implementation for Angular based on ngrx.
 
 ## Table of Contents
 
--   [Early Access](#early-access)
--   [Getting Started](#getting-started)
--   [Introduction](#introduction)
--   [Usage](#usage)
-    -   [Initial State](#initial-state)
-    -   [Selectors](#selectors)
-    -   [Computed Properties](#computed-properties)
-    -   [Read State](#read-state)
-    -   [Set State](#set-state)
-    -   [Actions](#actions)
-    -   [Effects](#effects)
-    -   [Feature Modules](#feature-modules)
-    -   [Redux Devtools](#redux-devtools)
--   [Api](#api)
-    -   [Store](#store)
-        -   [state](#state)
-        -   [dispatch(action)](#dispatchaction)
-        -   [setState(setter)](#setstatesetter)
-        -   [select(selector)](#selectselector)
-        -   [subscribe(2 overloads)](#subscribe2-overloads)
-    -   [StoreDirective](#storedirective)
-        -   [StoreContext](#storecontext)
-    -   [Operators](#operators)
-        -   [dispatch(store, setter)](#dispatchstore-setter)
-        -   [setState(store, setter)](#setstatestore-setter)
-        -   [select(selector)](#selectselectorspan-stylecolor-transparent2span)
-        -   [ofAction(action)](#ofactionaction)
-        -   [ofEffect(effect)](#ofeffecteffect)
-        -   [withLatestState(store)](#withlateststatestore)
-    -   [Utils](#utils)
-        -   [@OfType(type)](#oftypetype)
-        -   [createConnector\<T\>()](#createconnectort)
-        -   [createFeatureSelector()](#createfeatureselector)
-        -   [createSelector(97 overloads)](#createselector97-overloads)
+* [Early Access](store.md#early-access)
+* [Getting Started](store.md#getting-started)
+* [Introduction](store.md#introduction)
+* [Usage](store.md#usage)
+  * [Initial State](store.md#initial-state)
+  * [Selectors](store.md#selectors)
+  * [Computed Properties](store.md#computed-properties)
+  * [Read State](store.md#read-state)
+  * [Set State](store.md#set-state)
+  * [Actions](store.md#actions)
+  * [Effects](store.md#effects)
+  * [Feature Modules](store.md#feature-modules)
+  * [Redux Devtools](store.md#redux-devtools)
+* [Api](store.md#api)
+  * [Store](store.md#store)
+    * [state](store.md#state)
+    * [dispatch\(action\)](store.md#dispatchaction)
+    * [setState\(setter\)](store.md#setstatesetter)
+    * [select\(selector\)](store.md#selectselector)
+    * [subscribe\(2 overloads\)](store.md#subscribe2-overloads)
+  * [StoreDirective](store.md#storedirective)
+    * [StoreContext](store.md#storecontext)
+  * [Operators](store.md#operators)
+    * [dispatch\(store, setter\)](store.md#dispatchstore-setter)
+    * [setState\(store, setter\)](store.md#setstatestore-setter)
+    * [select\(selector\)](store.md#selectselectorspan-stylecolor-transparent2span)
+    * [ofAction\(action\)](store.md#ofactionaction)
+    * [ofEffect\(effect\)](store.md#ofeffecteffect)
+    * [withLatestState\(store\)](store.md#withlateststatestore)
+  * [Utils](store.md#utils)
+    * [@OfType\(type\)](store.md#oftypetype)
+    * [createConnector\\(\)](store.md#createconnectort)
+    * [createFeatureSelector\(\)](store.md#createfeatureselector)
+    * [createSelector\(97 overloads\)](store.md#createselector97-overloads)
 
 ## Early Access
 
@@ -47,23 +47,20 @@ Zodiac Store is being actively developed. Please do not use this in production.
 
 Install from NPM
 
-```
+```text
 npm install @zodiac-ui/store immer reselect
 yarn add @zodiac-ui/store immer reselect
 ```
 
 ## Introduction
 
-Zodiac Store is a zero boilerplate immutable state store implementation based on `@ngrx/store`. Instead of
-writing actions and reducers, all state modifications are performed with a `setState` function and computed properties.
-Zodiac Store also offers a more powerful effects module that lets you take full advantage of reactive streams. If
-effects aren't your thing, services work just as well.
+Zodiac Store is a zero boilerplate immutable state store implementation based on `@ngrx/store`. Instead of writing actions and reducers, all state modifications are performed with a `setState` function and computed properties. Zodiac Store also offers a more powerful effects module that lets you take full advantage of reactive streams. If effects aren't your thing, services work just as well.
 
 ## Usage
 
 Import the store module into your app.
 
-```ts
+```typescript
 @NgModule({
     imports: [StoreModule.forRoot(initialState)],
 })
@@ -74,7 +71,7 @@ export class AppModule {}
 
 Create an interface
 
-```ts
+```typescript
 export interface AppState {
     count: number
     todos: any
@@ -84,7 +81,7 @@ export interface AppState {
 
 Define the initial state getter
 
-```ts
+```typescript
 export function initialState(): InitialState<AppState> {
     return {
         count: 0,
@@ -98,13 +95,13 @@ export function initialState(): InitialState<AppState> {
 
 Create a feature selector
 
-```ts
+```typescript
 const $feature = createFeatureSelector<AppState>()
 ```
 
 Create a selector
 
-```ts
+```typescript
 const $count = createSelector(
     $feature,
     state => state.count,
@@ -115,7 +112,7 @@ const $count = createSelector(
 
 Extend the app state interface to include computed properties
 
-```ts
+```typescript
 export interface AppState {
     count: number
     todos: any[]
@@ -126,7 +123,7 @@ export interface AppState {
 
 Create a selector. This can also be used to read the state later
 
-```
+```text
 const $computedValue = createSelector(
     $count,
     count => count + 1,
@@ -135,7 +132,7 @@ const $computedValue = createSelector(
 
 Extend the initial state getter
 
-```ts
+```typescript
 export function initialState(): InitialState<AppState> {
     return {
         count: 0,
@@ -148,14 +145,13 @@ export function initialState(): InitialState<AppState> {
 
 Computed properties are evaluated in the same microtask queue. Use memoized selectors to prevent unnecessary recalculations
 
-For default values in computed properties, return them from the selector function. You can freely chain
-computed properties together if they don't cause circular references
+For default values in computed properties, return them from the selector function. You can freely chain computed properties together if they don't cause circular references
 
 ### Read State
 
 From a template
 
-```ts
+```typescript
 @Component({
     selector: "z-example",
     template: `
@@ -169,7 +165,7 @@ export class ExampleComponent {
 
 From TypeScript
 
-```ts
+```typescript
 export class ExampleComponent {
     constructor(public store: Store<AppState>) {
         // Observable
@@ -185,7 +181,7 @@ export class ExampleComponent {
 
 In a component
 
-```ts
+```typescript
 export class ExampleComponent {
     constructor(public store: Store<AppState>) {}
 
@@ -199,7 +195,7 @@ export class ExampleComponent {
 
 In a service
 
-```ts
+```typescript
 export class ExampleService {
     constructor(private store: Store<AppState>, private http: HttpClient) {}
 
@@ -213,7 +209,7 @@ export class ExampleService {
 
 In an observable stream
 
-```ts
+```typescript
 export class ExampleService {
     constructor(private store: Store<AppState>, private http: HttpClient) {}
 
@@ -234,7 +230,7 @@ export class ExampleService {
 
 Create an action. Actions are used to trigger effects.
 
-```ts
+```typescript
 @OfType("GET_TODOS")
 export class GetTodos {
     constructor(public payload: string) {}
@@ -243,7 +239,7 @@ export class GetTodos {
 
 Dispatch an action
 
-```ts
+```typescript
 export class StoreExample {
     constructor(private store: Store<AppState>) {}
 
@@ -255,7 +251,7 @@ export class StoreExample {
 
 Listen for an action
 
-```ts
+```typescript
 export class ExampleService {
     constructor(actions: Actions) {
         actions.pipe(
@@ -270,7 +266,7 @@ export class ExampleService {
 
 Import the effects module
 
-```ts
+```typescript
 @NgModule({
     imports: [EffectsModule.forRoot([AppEffects])],
 })
@@ -279,7 +275,7 @@ export class AppModule {}
 
 Create an effects class with injected dependencies
 
-```ts
+```typescript
 @Injectable()
 export class AppEffects {
     static connect = createConnector<AppEffects>()
@@ -294,7 +290,7 @@ export class AppEffects {
 
 Write some effects
 
-```ts
+```typescript
 const someEffect = AppEffects.connect((store, ctx) => {
     // Return any Observable
 })
@@ -302,7 +298,7 @@ const someEffect = AppEffects.connect((store, ctx) => {
 
 React to actions
 
-```ts
+```typescript
 const loadTodos = AppEffects.connect(ctx =>
     ctx.actions(GetTodos).pipe(
         switchMap(action => ctx.http.get(action.payload)),
@@ -315,7 +311,7 @@ const loadTodos = AppEffects.connect(ctx =>
 
 React to effects
 
-```ts
+```typescript
 const afterLoadTodos = AppEffects.connect((ctx) => (
     ctx.effects.pipe(
         ofEffect(loadTodos),
@@ -330,7 +326,7 @@ const afterLoadTodos = AppEffects.connect((ctx) => (
 
 In a lazy loaded module, import the store. For feature effects also import the effects module
 
-```ts
+```typescript
 @NgModule({
     imports: [
         StoreModule.forChild("feature", initialState),
@@ -342,7 +338,7 @@ export class FeatureModule {}
 
 Feature stores are configured the same way as the root store
 
-```ts
+```typescript
 export interface FeatureState {
     count: number
     computedValue: number
@@ -382,7 +378,7 @@ Zodiac Store has basic support for the [redux devtools extension](https://github
 
 Import the store devtools module in the main app module
 
-```ts
+```typescript
     imports: [
         StoreModule.forChild("feature", initialState),
         StoreDevtoolsModule.config({
@@ -391,10 +387,9 @@ Import the store devtools module in the main app module
     ],
 ```
 
-To update state from the dispatcher, send the following JSON payload. Computed properties should not be set,
-as they will update automatically.
+To update state from the dispatcher, send the following JSON payload. Computed properties should not be set, as they will update automatically.
 
-```ts
+```typescript
 // Payload to send from Redux Devtools Extension dispatcher
 {
     "setState": {
@@ -406,7 +401,7 @@ as they will update automatically.
 
 Changes are applied partially to the state of the root store and the state of each feature.
 
-```ts
+```typescript
 {
     "setState": {
         "feature": {
@@ -418,7 +413,7 @@ Changes are applied partially to the state of the root store and the state of ea
 
 If updating an object on a root or feature node, the entire object will be replaced.
 
-```ts
+```typescript
 {
     "setState": {
         // Replaces the todos array
@@ -434,7 +429,7 @@ If updating an object on a root or feature node, the entire object will be repla
 
 Actions can also be dispatched to trigger effects
 
-```ts
+```typescript
 {
     "type": "GET_TODOS",
     "payload: "http://..."
@@ -450,192 +445,179 @@ Actions can also be dispatched to trigger effects
 A getter that returns an immutable snapshot of the current state
 
 | Returns |
-| :------ |
-| `T`     |
+| :--- |
+| `T` |
 
-#### dispatch(action)
+#### dispatch\(action\)
 
 Immediately dispatches an action globally to the actions stream
 
-| Param         | Description                                                               |
-| :------------ | :------------------------------------------------------------------------ |
+| Param | Description |
+| :--- | :--- |
 | `action: any` | Any plain javascript object, usually with a `type` and optional `payload` |
 
 | Returns |
-| :------ |
-| `void`  |
+| :--- |
+| `void` |
 
-#### setState(setter)
+#### setState\(setter\)
 
-Accepts an object for partially or wholly replacing the previous state, or a producer function. Calls
-to `setState` are batched to prevent unnecessary change detections and can be called multiple times in the same tick.
-Objects are only shallow copied, so the state should be kept as flat as possible. Use [Computed Properties](#computed-properties) for values
-that are derived from state.
+Accepts an object for partially or wholly replacing the previous state, or a producer function. Calls to `setState` are batched to prevent unnecessary change detections and can be called multiple times in the same tick. Objects are only shallow copied, so the state should be kept as flat as possible. Use [Computed Properties](store.md#computed-properties) for values that are derived from state.
 
-| Param                       | Description                                                                                                            |
-| :-------------------------- | :--------------------------------------------------------------------------------------------------------------------- |
+| Param | Description |
+| :--- | :--- |
 | `setter: (state: T) => any` | A producer function passed directly to `immer`. Throws if return value is not void and does not match state signature. |
-| `setter: Partial<T>`        | A plain object that partially or wholly replaces the store state.                                                      |
+| `setter: Partial<T>` | A plain object that partially or wholly replaces the store state. |
 
 | Returns |
-| :------ |
-| `void`  |
+| :--- |
+| `void` |
 
-#### select(selector)
+#### select\(selector\)
 
-Returns an observable that is derived from state and emits a new value whenever the state changes. Pass a memoized selector to
-prevent performance issues in heavy computations
+Returns an observable that is derived from state and emits a new value whenever the state changes. Pass a memoized selector to prevent performance issues in heavy computations
 
-| Param                          | Description                                                     |
-| :----------------------------- | :-------------------------------------------------------------- |
+| Param | Description |
+| :--- | :--- |
 | `selector: <U>(state: T) => U` | A selector function that returns a value derived from the state |
 
-| Returns         |
-| :-------------- |
+| Returns |
+| :--- |
 | `Observable<U>` |
 
-#### subscribe(2 overloads)
+#### subscribe\(2 overloads\)
 
 Inherited from `Observable`
 
-Emits the entire state whenever the state changes. Use with the `select`, `dispatch` and `setState` operators to create
-reactive streams
+Emits the entire state whenever the state changes. Use with the `select`, `dispatch` and `setState` operators to create reactive streams
 
-| Returns         |
-| :-------------- |
+| Returns |
+| :--- |
 | `Observable<T>` |
-
----
 
 ### StoreDirective
 
 selectors: `[zStore][zStoreIn]`
 
-Automatically subscribes/unsubscribes from the store and performs change detection whenever the state changes.
-The embedded view is created immediately with the initial state that was passed in to the store module.
+Automatically subscribes/unsubscribes from the store and performs change detection whenever the state changes. The embedded view is created immediately with the initial state that was passed in to the store module.
 
-```ts
+```typescript
 <ng-container *zStore="let state; in: store"></ng-container>
 ```
 
 #### StoreContext
 
-| Property    | Description                                                     |
-| :---------- | :-------------------------------------------------------------- |
+| Property | Description |
+| :--- | :--- |
 | `$implicit` | A selector function that returns a value derived from the state |
-
----
 
 ### Operators
 
 A number of useful operators are included for composing reactive streams
 
-#### dispatch(store, setter)
+#### dispatch\(store, setter\)
 
 Taps a store to immediately dispatch an action. Returns the source Observable for further chaining.
 
-| Param                                | Description                                                                                    |
-| :----------------------------------- | :--------------------------------------------------------------------------------------------- |
-| `store: StoreLike<T>`                | An object that implements the `StoreLike` interface                                            |
-| `setter: any`                        | An action to dispatch, usually with a `type` and optional `payload`                            |
+| Param | Description |
+| :--- | :--- |
+| `store: StoreLike<T>` | An object that implements the `StoreLike` interface |
+| `setter: any` | An action to dispatch, usually with a `type` and optional `payload` |
 | `setter: (context: inferred) => any` | A function that returns an action, with the upstream observable value passed in as a paramater |
 
-| Returns                |
-| :--------------------- |
+| Returns |
+| :--- |
 | `Observable<inferred>` |
 
-#### setState(store, setter)
+#### setState\(store, setter\)
 
 Taps a store to immediately update its state. Returns the source Observable for further chaining.
 
-| Param                                          | Description                                                                                                                                                                                  |
-| :--------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `store: StoreLike<T>`                          | An object that implements the `StoreLike` interface                                                                                                                                          |
+| Param | Description |
+| :--- | :--- |
+| `store: StoreLike<T>` | An object that implements the `StoreLike` interface |
 | `setter: (state: T, context: inferred) => any` | A producer function passed directly to `immer`. Throws if return value is not void and does not match state signature. The upstream observable value is also passed in as a second parameter |
-| `setter: Partial<T>`                           | A plain object that partially or wholly replaces the store state.                                                                                                                            |
+| `setter: Partial<T>` | A plain object that partially or wholly replaces the store state. |
 
-| Returns                |
-| :--------------------- |
+| Returns |
+| :--- |
 | `Observable<inferred>` |
 
-#### select(selector)<span style="color: transparent">2</span>
+#### select\(selector\)2
 
-Functionally identical to [select](#selectselector), except it can be used to derive a value from any source Observable
+Functionally identical to [select](store.md#selectselector), except it can be used to derive a value from any source Observable
 
-| Param                          | Description                                                     |
-| :----------------------------- | :-------------------------------------------------------------- |
+| Param | Description |
+| :--- | :--- |
 | `selector: <U>(state: T) => U` | A selector function that returns a value derived from the state |
 
-| Returns         |
-| :-------------- |
+| Returns |
+| :--- |
 | `Observable<U>` |
 
-#### ofAction(action)
+#### ofAction\(action\)
 
 Filter the actions stream to a subset of values based on its `type`
 
-| Param             | Description                                                                                                                 |
-| :---------------- | :-------------------------------------------------------------------------------------------------------------------------- |
-| `action: Type<U>` | A class token that instantiates an action with the same `type`. Must be decorated with the [OfType](#oftypetype) annotation |
+| Param | Description |
+| :--- | :--- |
+| `action: Type<U>` | A class token that instantiates an action with the same `type`. Must be decorated with the [OfType](store.md#oftypetype) annotation |
 
-| Returns         |
-| :-------------- |
+| Returns |
+| :--- |
 | `Observable<U>` |
 
-#### ofEffect(effect)
+#### ofEffect\(effect\)
 
 Filter the effects stream to a subset of values based on its identity
 
-| Param                                       | Description                                                                |
-| :------------------------------------------ | :------------------------------------------------------------------------- |
-| `effect: (...args: any[]) => Observable<T>` | A reference to an effect created using [createConnector](#createconnector) |
+| Param | Description |
+| :--- | :--- |
+| `effect: (...args: any[]) => Observable<T>` | A reference to an effect created using [createConnector](store.md#createconnector) |
 
-| Returns         |
-| :-------------- |
+| Returns |
+| :--- |
 | `Observable<U>` |
 
-#### withLatestState(store)
+#### withLatestState\(store\)
 
 A more semantic version of `WithLatestFrom`, typed to the state of the store that is passed in
 
-| Param                 | Description                                         |
-| :-------------------- | :-------------------------------------------------- |
+| Param | Description |
+| :--- | :--- |
 | `store: StoreLike<T>` | An object that implements the `StoreLike` interface |
 
-| Returns         |
-| :-------------- |
+| Returns |
+| :--- |
 | `Observable<T>` |
-
----
 
 ### Utils
 
-#### @OfType(type)
+#### @OfType\(type\)
 
-Each Action class should have a unique `type` as annotated by this decorator. Needed for [ofAction](#ofactionaction) to
-match against the action type
+Each Action class should have a unique `type` as annotated by this decorator. Needed for [ofAction](store.md#ofactionaction) to match against the action type
 
-#### createConnector\<T\>()
+#### createConnector\\(\)
 
-Creates a strongly typed factory for registering [Effects](#effects). Effects created with the factory can be assigned
-to variables for testing or chaining using the [ofEffect](#ofeffecteffect) operator
+Creates a strongly typed factory for registering [Effects](store.md#effects). Effects created with the factory can be assigned to variables for testing or chaining using the [ofEffect](store.md#ofeffecteffect) operator
 
-| Returns                                                                 |
-| :---------------------------------------------------------------------- |
+| Returns |
+| :--- |
 | `(connectFn: ConnectFnWithContext<T, V>) => ConnectFnWithContext<T, V>` |
 
-#### createFeatureSelector()
+#### createFeatureSelector\(\)
 
 Creates a memoized feature selector that returns the root state of the store.
 
-| Returns            |
-| :----------------- |
+| Returns |
+| :--- |
 | `Selector<any, T>` |
 
-#### createSelector(97 overloads)
+#### createSelector\(97 overloads\)
 
 Creates a memoized selector that returns the selected state. Provided by `reselect`
 
-| Returns          |
-| :--------------- |
+| Returns |
+| :--- |
 | `Selector<T, U>` |
+

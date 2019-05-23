@@ -6,7 +6,7 @@ A rich text editor for Angular based on `@atlaskit/editor-core`.
 
 Install the package from NPM
 
-```
+```text
 npm install @zodiac-ui/editor
 ```
 
@@ -16,7 +16,7 @@ Zodiac Editor has a number of peer dependencies depending on which features are 
 
 #### Core Dependencies
 
-```
+```text
 npm install
     prosemirror-collab@^1.1.1
     prosemirror-commands@^1.0.7
@@ -36,7 +36,7 @@ npm install
 
 `LinkModule` requires `LinkifyIt` to be installed
 
-```
+```text
 npm install linkify-it@^2.1.0
 ```
 
@@ -44,13 +44,13 @@ npm install linkify-it@^2.1.0
 
 `CodeModule` requires `CodeMirror` to be installed
 
-```
+```text
 npm install codemirror@^5.45.0
 ```
 
 For CodeMirror mode support, add the following styles and assets to your project in `angular.json`
 
-```json
+```javascript
 {
     "assets": [
         {
@@ -71,7 +71,7 @@ TBA
 
 Import the editor module
 
-```ts
+```typescript
 @NgModule({
     imports: [EditorModule],
 })
@@ -80,13 +80,13 @@ export class BasicEditorModule {}
 
 Add this tag to your component template
 
-```html
+```markup
 <z-editor></z-editor>
 ```
 
 Features can be added through additional modules
 
-```ts
+```typescript
 @NgModule({
     imports: [
         EditorModule,
@@ -106,11 +106,11 @@ export class KitchenSinkEditorModule {}
 
 Documents can be loaded by passing in a serialised `ProseMirror` state object
 
-```html
+```markup
 <z-editor [state]="state" (stateChange)="save($event)"></z-editor>
 ```
 
-```ts
+```typescript
 @Component({ ... })
 export class BasicEditorComponent {
     state = {
@@ -135,16 +135,15 @@ Changes to the document or selection can be observed through the `stateChange` e
 
 ### Toolbar
 
-For convenience, Zodiac editor exports toolbar components built with Angular Material and FontAwesome. Some additional
-dependencies and config are required.
+For convenience, Zodiac editor exports toolbar components built with Angular Material and FontAwesome. Some additional dependencies and config are required.
 
-```
+```text
 npm install @angular/material@~7.2.2 @fortawesome/fontawesome-free@^5.8.1
 ```
 
 Add the following project config to `angular.json`
 
-```json
+```javascript
 {
     "styles": [
         "node_modules/@angular/material/prebuilt-themes/indigo-pink.css", // or another theme
@@ -156,7 +155,7 @@ Add the following project config to `angular.json`
 
 Now you can add the toolbar to your app
 
-```ts
+```typescript
 @NgModule({
     imports: [
         ...
@@ -166,14 +165,14 @@ Now you can add the toolbar to your app
 })
 ```
 
-```html
+```markup
 <z-editor-toolbar [editor]="editor"></z-editor-toolbar>
 <z-editor #editor></z-editor>
 ```
 
 This will render an empty toolbar. Add some tools to it.
 
-```ts
+```typescript
 @NgModule({
     imports: [
         ...
@@ -193,7 +192,7 @@ This will render an empty toolbar. Add some tools to it.
 })
 ```
 
-```html
+```markup
 <z-editor-toolbar [editor]="editor">
     <z-heading-tool></z-heading-tool>
     <z-strong-tool></z-strong-tool>
@@ -216,18 +215,18 @@ To create your own tools, toolbars or floating panels, refer to Advanced Usage.
 
 ## CodeModule
 
-> Ensure you've installed [peer dependencies](#codemodule-dependencies) before using this module
+> Ensure you've installed [peer dependencies](editor.md#codemodule-dependencies) before using this module
 
-```ts
+```typescript
 imports: [CodeModule.configure(config)]
 ```
 
-> config: [CodeModuleConfig](/libs/editor/src/plugins/code/interfaces.ts)
+> config: [CodeModuleConfig](https://github.com/zodiac-team/zodiac-ui/tree/4d768096819e10f7baa1fb0644104052d0d890a6/libs/editor/src/plugins/code/interfaces.ts)
 
-| Option     | Description                                 |
-| ---------- | ------------------------------------------- |
-| modeURL    | File pattern to load mode dependencies from |
-| extraModes | Additional metadata to append to modeInfo   |
+| Option | Description |
+| :--- | :--- |
+| modeURL | File pattern to load mode dependencies from |
+| extraModes | Additional metadata to append to modeInfo |
 
-Support for Angular language mode is [available here](/libs/editor/src/plugins/code/mode/angular.js). Copy this file to
-your assets folder (eg. `assets/modes/angular/angular.js`)
+Support for Angular language mode is [available here](https://github.com/zodiac-team/zodiac-ui/tree/4d768096819e10f7baa1fb0644104052d0d890a6/libs/editor/src/plugins/code/mode/angular.js). Copy this file to your assets folder \(eg. `assets/modes/angular/angular.js`\)
+

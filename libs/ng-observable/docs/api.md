@@ -1,109 +1,5 @@
 # API Reference
 
-- [API Reference](#api-reference)
-  * [Classes](#classes)
-    + [`NgObservable<T>`](#-ngobservable-t--)
-    + [Usage](#usage)
-      - [Override default lifecycle hooks](#override-default-lifecycle-hooks)
-      - [Subscribing to lifecycle events](#subscribing-to-lifecycle-events)
-      - [StreamSink](#streamsink)
-      - [Decorator Hooks](#decorator-hooks)
-      - [API](#api)
-    + [`StreamSink`](#-streamsink-)
-      - [Usage](#usage-1)
-      - [API](#api-1)
-    + [`StateFactory<T>`](#-statefactory-t--)
-      - [Usage](#usage-2)
-      - [API](#api-2)
-    + [`State<T>`](#-state-t--)
-      - [Usage](#usage-3)
-        * [Mapping `@Input()` props to `State<T>`](#mapping---input----props-to--state-t--)
-      - [API](#api-3)
-    + [`InvokeSubject<T>`](#-invokesubject-t--)
-      - [Usage](#usage-4)
-      - [API](#api-4)
-  * [Decorators](#decorators)
-    + [`@Computed<T>`](#--computed-t--)
-      - [Usage](#usage-5)
-      - [API](#api-5)
-    + [`@NgOnInit`](#--ngoninit-)
-      - [Usage](#usage-6)
-      - [API](#api-6)
-    + [`@NgOnChanges`](#--ngonchanges-)
-      - [Usage](#usage-7)
-      - [API](#api-7)
-    + [`@NgDoCheck`](#--ngdocheck-)
-      - [Usage](#usage-8)
-      - [API](#api-8)
-    + [`@NgAfterContentInit`](#--ngaftercontentinit-)
-      - [Usage](#usage-9)
-      - [API](#api-9)
-    + [`@NgAfterContentChecked`](#--ngaftercontentchecked-)
-      - [Usage](#usage-10)
-      - [API](#api-10)
-    + [`@NgAfterViewInit`](#--ngafterviewinit-)
-      - [Usage](#usage-11)
-      - [API](#api-11)
-    + [`@NgAfterViewChecked`](#--ngafterviewchecked-)
-      - [Usage](#usage-12)
-      - [API](#api-12)
-    + [`@NgOnDestroy`](#--ngondestroy-)
-      - [Usage](#usage-13)
-      - [API](#api-13)
-  * [Operators](#operators)
-    + [`ngOnChanges`](#-ngonchanges-)
-      - [Usage](#usage-14)
-      - [API](#api-14)
-    + [`ngOnInit`](#-ngoninit-)
-      - [Usage](#usage-15)
-      - [API](#api-15)
-    + [`ngDoCheck`](#-ngdocheck-)
-      - [Usage](#usage-16)
-      - [API](#api-16)
-    + [`ngAfterContentInit`](#-ngaftercontentinit-)
-      - [Usage](#usage-17)
-      - [API](#api-17)
-    + [`ngAfterContentChecked`](#-ngaftercontentchecked-)
-      - [Usage](#usage-18)
-      - [API](#api-18)
-    + [`ngAfterViewInit`](#-ngafterviewinit-)
-      - [Usage](#usage-19)
-      - [API](#api-19)
-    + [`ngAfterViewChecked`](#-ngafterviewchecked-)
-      - [Usage](#usage-20)
-      - [API](#api-20)
-    + [`ngOnDestroy`](#-ngondestroy-)
-      - [Usage](#usage-21)
-      - [API](#api-21)
-    + [`select<T, U>`](#-select-t--u--)
-      - [Usage](#usage-22)
-      - [API](#api-22)
-    + [`stream<T>`](#-stream-t--)
-      - [Usage](#usage-23)
-      - [API](#api-23)
-  * [Interfaces](#interfaces)
-    + [`NgHooksEvent<T>`](#-nghooksevent-t--)
-    + [`TypedChanges<T>`](#-typedchanges-t--)
-    + [`TypedChange<T>`](#-typedchange-t--)
-    + [`Sinkable`](#-sinkable-)
-  * [Utils](#utils)
-    + [`unsubscribe`](#-unsubscribe-)
-      - [Usage](#usage-24)
-  * [Providers](#providers)
-    + [`useDefaultLifecycleHooks`](#-usedefaultlifecyclehooks-)
-      - [Usage](#usage-25)
-  * [Constants](#constants)
-    + [`NgHooksEventType`](#-nghookseventtype-)
-    + [`ON_CHANGES`](#-on-changes-)
-    + [`ON_INIT`](#-on-init-)
-    + [`DO_CHECK`](#-do-check-)
-    + [`AFTER_CONTENT_INIT`](#-after-content-init-)
-    + [`AFTER_CONTENT_CHECKED`](#-after-content-checked-)
-    + [`AFTER_VIEW_INIT`](#-after-view-init-)
-    + [`AFTER_VIEW_CHECKED`](#-after-view-checked-)
-    + [`ON_DESTROY`](#-on-destroy-)
-    + [`LIFECYCLE_FLAGS`](#-lifecycle-flags-)
-
 ## Classes
 
 ### `NgObservable<T>`
@@ -123,11 +19,11 @@ export class MyComponent extends NgObservable<MyProps> {}
 
 `NgObservable<T>` emits the following lifecycle events by default:
 
--   `ON_INIT`
--   `ON_CHANGES`
--   `ON_CONTENT_INIT`
--   `ON_VIEW_INIT`
--   `ON_DESTROY`
+* `ON_INIT`
+* `ON_CHANGES`
+* `ON_CONTENT_INIT`
+* `ON_VIEW_INIT`
+* `ON_DESTROY`
 
 To change this per component instance, pass in flags through the constructor:
 
@@ -149,10 +45,9 @@ export class MyComponent extends NgObservable<MyProps> {
 
 #### Subscribing to lifecycle events
 
-`NgObservable<T>` turns your component into an observable that emits lifecycle events. To listen to these
-events, subscribe to your component:
+`NgObservable<T>` turns your component into an observable that emits lifecycle events. To listen to these events, subscribe to your component:
 
-```
+```typescript
 @Component()
 export class MyComponent extends NgObservable<MyProps> {
     constructor() {
@@ -163,7 +58,7 @@ export class MyComponent extends NgObservable<MyProps> {
 
 Use operators to listen for specific events:
 
-```
+```typescript
 @Component()
 export class MyComponent extends NgObservable<MyProps> {
     constructor() {
@@ -181,10 +76,9 @@ These will be cleaned up automatically when the component or directive is destro
 
 #### StreamSink
 
-For convenience the `NgObservable<T>` class provides a sink for your observable streams that will automatically
-clean up any subscriptions when the component or directive is destroyed
+For convenience the `NgObservable<T>` class provides a sink for your observable streams that will automatically clean up any subscriptions when the component or directive is destroyed
 
-```
+```typescript
 @Component()
 export class MyComponent extends NgObservable<MyProps> {
     constructor(myService: MyService) {
@@ -200,14 +94,13 @@ export class MyComponent extends NgObservable<MyProps> {
 
 #### Decorator Hooks
 
-The constructor might not be the best place to initialise streams. Hooks let you decorate any method to be
-called after a particular lifecycle event. The benefit of this over using the normal angular hooks?
+The constructor might not be the best place to initialise streams. Hooks let you decorate any method to be called after a particular lifecycle event. The benefit of this over using the normal angular hooks?
 
 1. Hooks can decorate multiple methods
 2. Methods can be named semantically
 3. Don't need to override base methods
 
-```
+```typescript
 @Component()
 export class MyComponent extends NgObservable<MyProps> {
     @Input() title: string
@@ -238,9 +131,9 @@ export class MyComponent extends NgObservable<MyProps> {
 
 Inherits from `Observable<NgHooksEvent<T>>`
 
-| Property | Type       | Description                              |
-| :------- | :--------- | :--------------------------------------- |
-| `sink`   | `Sinkable` | Sink a stream through object assignment. |
+| Property | Type | Description |
+| :--- | :--- | :--- |
+| `sink` | `Sinkable` | Sink a stream through object assignment. |
 
 ### `StreamSink`
 
@@ -285,12 +178,12 @@ export class MyService implements OnDestroy() {
 
 #### API
 
-| Property      | Type                                | Description                              |
-| :------------ | :---------------------------------- | :--------------------------------------- |
-| `sinkAll`     | `(...sinkables: Sinkables[]): void` | Sink all streams passed to it.           |
-| `sink`        | `Sinkable`                          | Sink a stream through object assignment. |
-| `close`       | `(): void`                          | Close and dispose of all streams.        |
-| `ngOnDestroy` | `(): void`                          | OnDestroy lifecycle hook                 |
+| Property | Type | Description |
+| :--- | :--- | :--- |
+| `sinkAll` | `(...sinkables: Sinkables[]): void` | Sink all streams passed to it. |
+| `sink` | `Sinkable` | Sink a stream through object assignment. |
+| `close` | `(): void` | Close and dispose of all streams. |
+| `ngOnDestroy` | `(): void` | OnDestroy lifecycle hook |
 
 ### `StateFactory<T>`
 
@@ -315,14 +208,13 @@ export class MyComponent implements MyState {
 
 #### API
 
-| Property | Type                                                            | Description           |
-| :------- | :-------------------------------------------------------------- | :-------------------- |
+| Property | Type | Description |
+| :--- | :--- | :--- |
 | `create` | `(value: T, notifier: Observable<Partial<T> or void): State<T>` | Create a state object |
 
 ### `State<T>`
 
-Centralised state management service for Angular components and directives. To be used with
-`ChangeDetectionStrategy.OnPush`.
+Centralised state management service for Angular components and directives. To be used with `ChangeDetectionStrategy.OnPush`.
 
 #### Usage
 
@@ -349,13 +241,11 @@ export class MyComponent implements MyState {
 }
 ```
 
-##### Mapping `@Input()` props to `State<T>`
+**Mapping @Input\(\) props to State&lt;T&gt;**
 
-> This step is optional if you don't need to subscribe to `@Input()`
-> changes.
+> This step is optional if you don't need to subscribe to `@Input()` changes.
 
-To keep the state in sync with `@Input()` props it is necessary to notify the `State<T>`
-when changes are made. Here's a couple of options:
+To keep the state in sync with `@Input()` props it is necessary to notify the `State<T>` when changes are made. Here's a couple of options:
 
 Notify with `OnChanges`:
 
@@ -375,26 +265,22 @@ export class MyComponent extends NgObservable<MyProps> implements MyState {
 }
 ```
 
-> Note: `mapPropsToState` assumes that `MyState` extends `MyProps`. If you would rather map
-> props to state differently, consider using the `ngOnChanges` operator.
+> Note: `mapPropsToState` assumes that `MyState` extends `MyProps`. If you would rather map props to state differently, consider using the `ngOnChanges` operator.
 
 #### API
 
 Inherits from `BehaviorSubject<T>`
 
-| Property        | Type                       | Description                                        |
-| :-------------- | :------------------------- | :------------------------------------------------- |
-| `value`         | `readonly T`               | The current value of the state                     |
-| `next()`        | `(partialState?: T): void` | Update the state and queue a change detection run. |
-| `unsubscribe()` | `(): void`                 | Close the state and unsubscribe from notifiers.    |
-| `ngOnDestroy`   | `(): void`                 | OnDestroy lifecycle hook                           |
+| Property | Type | Description |
+| :--- | :--- | :--- |
+| `value` | `readonly T` | The current value of the state |
+| `next()` | `(partialState?: T): void` | Update the state and queue a change detection run. |
+| `unsubscribe()` | `(): void` | Close the state and unsubscribe from notifiers. |
+| `ngOnDestroy` | `(): void` | OnDestroy lifecycle hook |
 
 ### `InvokeSubject<T>`
 
-A subject that implements both `Subject<T>` and `Function` interfaces. Using this subject
-in place of a normal method turns all invocations of that method into an observable stream without
-needing to modify the source of the caller. When called with multiple arguments it will emit the
-arguments as an array.
+A subject that implements both `Subject<T>` and `Function` interfaces. Using this subject in place of a normal method turns all invocations of that method into an observable stream without needing to modify the source of the caller. When called with multiple arguments it will emit the arguments as an array.
 
 #### Usage
 
@@ -418,17 +304,16 @@ export class MyComponent implements OnDestroy {
 
 Inherits from `Function` and `Subject<T>`.
 
-| Property       | Type                   | Description                         |
-| :------------- | :--------------------- | :---------------------------------- |
-| `[[Function]]` | `(next: T): void`      | Invoke the next value to be emitted |
+| Property | Type | Description |
+| :--- | :--- | :--- |
+| `[[Function]]` | `(next: T): void` | Invoke the next value to be emitted |
 | `[[Function]]` | `(...next: T[]): void` | Invoke the next value to be emitted |
 
 ## Decorators
 
 ### `@Computed<T>`
 
-Calculates computed properties with the provided function. Transforms the target property
-into a readonly getter. Use memoized functions for extra performance.
+Calculates computed properties with the provided function. Transforms the target property into a readonly getter. Use memoized functions for extra performance.
 
 #### Usage
 
@@ -448,8 +333,7 @@ export class MyComponent implements MyState {
 }
 ```
 
-Use factory functions when creating memoized selectors so that each
-instance of the class gets its own cache. For example:
+Use factory functions when creating memoized selectors so that each instance of the class gets its own cache. For example:
 
 ```typescript
 // This example uses createSelector from @ngrx/store
@@ -470,8 +354,8 @@ const $selectFullName = () =>
 
 #### API
 
-| Arguments                                  | Description                                         |
-| :----------------------------------------- | :-------------------------------------------------- |
+| Arguments | Description |
+| :--- | :--- |
 | `selectorFactory: () => (state: any) => T` | Selector factory that calculates the computed value |
 
 Returns `PropertyDecorator`
@@ -631,8 +515,8 @@ export class MyComponent extends NgObservable<T> {
 
 #### API
 
-| Arguments                             | Description                                          |
-| :------------------------------------ | :--------------------------------------------------- |
+| Arguments | Description |
+| :--- | :--- |
 | `source: Observable<NgHooksEvent<T>>` | The upstream observable emitted by `NgObservable<T>` |
 
 Returns `Observable<TypedChanges<T>>`
@@ -654,8 +538,8 @@ export class MyComponent extends NgObservable<T> {
 
 #### API
 
-| Arguments                             | Description                                          |
-| :------------------------------------ | :--------------------------------------------------- |
+| Arguments | Description |
+| :--- | :--- |
 | `source: Observable<NgHooksEvent<T>>` | The upstream observable emitted by `NgObservable<T>` |
 
 Returns `Observable<void>`
@@ -677,8 +561,8 @@ export class MyComponent extends NgObservable<T> {
 
 #### API
 
-| Arguments                             | Description                                          |
-| :------------------------------------ | :--------------------------------------------------- |
+| Arguments | Description |
+| :--- | :--- |
 | `source: Observable<NgHooksEvent<T>>` | The upstream observable emitted by `NgObservable<T>` |
 
 Returns `Observable<void>`
@@ -700,8 +584,8 @@ export class MyComponent extends NgObservable<T> {
 
 #### API
 
-| Arguments                             | Description                                          |
-| :------------------------------------ | :--------------------------------------------------- |
+| Arguments | Description |
+| :--- | :--- |
 | `source: Observable<NgHooksEvent<T>>` | The upstream observable emitted by `NgObservable<T>` |
 
 Returns `Observable<void>`
@@ -723,8 +607,8 @@ export class MyComponent extends NgObservable<T> {
 
 #### API
 
-| Arguments                             | Description                                          |
-| :------------------------------------ | :--------------------------------------------------- |
+| Arguments | Description |
+| :--- | :--- |
 | `source: Observable<NgHooksEvent<T>>` | The upstream observable emitted by `NgObservable<T>` |
 
 Returns `Observable<void>`
@@ -746,8 +630,8 @@ export class MyComponent extends NgObservable<T> {
 
 #### API
 
-| Arguments                             | Description                                          |
-| :------------------------------------ | :--------------------------------------------------- |
+| Arguments | Description |
+| :--- | :--- |
 | `source: Observable<NgHooksEvent<T>>` | The upstream observable emitted by `NgObservable<T>` |
 
 Returns `Observable<void>`
@@ -769,8 +653,8 @@ export class MyComponent extends NgObservable<T> {
 
 #### API
 
-| Arguments                             | Description                                          |
-| :------------------------------------ | :--------------------------------------------------- |
+| Arguments | Description |
+| :--- | :--- |
 | `source: Observable<NgHooksEvent<T>>` | The upstream observable emitted by `NgObservable<T>` |
 
 Returns `Observable<void>`
@@ -792,19 +676,17 @@ export class MyComponent extends NgObservable<T> {
 
 #### API
 
-| Arguments                             | Description                                          |
-| :------------------------------------ | :--------------------------------------------------- |
+| Arguments | Description |
+| :--- | :--- |
 | `source: Observable<NgHooksEvent<T>>` | The upstream observable emitted by `NgObservable<T>` |
 
 Returns `Observable<void>`
 
 ### `select<T, U>`
 
-Derive state from upstream observable and emit when the derived state changes. Recommended for use with `State<T>`.
-Provided for convenience if other select methods aren't available.
+Derive state from upstream observable and emit when the derived state changes. Recommended for use with `State<T>`. Provided for convenience if other select methods aren't available.
 
-> If you're using this to derive properties from a component or directive, consider using `@Computed<T>`
-> properties
+> If you're using this to derive properties from a component or directive, consider using `@Computed<T>` properties
 
 #### Usage
 
@@ -850,8 +732,7 @@ select<T, U>(state: Observable<T>, selector: (state: T) => U): Observable<U>
 
 ### `stream<T>`
 
-Alternative form of `subscribe()` for Observables. Connects an observer with the upstream observable and emits the
-teardown logic. Use with `StreamSink` for a more concise stream/sink syntax.
+Alternative form of `subscribe()` for Observables. Connects an observer with the upstream observable and emits the teardown logic. Use with `StreamSink` for a more concise stream/sink syntax.
 
 #### Usage
 
@@ -870,8 +751,8 @@ streamSink.sink = stream(count)(interval(1000))
 
 #### API
 
-| Arguments                             | Description                                 |
-| :------------------------------------ | :------------------------------------------ |
+| Arguments | Description |
+| :--- | :--- |
 | `partialObserver: PartialObserver<T>` | Accepts the same arguments as `subscribe()` |
 
 Returns `(source: Observable<T>) => Observable<TeardownLogic>`
@@ -929,8 +810,7 @@ unsubscribe(sub1, sub2, sub3)
 
 ### `useDefaultLifecycleHooks`
 
-Provides the default lifecycle flags to be used by `NgObservable<T>`. Lifecycle events will only be emitted for
-the flags that are provided by this token unless overwritten at the component or directive level.
+Provides the default lifecycle flags to be used by `NgObservable<T>`. Lifecycle events will only be emitted for the flags that are provided by this token unless overwritten at the component or directive level.
 
 #### Usage
 
@@ -986,3 +866,4 @@ Lifecycle flag used by `NgObservable<T>` to determine if events for this hook sh
 ### `LIFECYCLE_FLAGS`
 
 Injection token to configure the default lifecycle events emitted by `NgObservable<T>`
+
