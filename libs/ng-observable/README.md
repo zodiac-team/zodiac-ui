@@ -14,13 +14,12 @@ AoT compatible functional reactive utilities and component level state managemen
 
 ## API
 
-[Read the docs](docs/api.md)
+[Read the docs](https://zodiac-team.gitbook.io/ng-observable/libs/ng-observable/docs/api)
 
-[See an example](docs/example.md)
+[See an example](https://zodiac-team.gitbook.io/ng-observable/libs/ng-observable/docs/example)
 
 ## Setup
 
-```typescript
+```
 npm install @zodiac-ui/ng-observable
 ```
-
