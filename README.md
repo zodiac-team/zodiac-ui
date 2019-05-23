@@ -1,19 +1,35 @@
-<p>
-<img src="https://travis-ci.com/zodiac-team/zodiac-ui.svg?branch=master" alt="Coverage Status" />
-<a href="https://coveralls.io/github/zodiac-team/zodiac-ui?branch=master"><img src="https://coveralls.io/repos/github/zodiac-team/zodiac-ui/badge.svg?branch=master" alt="Coverage Status" /></a>
-<a href="https://opensource.org/licenses/MIT" rel="nofollow"><img src="https://camo.githubusercontent.com/3ccf4c50a1576b0dd30b286717451fa56b783512/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4c6963656e73652d4d49542d79656c6c6f772e737667" alt="License: MIT" data-canonical-src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
-</p>
+---
+description: >-
+  Turn Angular directives and components into observable streams. Observable
+  lifecycle hooks, local state management pattern, lifecycle decorators,
+  stream/sink, computed properties and more.
+---
 
-# Zodiac UI
+# NgObservable
 
-A collection of useful UI libraries for Angular.
+AoT compatible functional reactive utilities and component level state management for Angular.
 
-## Packages
+* 🚀 Observe lifecycle hooks such as `ngOnInit`, `ngOnChanges` and more
+* 🎉 Convert `HostListener` and template events into observable streams
+* 🍷 Make computed properties with the `@Computed` decorator
+* 💥 Use decorators for all of the builtin lifecycle hooks
+* ✈️ Standardised state management pattern for components and directives with automatic change detection
+* 🚫 Escape async hell and redundant placeholder variables
+* 🚮 Automatically clean up subscriptions with `StreamSink`
+* 🎈 Get strongly typed changes with `TypedChanges<T>`
+* 👉 Extract implementation details into easily testable pure functions
 
-| Package                                               | Version                                                                                                                                                                       | Description                                                                                   |
-| ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| [@zodiac-ui/ng-observable](/libs/ng-observable)       | <a href="https://badge.fury.io/js/%40zodiac-ui%2Fng-observable"><img src="https://badge.fury.io/js/%40zodiac-ui%2Fng-observable.svg" alt="npm version" height="18"></a>       | AoT compatible functional reactive utilities and component level state management for Angular |
-| [@zodiac-ui/formula](/libs/formula)                   | <a href="https://badge.fury.io/js/%40zodiac-ui%2Fformula"><img src="https://badge.fury.io/js/%40zodiac-ui%2Fformula.svg" alt="npm version" height="18"></a>                   | A form generator inspired by Angular Router                                                   |
-| [@zodiac-ui/formula-material](/libs/formula-material) | <a href="https://badge.fury.io/js/%40zodiac-ui%2Fformula-material"><img src="https://badge.fury.io/js/%40zodiac-ui%2Fformula-material.svg" alt="npm version" height="18"></a> | Angular Material components for Formula                                                       |
-| [@zodiac-ui/store](/libs/store)                       | <a href="https://badge.fury.io/js/%40zodiac-ui%2Fstore"><img src="https://badge.fury.io/js/%40zodiac-ui%2Fstore.svg" alt="npm version" height="18"></a>                       | An immutable store implementation based on ngrx                                               |
-| [@zodiac-ui/editor](/libs/editor)                     | <a href="https://badge.fury.io/js/%40zodiac-ui%2Feditor"><img src="https://badge.fury.io/js/%40zodiac-ui%2Feditor.svg" alt="npm version" height="18"></a>                     | A rich text editor for Angular built on ProseMirror                                           |
+## API
+
+[Read the docs](api.md)
+
+[See an example](example.md)
+
+## Setup
+
+```text
+npm install @zodiac-ui/ng-observable
+```
+
+
+
