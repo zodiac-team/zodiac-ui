@@ -732,7 +732,8 @@ select<T, U>(state: Observable<T>, selector: (state: T) => U): Observable<U>
 
 ### `stream<T>`
 
-Alternative form of `subscribe()` for Observables. Connects an observer with the upstream observable and emits the teardown logic. Use with `StreamSink` for a more concise stream/sink syntax.
+Connects an observer with the upstream observable but only forwards `next` values. Uncaught errors are only logged and completions are discarded.
+The resulting observable emits the teardown logic for the subscription. Use with `StreamSink` for a more concise stream/sink syntax.
 
 #### Usage
 

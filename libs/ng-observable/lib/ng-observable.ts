@@ -25,10 +25,6 @@ import { StreamSink } from "./stream-sink"
 import { createMask } from "./internals/create-mask"
 import { unsubscribe } from "./utils"
 
-
-/**
- *
- */
 export abstract class NgObservable<Props extends any = any> extends Observable<NgHooksEvent<Props>>
     implements
         OnInit,
@@ -61,6 +57,10 @@ export abstract class NgObservable<Props extends any = any> extends Observable<N
         this._eventEmitter = new Subject()
         this._features = flags.length ? createMask(...flags) : NgObservable.DEFAULT_LIFECYCLE_HOOKS
         this._stream = new StreamSink()
+    }
+
+    protected sinkAll(...sinkables: Sinkable[]) {
+        this._stream.sinkAll(...sinkables)
     }
 
     public ngOnChanges(changes: TypedChanges<any>): void {
