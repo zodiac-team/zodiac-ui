@@ -1,6 +1,6 @@
 import { TestBed } from "@angular/core/testing"
 
-import { StateFactory } from "./state-factory"
+import { StateFactory } from "./state"
 
 describe("StateFactoryService", () => {
     beforeEach(() =>

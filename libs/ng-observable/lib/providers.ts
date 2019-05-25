@@ -1,6 +1,6 @@
 import { APP_INITIALIZER } from "@angular/core"
 import { configureLifecycleHooks } from "./internals/configure-lifecycle-hooks"
-import { LIFECYCLE_FLAGS } from "./constants"
+import { LIFECYCLE_FLAGS, STATE_CHANGE_STRATEGY, StateChangeStrategy } from "./constants"
 
 export function useDefaultLifecycleHooks(...flags: number[]) {
     return [
@@ -15,4 +15,11 @@ export function useDefaultLifecycleHooks(...flags: number[]) {
             useValue: flags,
         },
     ]
+}
+
+export function useStateChangeStrategy(strategy: StateChangeStrategy) {
+    return {
+        provide: STATE_CHANGE_STRATEGY,
+        useValue: strategy
+    }
 }

@@ -8,7 +8,7 @@ export interface TypedChange<T> {
     isFirstChange(): boolean
 }
 
-export type TypedChanges<T> = { [key in keyof T]: TypedChange<T[key]> }
+export type TypedChanges<T> = { [key in keyof T]?: TypedChange<T[key]> }
 
 export type NgHooksEvent<T extends any = any> =
     | [NgHooksEventType, TypedChanges<T>]
