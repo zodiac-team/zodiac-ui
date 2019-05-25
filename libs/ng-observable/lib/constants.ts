@@ -24,7 +24,9 @@ export const LIFECYCLE_FLAGS = new InjectionToken<number>("FLAGS")
 
 export enum StateChangeStrategy {
     REATTACH = 0,
-    DETACH = 1
+    DETACH = 1,
 }
 
-export const STATE_CHANGE_STRATEGY = new InjectionToken<StateChangeStrategy>("STATE_CHANGE_STRATEGY")
+export const STATE_CHANGE_STRATEGY = new InjectionToken<StateChangeStrategy>(
+    "STATE_CHANGE_STRATEGY",
+)

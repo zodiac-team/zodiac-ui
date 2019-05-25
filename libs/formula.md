@@ -54,33 +54,33 @@ If you'd like to learn more, read on or [check out the example](https://github.c
 
 Formula aims to achieve feature symmetry with the `Route` interface from `@angular/router` and `FormBuilder` from `@angular/forms`.
 
-* Builder \(in progress\): A convenient utility for generating Formula objects
-* Renderer \(in progress\): Automatically synchronises the UI based on the current formula and value
-* FormArray \(in progress\): Automatically populate array controls based on the current value and expose api
+-   Builder \(in progress\): A convenient utility for generating Formula objects
+-   Renderer \(in progress\): Automatically synchronises the UI based on the current formula and value
+-   FormArray \(in progress\): Automatically populate array controls based on the current value and expose api
 
-  for adding, moving or removing controls
+    for adding, moving or removing controls
 
-* Guards \(not supported yet\): Contextually control whether a form node can be loaded, activated or deactivated
-* Resolve \(not supported yet\): Contextually fetch remote or async data
+-   Guards \(not supported yet\): Contextually control whether a form node can be loaded, activated or deactivated
+-   Resolve \(not supported yet\): Contextually fetch remote or async data
 
-  \(eg. populating select options based on the current user\)
+    \(eg. populating select options based on the current user\)
 
-* LoadChildren \(not supported yet\): To allow for code splitting/lazy loading
-* StyleGuide \(in progress\): A common convention for declaring readable, composible, maintainable forms
-* Themes \(in progress\): Apply different styles to the same form by targeting classes exposed by each form element
-* FormContainer \(in progress\): Formula provides a container type useful for adding nodes that do not need a model
+-   LoadChildren \(not supported yet\): To allow for code splitting/lazy loading
+-   StyleGuide \(in progress\): A common convention for declaring readable, composible, maintainable forms
+-   Themes \(in progress\): Apply different styles to the same form by targeting classes exposed by each form element
+-   FormContainer \(in progress\): Formula provides a container type useful for adding nodes that do not need a model
 
-  \(eg. a submit button\)
+    \(eg. a submit button\)
 
-* Smart Validators \(not supported yet\): In addition to the usual validator options, Formula will also support
+-   Smart Validators \(not supported yet\): In addition to the usual validator options, Formula will also support
 
-  validator class tokens that will be instantiated with the Angular injector.
+    validator class tokens that will be instantiated with the Angular injector.
 
-* Computed Fields \(in progress\): A method for creating one-way or two-way computed fields that react to changes in
+-   Computed Fields \(in progress\): A method for creating one-way or two-way computed fields that react to changes in
 
-  the form model
+    the form model
 
-* Material \(in progress\): A [support library](formula-material.md) that wraps Angular Material
+-   Material \(in progress\): A [support library](formula-material.md) that wraps Angular Material
 
 ## FormulaBuilder
 
@@ -88,11 +88,11 @@ Formula provides a form builder to construct Formula objects that are used to re
 
 ### API
 
-| Member | Description |
-| :--- | :--- |
-| `group: FormulaBuildFn<FormulaGroup>` | Creates a factory for `FormulaType.GROUP` nodes |
-| `array: FormulaBuildFn<FormulaArray>` | Creates a factory for `FormulaType.ARRAY` nodes |
-| `control: FormulaBuildFn<FormulaControl>` | Creates a factory for `FormulaType.CONTROL` nodes |
+| Member                                        | Description                                         |
+| :-------------------------------------------- | :-------------------------------------------------- |
+| `group: FormulaBuildFn<FormulaGroup>`         | Creates a factory for `FormulaType.GROUP` nodes     |
+| `array: FormulaBuildFn<FormulaArray>`         | Creates a factory for `FormulaType.ARRAY` nodes     |
+| `control: FormulaBuildFn<FormulaControl>`     | Creates a factory for `FormulaType.CONTROL` nodes   |
 | `container: FormulaBuildFn<FormulaContainer>` | Creates a factory for `FormulaType.CONTAINER` nodes |
 
 ### Usage
@@ -131,15 +131,15 @@ Creates a `FormulaNode` tree that is used to render a form. `FormulaDirective` p
 
 Formula is under active development. The current API is experimental and likely to change before release.
 
-| Member | Description |
-| :--- | :--- |
-| `@Input() formula: Formula` | The formula to be rendered. See `Formula` for options. |
-| `@Input() value: any` | Form value setter. Unknown object keys are discarded. |
-| `@Output() valueChanges: EventEmitter<any>` | Forwards `valueChanges` from `AbstractControl`. |
-| `@Output() statusChanges: EventEmitter<any>` | Forwards `statusChanges` from `AbstractControl`. |
-| `@Output() submit: EventEmitter<any>` | Forwards `submit` events from a registered `NgForm`. |
-| `setForm(form: NgForm): void` | Registers a `NgForm` with the outlet. |
-| `setValue(value: any): void` | Immediately patches the value of the form |
+| Member                                       | Description                                            |
+| :------------------------------------------- | :----------------------------------------------------- |
+| `@Input() formula: Formula`                  | The formula to be rendered. See `Formula` for options. |
+| `@Input() value: any`                        | Form value setter. Unknown object keys are discarded.  |
+| `@Output() valueChanges: EventEmitter<any>`  | Forwards `valueChanges` from `AbstractControl`.        |
+| `@Output() statusChanges: EventEmitter<any>` | Forwards `statusChanges` from `AbstractControl`.       |
+| `@Output() submit: EventEmitter<any>`        | Forwards `submit` events from a registered `NgForm`.   |
+| `setForm(form: NgForm): void`                | Registers a `NgForm` with the outlet.                  |
+| `setValue(value: any): void`                 | Immediately patches the value of the form              |
 
 ### Usage
 
@@ -217,4 +217,3 @@ A basic wrapper for `NgForm` that forwards native submit events to the root `For
 ### Usage
 
 See [Formula Outlet](formula.md#formulaoutlet)
-

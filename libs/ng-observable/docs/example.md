@@ -1,8 +1,8 @@
 ---
 description: >-
-  This is a simple example demonstrating most of the features of this library.
-  Implementation details are extracted from the class definition and omitted for
-  brevity.
+    This is a simple example demonstrating most of the features of this library.
+    Implementation details are extracted from the class definition and omitted for
+    brevity.
 ---
 
 # Example
@@ -63,7 +63,7 @@ export class HelloComponent extends NgObservable<HelloProps> implements HelloSta
     constructor(
         @Self() stateFactory: StateFactory<HelloState>,
         store: Store<AppStore>,
-        someService: SomeService
+        someService: SomeService,
     ) {
         super()
 
@@ -105,4 +105,3 @@ export class HelloComponent extends NgObservable<HelloProps> implements HelloSta
     }
 }
 ```
-

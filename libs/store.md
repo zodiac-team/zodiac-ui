@@ -4,40 +4,40 @@ An immutable store implementation for Angular based on ngrx.
 
 ## Table of Contents
 
-* [Early Access](store.md#early-access)
-* [Getting Started](store.md#getting-started)
-* [Introduction](store.md#introduction)
-* [Usage](store.md#usage)
-  * [Initial State](store.md#initial-state)
-  * [Selectors](store.md#selectors)
-  * [Computed Properties](store.md#computed-properties)
-  * [Read State](store.md#read-state)
-  * [Set State](store.md#set-state)
-  * [Actions](store.md#actions)
-  * [Effects](store.md#effects)
-  * [Feature Modules](store.md#feature-modules)
-  * [Redux Devtools](store.md#redux-devtools)
-* [Api](store.md#api)
-  * [Store](store.md#store)
-    * [state](store.md#state)
-    * [dispatch\(action\)](store.md#dispatchaction)
-    * [setState\(setter\)](store.md#setstatesetter)
-    * [select\(selector\)](store.md#selectselector)
-    * [subscribe\(2 overloads\)](store.md#subscribe2-overloads)
-  * [StoreDirective](store.md#storedirective)
-    * [StoreContext](store.md#storecontext)
-  * [Operators](store.md#operators)
-    * [dispatch\(store, setter\)](store.md#dispatchstore-setter)
-    * [setState\(store, setter\)](store.md#setstatestore-setter)
-    * [select\(selector\)](store.md#selectselectorspan-stylecolor-transparent2span)
-    * [ofAction\(action\)](store.md#ofactionaction)
-    * [ofEffect\(effect\)](store.md#ofeffecteffect)
-    * [withLatestState\(store\)](store.md#withlateststatestore)
-  * [Utils](store.md#utils)
-    * [@OfType\(type\)](store.md#oftypetype)
-    * [createConnector\\(\)](store.md#createconnectort)
-    * [createFeatureSelector\(\)](store.md#createfeatureselector)
-    * [createSelector\(97 overloads\)](store.md#createselector97-overloads)
+-   [Early Access](store.md#early-access)
+-   [Getting Started](store.md#getting-started)
+-   [Introduction](store.md#introduction)
+-   [Usage](store.md#usage)
+    -   [Initial State](store.md#initial-state)
+    -   [Selectors](store.md#selectors)
+    -   [Computed Properties](store.md#computed-properties)
+    -   [Read State](store.md#read-state)
+    -   [Set State](store.md#set-state)
+    -   [Actions](store.md#actions)
+    -   [Effects](store.md#effects)
+    -   [Feature Modules](store.md#feature-modules)
+    -   [Redux Devtools](store.md#redux-devtools)
+-   [Api](store.md#api)
+    -   [Store](store.md#store)
+        -   [state](store.md#state)
+        -   [dispatch\(action\)](store.md#dispatchaction)
+        -   [setState\(setter\)](store.md#setstatesetter)
+        -   [select\(selector\)](store.md#selectselector)
+        -   [subscribe\(2 overloads\)](store.md#subscribe2-overloads)
+    -   [StoreDirective](store.md#storedirective)
+        -   [StoreContext](store.md#storecontext)
+    -   [Operators](store.md#operators)
+        -   [dispatch\(store, setter\)](store.md#dispatchstore-setter)
+        -   [setState\(store, setter\)](store.md#setstatestore-setter)
+        -   [select\(selector\)](store.md#selectselectorspan-stylecolor-transparent2span)
+        -   [ofAction\(action\)](store.md#ofactionaction)
+        -   [ofEffect\(effect\)](store.md#ofeffecteffect)
+        -   [withLatestState\(store\)](store.md#withlateststatestore)
+    -   [Utils](store.md#utils)
+        -   [@OfType\(type\)](store.md#oftypetype)
+        -   [createConnector\\(\)](store.md#createconnectort)
+        -   [createFeatureSelector\(\)](store.md#createfeatureselector)
+        -   [createSelector\(97 overloads\)](store.md#createselector97-overloads)
 
 ## Early Access
 
@@ -445,44 +445,44 @@ Actions can also be dispatched to trigger effects
 A getter that returns an immutable snapshot of the current state
 
 | Returns |
-| :--- |
-| `T` |
+| :------ |
+| `T`     |
 
 #### dispatch\(action\)
 
 Immediately dispatches an action globally to the actions stream
 
-| Param | Description |
-| :--- | :--- |
+| Param         | Description                                                               |
+| :------------ | :------------------------------------------------------------------------ |
 | `action: any` | Any plain javascript object, usually with a `type` and optional `payload` |
 
 | Returns |
-| :--- |
-| `void` |
+| :------ |
+| `void`  |
 
 #### setState\(setter\)
 
 Accepts an object for partially or wholly replacing the previous state, or a producer function. Calls to `setState` are batched to prevent unnecessary change detections and can be called multiple times in the same tick. Objects are only shallow copied, so the state should be kept as flat as possible. Use [Computed Properties](store.md#computed-properties) for values that are derived from state.
 
-| Param | Description |
-| :--- | :--- |
+| Param                       | Description                                                                                                            |
+| :-------------------------- | :--------------------------------------------------------------------------------------------------------------------- |
 | `setter: (state: T) => any` | A producer function passed directly to `immer`. Throws if return value is not void and does not match state signature. |
-| `setter: Partial<T>` | A plain object that partially or wholly replaces the store state. |
+| `setter: Partial<T>`        | A plain object that partially or wholly replaces the store state.                                                      |
 
 | Returns |
-| :--- |
-| `void` |
+| :------ |
+| `void`  |
 
 #### select\(selector\)
 
 Returns an observable that is derived from state and emits a new value whenever the state changes. Pass a memoized selector to prevent performance issues in heavy computations
 
-| Param | Description |
-| :--- | :--- |
+| Param                          | Description                                                     |
+| :----------------------------- | :-------------------------------------------------------------- |
 | `selector: <U>(state: T) => U` | A selector function that returns a value derived from the state |
 
-| Returns |
-| :--- |
+| Returns         |
+| :-------------- |
 | `Observable<U>` |
 
 #### subscribe\(2 overloads\)
@@ -491,8 +491,8 @@ Inherited from `Observable`
 
 Emits the entire state whenever the state changes. Use with the `select`, `dispatch` and `setState` operators to create reactive streams
 
-| Returns |
-| :--- |
+| Returns         |
+| :-------------- |
 | `Observable<T>` |
 
 ### StoreDirective
@@ -507,8 +507,8 @@ Automatically subscribes/unsubscribes from the store and performs change detecti
 
 #### StoreContext
 
-| Property | Description |
-| :--- | :--- |
+| Property    | Description                                                     |
+| :---------- | :-------------------------------------------------------------- |
 | `$implicit` | A selector function that returns a value derived from the state |
 
 ### Operators
@@ -519,76 +519,76 @@ A number of useful operators are included for composing reactive streams
 
 Taps a store to immediately dispatch an action. Returns the source Observable for further chaining.
 
-| Param | Description |
-| :--- | :--- |
-| `store: StoreLike<T>` | An object that implements the `StoreLike` interface |
-| `setter: any` | An action to dispatch, usually with a `type` and optional `payload` |
+| Param                                | Description                                                                                    |
+| :----------------------------------- | :--------------------------------------------------------------------------------------------- |
+| `store: StoreLike<T>`                | An object that implements the `StoreLike` interface                                            |
+| `setter: any`                        | An action to dispatch, usually with a `type` and optional `payload`                            |
 | `setter: (context: inferred) => any` | A function that returns an action, with the upstream observable value passed in as a paramater |
 
-| Returns |
-| :--- |
+| Returns                |
+| :--------------------- |
 | `Observable<inferred>` |
 
 #### setState\(store, setter\)
 
 Taps a store to immediately update its state. Returns the source Observable for further chaining.
 
-| Param | Description |
-| :--- | :--- |
-| `store: StoreLike<T>` | An object that implements the `StoreLike` interface |
+| Param                                          | Description                                                                                                                                                                                  |
+| :--------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `store: StoreLike<T>`                          | An object that implements the `StoreLike` interface                                                                                                                                          |
 | `setter: (state: T, context: inferred) => any` | A producer function passed directly to `immer`. Throws if return value is not void and does not match state signature. The upstream observable value is also passed in as a second parameter |
-| `setter: Partial<T>` | A plain object that partially or wholly replaces the store state. |
+| `setter: Partial<T>`                           | A plain object that partially or wholly replaces the store state.                                                                                                                            |
 
-| Returns |
-| :--- |
+| Returns                |
+| :--------------------- |
 | `Observable<inferred>` |
 
 #### select\(selector\)2
 
 Functionally identical to [select](store.md#selectselector), except it can be used to derive a value from any source Observable
 
-| Param | Description |
-| :--- | :--- |
+| Param                          | Description                                                     |
+| :----------------------------- | :-------------------------------------------------------------- |
 | `selector: <U>(state: T) => U` | A selector function that returns a value derived from the state |
 
-| Returns |
-| :--- |
+| Returns         |
+| :-------------- |
 | `Observable<U>` |
 
 #### ofAction\(action\)
 
 Filter the actions stream to a subset of values based on its `type`
 
-| Param | Description |
-| :--- | :--- |
+| Param             | Description                                                                                                                         |
+| :---------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
 | `action: Type<U>` | A class token that instantiates an action with the same `type`. Must be decorated with the [OfType](store.md#oftypetype) annotation |
 
-| Returns |
-| :--- |
+| Returns         |
+| :-------------- |
 | `Observable<U>` |
 
 #### ofEffect\(effect\)
 
 Filter the effects stream to a subset of values based on its identity
 
-| Param | Description |
-| :--- | :--- |
+| Param                                       | Description                                                                        |
+| :------------------------------------------ | :--------------------------------------------------------------------------------- |
 | `effect: (...args: any[]) => Observable<T>` | A reference to an effect created using [createConnector](store.md#createconnector) |
 
-| Returns |
-| :--- |
+| Returns         |
+| :-------------- |
 | `Observable<U>` |
 
 #### withLatestState\(store\)
 
 A more semantic version of `WithLatestFrom`, typed to the state of the store that is passed in
 
-| Param | Description |
-| :--- | :--- |
+| Param                 | Description                                         |
+| :-------------------- | :-------------------------------------------------- |
 | `store: StoreLike<T>` | An object that implements the `StoreLike` interface |
 
-| Returns |
-| :--- |
+| Returns         |
+| :-------------- |
 | `Observable<T>` |
 
 ### Utils
@@ -601,23 +601,22 @@ Each Action class should have a unique `type` as annotated by this decorator. Ne
 
 Creates a strongly typed factory for registering [Effects](store.md#effects). Effects created with the factory can be assigned to variables for testing or chaining using the [ofEffect](store.md#ofeffecteffect) operator
 
-| Returns |
-| :--- |
+| Returns                                                                 |
+| :---------------------------------------------------------------------- |
 | `(connectFn: ConnectFnWithContext<T, V>) => ConnectFnWithContext<T, V>` |
 
 #### createFeatureSelector\(\)
 
 Creates a memoized feature selector that returns the root state of the store.
 
-| Returns |
-| :--- |
+| Returns            |
+| :----------------- |
 | `Selector<any, T>` |
 
 #### createSelector\(97 overloads\)
 
 Creates a memoized selector that returns the selected state. Provided by `reselect`
 
-| Returns |
-| :--- |
+| Returns          |
+| :--------------- |
 | `Selector<T, U>` |
-

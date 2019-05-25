@@ -28,7 +28,7 @@ export class StreamSink implements OnDestroy {
                 this.sink = stream
             }
         } else {
-            this.sink = from(sinkable).subscribe((stream) => {
+            this.sink = from(sinkable).subscribe(stream => {
                 this.sink = stream
             })
         }

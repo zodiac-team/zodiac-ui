@@ -20,6 +20,6 @@ export function useDefaultLifecycleHooks(...flags: number[]) {
 export function useStateChangeStrategy(strategy: StateChangeStrategy) {
     return {
         provide: STATE_CHANGE_STRATEGY,
-        useValue: strategy
+        useValue: strategy,
     }
 }

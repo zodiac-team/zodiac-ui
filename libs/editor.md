@@ -223,10 +223,9 @@ imports: [CodeModule.configure(config)]
 
 > config: [CodeModuleConfig](https://github.com/zodiac-team/zodiac-ui/tree/4d768096819e10f7baa1fb0644104052d0d890a6/libs/editor/src/plugins/code/interfaces.ts)
 
-| Option | Description |
-| :--- | :--- |
-| modeURL | File pattern to load mode dependencies from |
-| extraModes | Additional metadata to append to modeInfo |
+| Option     | Description                                 |
+| :--------- | :------------------------------------------ |
+| modeURL    | File pattern to load mode dependencies from |
+| extraModes | Additional metadata to append to modeInfo   |
 
 Support for Angular language mode is [available here](https://github.com/zodiac-team/zodiac-ui/tree/4d768096819e10f7baa1fb0644104052d0d890a6/libs/editor/src/plugins/code/mode/angular.js). Copy this file to your assets folder \(eg. `assets/modes/angular/angular.js`\)
-

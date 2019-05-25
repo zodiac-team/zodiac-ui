@@ -1,4 +1,8 @@
-export function makePropertyMapper<T>(prototype: any, key: string, mapper: () => (state: any) => T) {
+export function makePropertyMapper<T>(
+    prototype: any,
+    key: string,
+    mapper: () => (state: any) => T,
+) {
     Object.defineProperty(prototype, key, {
         set() {
             const getValue = mapper()
@@ -8,9 +12,9 @@ export function makePropertyMapper<T>(prototype: any, key: string, mapper: () =>
                     return getValue(Object.create(this))
                 },
                 enumerable: true,
-            });
+            })
         },
         enumerable: true,
         configurable: true,
-    });
+    })
 }

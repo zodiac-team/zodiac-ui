@@ -33,25 +33,28 @@ export class StateFactory<T extends Object> implements OnDestroy {
     private readonly stream: StreamSink
     private readonly strategy: StateChangeStrategy
     private readonly cdr?: ChangeDetectorRef
-    constructor(@Inject(STATE_CHANGE_STRATEGY) strategy: StateChangeStrategy, @Optional() cdr?: ChangeDetectorRef) {
+    constructor(
+        @Inject(STATE_CHANGE_STRATEGY) strategy: StateChangeStrategy,
+        @Optional() cdr?: ChangeDetectorRef,
+    ) {
         this.stream = new StreamSink()
         this.cdr = cdr
         this.strategy = strategy
     }
 
     public create(value: T): State<T> {
-        const { cdr, strategy} = this
+        const { cdr, strategy } = this
         const state = new State(value)
 
         if (cdr) {
             if (strategy === StateChangeStrategy.DETACH) {
                 Promise.resolve().then(() => cdr.detach())
-                this.stream.sink = throttleTime(0, asapScheduler, { trailing: true })(state).subscribe(
-                    () => {
-                        cdr.detectChanges()
-                        cdr.checkNoChanges()
-                    },
-                )
+                this.stream.sink = throttleTime(0, asapScheduler, { trailing: true })(
+                    state,
+                ).subscribe(() => {
+                    cdr.detectChanges()
+                    cdr.checkNoChanges()
+                })
             } else {
                 cdr.reattach()
             }

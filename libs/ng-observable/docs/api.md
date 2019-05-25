@@ -19,11 +19,11 @@ export class MyComponent extends NgObservable<MyProps> {}
 
 `NgObservable<T>` emits the following lifecycle events by default:
 
-* `ON_INIT`
-* `ON_CHANGES`
-* `ON_CONTENT_INIT`
-* `ON_VIEW_INIT`
-* `ON_DESTROY`
+-   `ON_INIT`
+-   `ON_CHANGES`
+-   `ON_CONTENT_INIT`
+-   `ON_VIEW_INIT`
+-   `ON_DESTROY`
 
 To change this per component instance, pass in flags through the constructor:
 
@@ -51,7 +51,7 @@ export class MyComponent extends NgObservable<MyProps> {
 @Component()
 export class MyComponent extends NgObservable<MyProps> {
     constructor() {
-        this.subscribe((event) => console.log(event))
+        this.subscribe(event => console.log(event))
     }
 }
 ```
@@ -67,7 +67,7 @@ export class MyComponent extends NgObservable<MyProps> {
 
         ngOnChanges(this) // fires after each ngOnChanges
             // changes are strongly typed to TypedChanges<MyProps>
-            .subscribe((changes) => console.log(changes))
+            .subscribe(changes => console.log(changes))
     }
 }
 ```
@@ -84,9 +84,9 @@ export class MyComponent extends NgObservable<MyProps> {
     constructor(myService: MyService) {
         this.sink = ngOnInit(this).pipe(
             switchMapTo(myService.longRunningPoll()),
-            stream((result) => {
+            stream(result => {
                 console.log(result)
-            })
+            }),
         )
     }
 }
@@ -131,9 +131,9 @@ export class MyComponent extends NgObservable<MyProps> {
 
 Inherits from `Observable<NgHooksEvent<T>>`
 
-| Property | Type | Description |
-| :--- | :--- | :--- |
-| `sink` | `Sinkable` | Sink a stream through object assignment. |
+| Property | Type       | Description                              |
+| :------- | :--------- | :--------------------------------------- |
+| `sink`   | `Sinkable` | Sink a stream through object assignment. |
 
 ### `StreamSink`
 
@@ -178,12 +178,12 @@ export class MyService implements OnDestroy() {
 
 #### API
 
-| Property | Type | Description |
-| :--- | :--- | :--- |
-| `sinkAll` | `(...sinkables: Sinkables[]): void` | Sink all streams passed to it. |
-| `sink` | `Sinkable` | Sink a stream through object assignment. |
-| `close` | `(): void` | Close and dispose of all streams. |
-| `ngOnDestroy` | `(): void` | OnDestroy lifecycle hook |
+| Property      | Type                                | Description                              |
+| :------------ | :---------------------------------- | :--------------------------------------- |
+| `sinkAll`     | `(...sinkables: Sinkables[]): void` | Sink all streams passed to it.           |
+| `sink`        | `Sinkable`                          | Sink a stream through object assignment. |
+| `close`       | `(): void`                          | Close and dispose of all streams.        |
+| `ngOnDestroy` | `(): void`                          | OnDestroy lifecycle hook                 |
 
 ### `StateFactory<T>`
 
@@ -208,8 +208,8 @@ export class MyComponent implements MyState {
 
 #### API
 
-| Property | Type | Description |
-| :--- | :--- | :--- |
+| Property | Type                                                            | Description           |
+| :------- | :-------------------------------------------------------------- | :-------------------- |
 | `create` | `(value: T, notifier: Observable<Partial<T> or void): State<T>` | Create a state object |
 
 ### `State<T>`
@@ -271,12 +271,12 @@ export class MyComponent extends NgObservable<MyProps> implements MyState {
 
 Inherits from `BehaviorSubject<T>`
 
-| Property | Type | Description |
-| :--- | :--- | :--- |
-| `value` | `readonly T` | The current value of the state |
-| `next()` | `(partialState?: T): void` | Update the state and queue a change detection run. |
-| `unsubscribe()` | `(): void` | Close the state and unsubscribe from notifiers. |
-| `ngOnDestroy` | `(): void` | OnDestroy lifecycle hook |
+| Property        | Type                       | Description                                        |
+| :-------------- | :------------------------- | :------------------------------------------------- |
+| `value`         | `readonly T`               | The current value of the state                     |
+| `next()`        | `(partialState?: T): void` | Update the state and queue a change detection run. |
+| `unsubscribe()` | `(): void`                 | Close the state and unsubscribe from notifiers.    |
+| `ngOnDestroy`   | `(): void`                 | OnDestroy lifecycle hook                           |
 
 ### `InvokeSubject<T>`
 
@@ -304,9 +304,9 @@ export class MyComponent implements OnDestroy {
 
 Inherits from `Function` and `Subject<T>`.
 
-| Property | Type | Description |
-| :--- | :--- | :--- |
-| `[[Function]]` | `(next: T): void` | Invoke the next value to be emitted |
+| Property       | Type                   | Description                         |
+| :------------- | :--------------------- | :---------------------------------- |
+| `[[Function]]` | `(next: T): void`      | Invoke the next value to be emitted |
 | `[[Function]]` | `(...next: T[]): void` | Invoke the next value to be emitted |
 
 ## Decorators
@@ -354,8 +354,8 @@ const $selectFullName = () =>
 
 #### API
 
-| Arguments | Description |
-| :--- | :--- |
+| Arguments                                  | Description                                         |
+| :----------------------------------------- | :-------------------------------------------------- |
 | `selectorFactory: () => (state: any) => T` | Selector factory that calculates the computed value |
 
 Returns `PropertyDecorator`
@@ -515,8 +515,8 @@ export class MyComponent extends NgObservable<T> {
 
 #### API
 
-| Arguments | Description |
-| :--- | :--- |
+| Arguments                             | Description                                          |
+| :------------------------------------ | :--------------------------------------------------- |
 | `source: Observable<NgHooksEvent<T>>` | The upstream observable emitted by `NgObservable<T>` |
 
 Returns `Observable<TypedChanges<T>>`
@@ -538,8 +538,8 @@ export class MyComponent extends NgObservable<T> {
 
 #### API
 
-| Arguments | Description |
-| :--- | :--- |
+| Arguments                             | Description                                          |
+| :------------------------------------ | :--------------------------------------------------- |
 | `source: Observable<NgHooksEvent<T>>` | The upstream observable emitted by `NgObservable<T>` |
 
 Returns `Observable<void>`
@@ -561,8 +561,8 @@ export class MyComponent extends NgObservable<T> {
 
 #### API
 
-| Arguments | Description |
-| :--- | :--- |
+| Arguments                             | Description                                          |
+| :------------------------------------ | :--------------------------------------------------- |
 | `source: Observable<NgHooksEvent<T>>` | The upstream observable emitted by `NgObservable<T>` |
 
 Returns `Observable<void>`
@@ -584,8 +584,8 @@ export class MyComponent extends NgObservable<T> {
 
 #### API
 
-| Arguments | Description |
-| :--- | :--- |
+| Arguments                             | Description                                          |
+| :------------------------------------ | :--------------------------------------------------- |
 | `source: Observable<NgHooksEvent<T>>` | The upstream observable emitted by `NgObservable<T>` |
 
 Returns `Observable<void>`
@@ -607,8 +607,8 @@ export class MyComponent extends NgObservable<T> {
 
 #### API
 
-| Arguments | Description |
-| :--- | :--- |
+| Arguments                             | Description                                          |
+| :------------------------------------ | :--------------------------------------------------- |
 | `source: Observable<NgHooksEvent<T>>` | The upstream observable emitted by `NgObservable<T>` |
 
 Returns `Observable<void>`
@@ -630,8 +630,8 @@ export class MyComponent extends NgObservable<T> {
 
 #### API
 
-| Arguments | Description |
-| :--- | :--- |
+| Arguments                             | Description                                          |
+| :------------------------------------ | :--------------------------------------------------- |
 | `source: Observable<NgHooksEvent<T>>` | The upstream observable emitted by `NgObservable<T>` |
 
 Returns `Observable<void>`
@@ -653,8 +653,8 @@ export class MyComponent extends NgObservable<T> {
 
 #### API
 
-| Arguments | Description |
-| :--- | :--- |
+| Arguments                             | Description                                          |
+| :------------------------------------ | :--------------------------------------------------- |
 | `source: Observable<NgHooksEvent<T>>` | The upstream observable emitted by `NgObservable<T>` |
 
 Returns `Observable<void>`
@@ -676,8 +676,8 @@ export class MyComponent extends NgObservable<T> {
 
 #### API
 
-| Arguments | Description |
-| :--- | :--- |
+| Arguments                             | Description                                          |
+| :------------------------------------ | :--------------------------------------------------- |
 | `source: Observable<NgHooksEvent<T>>` | The upstream observable emitted by `NgObservable<T>` |
 
 Returns `Observable<void>`
@@ -752,8 +752,8 @@ streamSink.sink = stream(count)(interval(1000))
 
 #### API
 
-| Arguments | Description |
-| :--- | :--- |
+| Arguments                             | Description                                 |
+| :------------------------------------ | :------------------------------------------ |
 | `partialObserver: PartialObserver<T>` | Accepts the same arguments as `subscribe()` |
 
 Returns `(source: Observable<T>) => Observable<TeardownLogic>`
@@ -867,4 +867,3 @@ Lifecycle flag used by `NgObservable<T>` to determine if events for this hook sh
 ### `LIFECYCLE_FLAGS`
 
 Injection token to configure the default lifecycle events emitted by `NgObservable<T>`
-
