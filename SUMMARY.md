@@ -3,10 +3,8 @@
 * [README](README.md)
 * [libs](libs/README.md)
   * [NgObservable](libs/ng-observable/README.md)
-    * [docs](libs/ng-observable/docs/README.md)
-      * [API Reference](libs/ng-observable/docs/README.md)
-      * [Example](libs/ng-observable/docs/example.md)
-
+    * [Example](libs/ng-observable/docs/example.md)
+    * [API Reference](libs/ng-observable/docs/README.md)
       * [classes](libs/ng-observable/docs/classes/README.md)
         * [InvokeSubject](libs/ng-observable/docs/classes/invoke-subject.md)
         * [NgObservable](libs/ng-observable/docs/classes/ng-observable.md)

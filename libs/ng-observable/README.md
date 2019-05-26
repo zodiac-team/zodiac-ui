@@ -78,7 +78,7 @@ export class AppComponent {}
 
 #### Remove `zone.js`
 
-> If any parts of your project or dependencies (such as `@angular/material`) rely `zone.js` for change detection,
+> If any parts of your project or dependencies (such as `@angular/material`) rely on `zone.js` for change detection,
 > skip this step.
 
 1. Remove the `zone.js` polyfill
@@ -91,7 +91,7 @@ import "zone.js/dist/zone" // <-- Remove this line
 
 2. Configure `platformBrowserDynamic` to use `"noop"` zones:
 
-> If using `Render3` from ivy, skip this step.
+> If using `Render3` from ivy beta, skip this step.
 
 ```typescript
 // `main.ts`
