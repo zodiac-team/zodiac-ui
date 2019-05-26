@@ -19,7 +19,7 @@ API reference for `NgObservable`
 -   [decorators](decorators/README.md)
 
     -   [computed](decorators/computed.md)
-    -   [map-inputs-to-props](decorators/map-inputs-to-props.md)
+    -   [map-inputs-to-props](operators/map-inputs-to-props.md)
     -   [ng-after-content-checked](decorators/ng-after-content-checked.md)
     -   [ng-after-content-init](decorators/ng-after-content-init.md)
     -   [ng-after-view-checked](decorators/ng-after-view-checked.md)
