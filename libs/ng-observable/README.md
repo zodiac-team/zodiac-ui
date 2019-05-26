@@ -15,7 +15,7 @@ Create powerful reactive components with Angular. AoT compatible and Ivy ready.
 
 ## API
 
-[Read the docs](https://zodiac-team.gitbook.io/zodiac-ui/libs/ng-observable)
+[Read the docs](https://zodiac-team.gitbook.io/zodiac-ui/libs/ng-observable/docs)
 
 [Read the intro](https://dev.to/michaelmuscat/create-observable-angular-components-with-ngobservable-2424)
 
