@@ -1,21 +1,23 @@
 # NgObservable
 
-AoT compatible functional reactive utilities and component level state management for Angular.
+Create powerful reactive components with Angular. AoT compatible and Ivy ready.
 
--   🚀 Observe lifecycle hooks such as `ngOnInit`, `ngOnChanges` and more
+-   🚀 Observe lifecycle hooks such as `ngOnInit`, `ngOnChanges`
 -   🎉 Convert `HostListener` and template events into observable streams
--   🍷 Make computed properties with the `@Computed` decorator
+-   ✈️ Manage and observe state changes in your components and directives
+-   ☑️ Unlock blazing performance with zoneless and observable change detection
 -   💥 Use `@Decorators` for all of the builtin lifecycle hooks
--   ✈️ A standard `State` for components and directives
--   ☑️ Automatic change detection combined with with `OnPush`
+-   🍷 Make computed properties with the `@Computed` decorator
 -   🚫 Escape async hell and redundant placeholder variables
 -   🚮 Automatically clean up subscriptions with `StreamSink`
 -   🎈 Get strongly typed changes with `TypedChanges<T>`
--   👉 Extract and compose implementation details into easily testable pure functions
+-   👉 Extract implementation details into testable, composable, pure functions
 
 ## API
 
 [Read the docs](https://zodiac-team.gitbook.io/ng-observable/libs/ng-observable/docs/api)
+
+[Read the intro](https://dev.to/michaelmuscat/create-observable-angular-components-with-ngobservable-2424)
 
 [See an example](https://zodiac-team.gitbook.io/ng-observable/libs/ng-observable/docs/example)
 
@@ -23,4 +25,80 @@ AoT compatible functional reactive utilities and component level state managemen
 
 ```
 npm install @zodiac-ui/ng-observable
+```
+
+### Configure `DefaultLifecycleHooks` (optional)
+
+`NgObservable` is configured only emit events for the following lifecycle hooks:
+
+-   `OnInit`
+-   `OnChanges`
+-   `OnContentInit`
+-   `OnViewInit`
+-   `OnDestroy`
+
+This can be configured globally.
+
+```typescript
+// Only provide this token once in the root injector.
+@NgModule({
+    providers: [
+        // provide default flags
+        useDefaultLifecycleHooks(ON_INIT, ON_CHANGES, DO_CHECK, AFTER_VIEW_CHECKED, ON_DESTROY),
+    ],
+})
+export class MyAppModule {}
+```
+
+For component level configuration, refer to the docs.
+
+### Configure `State` (optional)
+
+To get started with `State`, some additional configuration is needed.
+
+The `State` utility provides its own change detection strategy that does not depend on zones. How this differs from
+when normal change detection is run is illustrated below.
+
+|           | `Microtask` | `Macrotask` | `(event)` | `@Input()` | `next()` |
+| --------- | ----------- | ----------- | --------- | ---------- | -------- |
+| `Default` | ✅          | ✅          | ✅        | ✅         |          |
+| `OnPush`  |             |             | ✅        | ✅         |          |
+| `State`   |             |             |           |            | ✅       |
+
+#### Set a default `StateChangeStrategy`
+
+Add a default `StateChangeStrategy` to your root component.
+
+```typescript
+@Component({
+    providers: [useStateChangeStrategy(StateChangeStrategy.DETACH)], // Or REATTACH if using zones
+})
+export class AppComponent {}
+```
+
+#### Remove `zone.js`
+
+> If any parts of your project or dependencies (such as `@angular/material`) rely `zone.js` for change detection,
+> skip this step.
+
+1. Remove the `zone.js` polyfill
+
+```typescript
+// polyfills.ts
+
+import "zone.js/dist/zone" // <-- Remove this line
+```
+
+2. Configure `platformBrowserDynamic` to use `"noop"` zones:
+
+> If using `Render3` from ivy, skip this step.
+
+```typescript
+// `main.ts`
+
+platformBrowserDynamic()
+    .bootstrapModule(AppModule, {
+        ngZone: "noop", // <-- Add this line
+    })
+    .catch(err => console.error(err))
 ```
