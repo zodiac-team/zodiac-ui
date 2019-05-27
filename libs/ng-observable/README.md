@@ -5,7 +5,7 @@ Create powerful reactive components with Angular. AoT compatible and Ivy ready.
 -   🚀 Observe lifecycle hooks such as `ngOnInit`, `ngOnChanges`
 -   🎉 Convert `HostListener` and template events into observable streams
 -   ✈️ Manage and observe state changes in your components and directives
--   ☑️ Unlock blazing performance with zoneless and observable change detection
+-   ☑️ Unlock [blazing performance](https://stackblitz.com/edit/angular-25scyj) with zoneless, observable change detection
 -   💥 Use `@Decorators` for all of the builtin lifecycle hooks
 -   🍷 Make computed properties with the `@Computed` decorator
 -   🚫 Escape async hell and redundant placeholder variables
@@ -21,6 +21,8 @@ Create powerful reactive components with Angular. AoT compatible and Ivy ready.
 
 [See an example](https://zodiac-team.gitbook.io/zodiac-ui/libs/ng-observable/example)
 
+[Try it on StackBlitz](https://stackblitz.com/edit/angular-25scyj)
+
 ## Setup
 
 ```
@@ -29,7 +31,7 @@ npm install @zodiac-ui/ng-observable
 
 ### Configure `DefaultLifecycleHooks` (optional)
 
-`NgObservable` is configured only emit events for the following lifecycle hooks:
+`NgObservable` emits events for the following default lifecycle hooks:
 
 -   `OnInit`
 -   `OnChanges`
@@ -57,13 +59,16 @@ For component level configuration, refer to the docs.
 To get started with `State`, some additional configuration is needed.
 
 The `State` utility provides its own change detection strategy that does not depend on zones. How this differs from
-when normal change detection is run is illustrated below.
+normal change detection is illustrated below.
 
-|           | `Microtask` | `Macrotask` | `(event)` | `@Input()` | `next()` |
-| --------- | ----------- | ----------- | --------- | ---------- | -------- |
-| `Default` | ✅          | ✅          | ✅        | ✅         |          |
-| `OnPush`  |             |             | ✅        | ✅         |          |
-| `State`   |             |             |           |            | ✅       |
+|            | Zones  | `Microtask` | `Macrotask` | `(event)` | `@Input()` | `next()` |
+| ---------- | ------ | ----------- | ----------- | --------- | ---------- | -------- |
+| `Default`  | Yes    | ✅          | ✅          | ✅        | ✅         |          |
+| `OnPush`   | Yes    |             |             | ✅        | ✅         |          |
+| `OnPush`   | No     |             |             |           | ✅         |          |
+| `REATTACH` | Yes    |             |             | ✅        | ✅         | ✅       |
+| `REATTACH` | No     |             |             |           | ✅         | ✅       |
+| `DETACH`   | N/A    |             |             |           |            | ✅       |
 
 #### Set a default `StateChangeStrategy`
 

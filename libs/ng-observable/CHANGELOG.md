@@ -1,6 +1,12 @@
 # CHANGELOG
 
-## v0.1.0 release
+## v0.1.2
+
+- Fix bug with change detection on recursive component trees.
+
+- Change detection is no longer debounced and now executes immediately when calling `next()`
+
+## v0.1.0
 
 -   Detach views from `ChangeDetectorRef` after first render.
     Change detection is now queued on the calling directive or component

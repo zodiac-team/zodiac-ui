@@ -1,6 +1,5 @@
-import { ChangeDetectorRef, Inject, Injectable, OnDestroy, Optional, Self } from "@angular/core"
-import { asapScheduler, BehaviorSubject } from "rxjs"
-import { throttleTime } from "rxjs/operators"
+import { ChangeDetectorRef, Inject, Injectable, OnDestroy, Optional } from "@angular/core"
+import { BehaviorSubject } from "rxjs"
 import { StreamSink } from "./stream-sink"
 import { STATE_CHANGE_STRATEGY, StateChangeStrategy } from "./constants"
 
@@ -20,9 +19,6 @@ export class State<T extends object> extends BehaviorSubject<T> {
         }
 
         this.patchValue = (partialState?: Partial<T>) => {
-            if (!partialState || valueRef.isPrototypeOf(partialState as any)) {
-                return
-            }
             Object.assign(valueRef, partialState)
         }
     }
@@ -42,19 +38,20 @@ export class StateFactory<T extends Object> implements OnDestroy {
         this.strategy = strategy
     }
 
-    public create(value: T): State<T> {
+    public create(valueRef: T): State<T> {
         const { cdr, strategy } = this
-        const state = new State(value)
+        const state = new State(valueRef)
 
         if (cdr) {
             if (strategy === StateChangeStrategy.DETACH) {
-                Promise.resolve().then(() => cdr.detach())
-                this.stream.sink = throttleTime(0, asapScheduler, { trailing: true })(
-                    state,
-                ).subscribe(() => {
-                    cdr.detectChanges()
-                    cdr.checkNoChanges()
+                Promise.resolve().then(() => {
+                    cdr.detach()
+                    this.stream.sink = state.subscribe(() => {
+                        cdr.detectChanges()
+                        cdr.checkNoChanges()
+                    })
                 })
+
             } else {
                 cdr.reattach()
             }
