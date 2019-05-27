@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.1.3
+
+- Only `checkNoChanges` in dev mode.
+
 ## v0.1.2
 
 - Fix bug with change detection on recursive component trees.

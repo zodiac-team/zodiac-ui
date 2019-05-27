@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Inject, Injectable, OnDestroy, Optional } from "@angular/core"
+import { ChangeDetectorRef, Inject, Injectable, isDevMode, OnDestroy, Optional } from "@angular/core"
 import { BehaviorSubject } from "rxjs"
 import { StreamSink } from "./stream-sink"
 import { STATE_CHANGE_STRATEGY, StateChangeStrategy } from "./constants"
@@ -48,7 +48,9 @@ export class StateFactory<T extends Object> implements OnDestroy {
                     cdr.detach()
                     this.stream.sink = state.subscribe(() => {
                         cdr.detectChanges()
-                        cdr.checkNoChanges()
+                        if (isDevMode()) {
+                            cdr.checkNoChanges()
+                        }
                     })
                 })
 
