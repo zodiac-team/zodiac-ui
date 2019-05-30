@@ -8,7 +8,6 @@ function defaultMapFn<T>(value?: T): any {
 export function mapInputsToState<T, U>(source: any, mapFn: (value?: T) => U = defaultMapFn) {
     return ngOnChanges(source).pipe(
         mapTo(Object.create(source)),
-        map(mapFn)
+        map(mapFn),
     )
 }
-

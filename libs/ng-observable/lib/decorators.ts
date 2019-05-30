@@ -18,10 +18,7 @@ export function decorateLifecycle(target: any, propertyKey: string, name: string
     })
 }
 
-export function NgOnChanges<T extends NgObservable>(): (
-    target: T,
-    propertyKey: string,
-) => void {
+export function NgOnChanges<T extends NgObservable>(): (target: T, propertyKey: string) => void {
     return function(target, propertyKey: string) {
         return decorateLifecycle(target, propertyKey, "ngOnChanges")
     }
@@ -75,10 +72,7 @@ export function NgAfterViewChecked<T extends NgObservable>(): (
     }
 }
 
-export function NgOnDestroy<T extends NgObservable>(): (
-    target: T,
-    propertyKey: string,
-) => void {
+export function NgOnDestroy<T extends NgObservable>(): (target: T, propertyKey: string) => void {
     return function(target, propertyKey) {
         return decorateLifecycle(target, propertyKey, "ngOnDestroy")
     }

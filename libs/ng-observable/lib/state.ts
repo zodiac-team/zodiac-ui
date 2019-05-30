@@ -1,4 +1,11 @@
-import { ChangeDetectorRef, Inject, Injectable, isDevMode, OnDestroy, Optional } from "@angular/core"
+import {
+    ChangeDetectorRef,
+    Inject,
+    Injectable,
+    isDevMode,
+    OnDestroy,
+    Optional,
+} from "@angular/core"
 import { BehaviorSubject, asapScheduler } from "rxjs"
 import { Stream } from "./stream"
 import { STATE_CHANGE_STRATEGY, StateChangeStrategy } from "./constants"
@@ -59,7 +66,7 @@ export class StateFactory<T extends Object> implements OnDestroy {
                         if (isDevMode()) {
                             cdr.checkNoChanges()
                         }
-                    }
+                    },
                 })(debounceTime(0, asapScheduler)(state))
             })
         }

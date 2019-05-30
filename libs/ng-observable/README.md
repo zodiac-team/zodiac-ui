@@ -61,14 +61,14 @@ To get started with `State`, some additional configuration is needed.
 The `State` utility provides its own change detection strategy that does not depend on zones. How this differs from
 normal change detection is illustrated below.
 
-|            | Zones  | `Microtask` | `Macrotask` | `(event)` | `@Input()` | `next()` |
-| ---------- | ------ | ----------- | ----------- | --------- | ---------- | -------- |
-| `Default`  | Yes    | ✅          | ✅          | ✅        | ✅         |          |
-| `OnPush`   | Yes    |             |             | ✅        | ✅         |          |
-| `OnPush`   | No     |             |             |           | ✅         |          |
-| `REATTACH` | Yes    |             |             | ✅        | ✅         | ✅       |
-| `REATTACH` | No     |             |             |           | ✅         | ✅       |
-| `DETACH`   | N/A    |             |             |           |            | ✅       |
+|            | Zones | `Microtask` | `Macrotask` | `(event)` | `@Input()` | `next()` |
+| ---------- | ----- | ----------- | ----------- | --------- | ---------- | -------- |
+| `Default`  | Yes   | ✅          | ✅          | ✅        | ✅         |          |
+| `OnPush`   | Yes   |             |             | ✅        | ✅         |          |
+| `OnPush`   | No    |             |             |           | ✅         |          |
+| `REATTACH` | Yes   |             |             | ✅        | ✅         | ✅       |
+| `REATTACH` | No    |             |             |           | ✅         | ✅       |
+| `DETACH`   | N/A   |             |             |           |            | ✅       |
 
 #### Set a default `StateChangeStrategy`
 

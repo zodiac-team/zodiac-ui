@@ -9,7 +9,7 @@ Event emitter wrapping `ngOnChanges` that is used to notify the `State` object o
 export class MyComponent extends NgObservable<T> {
     constructor(@Self() stateFactory: StateFactory<MyState>) {
         const state = stateFactory.create(this)
-    
+
         this.sink = stream(state)(mapInputsToState(this))
     }
 }

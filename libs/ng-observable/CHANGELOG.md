@@ -2,17 +2,17 @@
 
 ## v0.1.4
 
-- Fix change detection when using `REATTACH` change strategy.
+-   Fix change detection when using `REATTACH` change strategy.
 
 ## v0.1.3
 
-- Only `checkNoChanges` in dev mode.
+-   Only `checkNoChanges` in dev mode.
 
 ## v0.1.2
 
-- Fix bug with change detection on recursive component trees.
+-   Fix bug with change detection on recursive component trees.
 
-- Change detection is no longer debounced and now executes immediately when calling `next()`
+-   Change detection is no longer debounced and now executes immediately when calling `next()`
 
 ## v0.1.0
 

@@ -12,16 +12,20 @@ export class InvokeSubject<T> extends Callable<NextFn<T>> {
     private static [mixins] = applyMixins(InvokeSubject, [Observable, Subject])
 
     constructor(fn?: NextFn<T>) {
-        super(fn ? fn : (...args: any) => {
-            const len = args.length
-            if (len === 0) {
-                this.next()
-            } else if (len === 1) {
-                this.next(args[0])
-            } else {
-                this.next(args)
-            }
-        })
+        super(
+            fn
+                ? fn
+                : (...args: any) => {
+                      const len = args.length
+                      if (len === 0) {
+                          this.next()
+                      } else if (len === 1) {
+                          this.next(args[0])
+                      } else {
+                          this.next(args)
+                      }
+                  },
+        )
         Object.assign(this, new Subject())
     }
 }

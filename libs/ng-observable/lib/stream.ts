@@ -4,24 +4,27 @@ import { Callable } from "./internals/callable"
 
 function createStream(sub: Subscription) {
     return function stream(...targets: (NextObserver<any> | ((value: any) => void))[]) {
-        return function (...sources: ObservableInput<any>[]) {
+        return function(...sources: ObservableInput<any>[]) {
             for (const source of sources) {
-                sub.add(from(source).subscribe((value) => {
-                    for (const target of targets) {
-                        if (typeof target === "function") {
-                            target(value)
-                        } else {
-                            target.next(value)
+                sub.add(
+                    from(source).subscribe(value => {
+                        for (const target of targets) {
+                            if (typeof target === "function") {
+                                target(value)
+                            } else {
+                                target.next(value)
+                            }
                         }
-                    }
-                }))
+                    }),
+                )
             }
         }
     }
 }
 
-export type StreamFn =
-    <T>(...targets: NextObserver<T>[]) => (...sources: ObservableInput<T>[]) => void
+export type StreamFn = <T>(
+    ...targets: NextObserver<T>[]
+) => (...sources: ObservableInput<T>[]) => void
 
 export interface Stream extends StreamFn {}
 
