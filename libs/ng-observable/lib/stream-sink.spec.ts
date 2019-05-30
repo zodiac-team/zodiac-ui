@@ -1,4 +1,4 @@
-import { StreamSink } from "./stream-sink"
+import { StreamSink } from "./stream"
 
 describe("Sink", () => {
     it("should create an instance", () => {

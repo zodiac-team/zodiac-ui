@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.1.4
+
+- Fix change detection when using `REATTACH` change strategy.
+
 ## v0.1.3
 
 - Only `checkNoChanges` in dev mode.

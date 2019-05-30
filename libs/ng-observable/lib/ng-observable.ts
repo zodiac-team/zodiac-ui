@@ -1,16 +1,4 @@
-import {
-    AFTER_CONTENT_CHECKED,
-    AFTER_CONTENT_INIT,
-    AFTER_VIEW_CHECKED,
-    AFTER_VIEW_INIT,
-    DO_CHECK,
-    ON_CHANGES,
-    ON_DESTROY,
-    ON_INIT,
-} from "./constants"
-
-import { NgHooksEvent, Sinkable, TypedChanges } from "./interfaces"
-import { Observable, Subject } from "rxjs"
+import { TypedChanges } from "./interfaces"
 import {
     AfterContentChecked,
     AfterContentInit,
@@ -21,11 +9,41 @@ import {
     OnDestroy,
     OnInit,
 } from "@angular/core"
-import { StreamSink } from "./stream-sink"
+import { InvokeSubject } from "./invoke-subject"
+import { mixins } from "./internals/apply-mixins"
 import { createMask } from "./internals/create-mask"
-import { unsubscribe } from "./utils"
 
-export abstract class NgObservable<Props extends any = any> extends Observable<NgHooksEvent<Props>>
+export function UseHooks(...flags: number[]) {
+    const features = createMask(...flags)
+    return function (target: any) {
+        if (features & 1) {
+            target.prototype.ngOnChanges = new InvokeSubject(target.prototype.ngOnChanges)
+        }
+        if (features & 2) {
+            target.prototype.ngOnInit = new InvokeSubject(target.prototype.ngOnInit)
+        }
+        if (features & 4) {
+            target.prototype.ngDoCheck = new InvokeSubject(target.prototype.ngDoCheck)
+        }
+        if (features & 8) {
+            target.prototype.ngAfterContentInit = new InvokeSubject(target.prototype.ngAfterContentInit)
+        }
+        if (features & 16) {
+            target.prototype.ngAfterContentChecked = new InvokeSubject(target.prototype.ngAfterContentChecked)
+        }
+        if (features & 32) {
+            target.prototype.ngAfterViewInit = new InvokeSubject(target.prototype.ngAfterViewInit)
+        }
+        if (features & 64) {
+            target.prototype.ngAfterViewChecked = new InvokeSubject(target.prototype.ngAfterViewChecked)
+        }
+        if (features & 128) {
+            target.prototype.ngOnDestroy = new InvokeSubject(target.prototype.ngOnDestroy)
+        }
+    }
+}
+
+export abstract class NgObservable
     implements
         OnInit,
         OnChanges,
@@ -35,70 +53,38 @@ export abstract class NgObservable<Props extends any = any> extends Observable<N
         AfterContentChecked,
         AfterViewInit,
         AfterViewChecked {
-    static DEFAULT_LIFECYCLE_HOOKS = createMask(
-        ON_CHANGES,
-        ON_INIT,
-        AFTER_CONTENT_INIT,
-        AFTER_VIEW_INIT,
-        ON_DESTROY,
-    )
 
-    protected set sink(stream: Sinkable) {
-        this._stream.sink = stream
-    }
-
-    private readonly _stream: StreamSink
-    private readonly _eventEmitter: Subject<NgHooksEvent>
-    private readonly _features: number
-
-    protected constructor(...flags: number[]) {
-        super(subscriber => this._eventEmitter.subscribe(subscriber))
-
-        this._eventEmitter = new Subject()
-        this._features = flags.length ? createMask(...flags) : NgObservable.DEFAULT_LIFECYCLE_HOOKS
-        this._stream = new StreamSink()
-    }
-
-    protected sinkAll(...sinkables: Sinkable[]) {
-        this._stream.sinkAll(...sinkables)
-    }
+    static [mixins] = UseHooks(255)(NgObservable)
 
     public ngOnChanges(changes: TypedChanges<any>): void {
-        this._emitEvent([ON_CHANGES, changes])
+        (<InvokeSubject<any>>this.ngOnChanges).next([this, changes])
     }
 
     public ngOnInit(): void {
-        this._emitEvent([ON_INIT])
+        (<InvokeSubject<any>>this.ngOnInit).next(this)
     }
 
     public ngDoCheck() {
-        this._emitEvent([DO_CHECK])
+        (<InvokeSubject<any>>this.ngDoCheck).next(this)
     }
 
     public ngAfterContentInit() {
-        this._emitEvent([AFTER_CONTENT_INIT])
+        (<InvokeSubject<any>>this.ngAfterContentInit).next(this)
     }
 
     public ngAfterContentChecked() {
-        this._emitEvent([AFTER_CONTENT_CHECKED])
+        (<InvokeSubject<any>>this.ngAfterContentChecked).next(this)
     }
 
     public ngAfterViewInit() {
-        this._emitEvent([AFTER_VIEW_INIT])
+        (<InvokeSubject<any>>this.ngAfterViewInit).next(this)
     }
 
     public ngAfterViewChecked() {
-        this._emitEvent([AFTER_VIEW_CHECKED])
+        (<InvokeSubject<any>>this.ngAfterViewChecked).next(this)
     }
 
     public ngOnDestroy() {
-        this._emitEvent([ON_DESTROY])
-        unsubscribe(this._eventEmitter, this._stream)
-    }
-
-    private _emitEvent(event: NgHooksEvent) {
-        if (this._features & event[0]) {
-            this._eventEmitter.next(event)
-        }
+        (<InvokeSubject<any>>this.ngOnDestroy).next(this)
     }
 }

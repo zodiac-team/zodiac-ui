@@ -11,9 +11,16 @@ export interface InvokeSubject<T> extends Subject<T> {
 export class InvokeSubject<T> extends Callable<NextFn<T>> {
     private static [mixins] = applyMixins(InvokeSubject, [Observable, Subject])
 
-    constructor() {
-        super((value: T) => {
-            this.next(value)
+    constructor(fn?: NextFn<T>) {
+        super(fn ? fn : (...args: any) => {
+            const len = args.length
+            if (len === 0) {
+                this.next()
+            } else if (len === 1) {
+                this.next(args[0])
+            } else {
+                this.next(args)
+            }
         })
         Object.assign(this, new Subject())
     }
