@@ -20,7 +20,7 @@ import { RouterModule } from "@angular/router"
         RouterModule.forRoot([
             {
                 path: "",
-                loadChildren: "./feature/feature.module#FeatureModule",
+                loadChildren: () => import('./feature/feature.module').then(m => m.FeatureModule),
             },
         ]),
     ],

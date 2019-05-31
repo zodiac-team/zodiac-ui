@@ -46,7 +46,7 @@
                     }
                 },
                 "test": {
-                    "builder": "@nrwl/builders:jest",
+                    "builder": "@nrwl/jest:jest",
                     "options": {
                         "jestConfig": "libs/store/jest.config.js",
                         "tsConfig": "libs/store/tsconfig.spec.json",
@@ -79,7 +79,7 @@
                     }
                 },
                 "test": {
-                    "builder": "@nrwl/builders:jest",
+                    "builder": "@nrwl/jest:jest",
                     "options": {
                         "jestConfig": "libs/formula/jest.config.js",
                         "tsConfig": "libs/formula/tsconfig.spec.json",
@@ -279,7 +279,7 @@
                     }
                 },
                 "test": {
-                    "builder": "@nrwl/builders:jest",
+                    "builder": "@nrwl/jest:jest",
                     "options": {
                         "jestConfig": "libs/formula-material/jest.config.js",
                         "tsConfig": "libs/formula-material/tsconfig.spec.json",
@@ -309,7 +309,7 @@
                     }
                 },
                 "test": {
-                    "builder": "@nrwl/builders:jest",
+                    "builder": "@nrwl/jest:jest",
                     "options": {
                         "jestConfig": "libs/blog/jest.config.js",
                         "tsConfig": "libs/blog/tsconfig.spec.json",
@@ -403,7 +403,7 @@
                     }
                 },
                 "test": {
-                    "builder": "@nrwl/builders:jest",
+                    "builder": "@nrwl/jest:jest",
                     "options": {
                         "jestConfig": "apps/blog-example/jest.config.js",
                         "tsConfig": "apps/blog-example/tsconfig.spec.json",
@@ -418,7 +418,7 @@
             "prefix": "",
             "architect": {
                 "e2e": {
-                    "builder": "@nrwl/builders:cypress",
+                    "builder": "@nrwl/cypress:cypress",
                     "options": {
                         "cypressConfig": "apps/blog-example-e2e/cypress.json",
                         "tsConfig": "apps/blog-example-e2e/tsconfig.e2e.json",
@@ -463,7 +463,7 @@
                     }
                 },
                 "test": {
-                    "builder": "@nrwl/builders:jest",
+                    "builder": "@nrwl/jest:jest",
                     "options": {
                         "jestConfig": "libs/editor/jest.config.js",
                         "tsConfig": "libs/editor/tsconfig.spec.json",
@@ -569,7 +569,7 @@
                     }
                 },
                 "test": {
-                    "builder": "@nrwl/builders:jest",
+                    "builder": "@nrwl/jest:jest",
                     "options": {
                         "jestConfig": "apps/editor-example/jest.config.js",
                         "tsConfig": "apps/editor-example/tsconfig.spec.json",
@@ -602,7 +602,7 @@
                     }
                 },
                 "test": {
-                    "builder": "@nrwl/builders:jest",
+                    "builder": "@nrwl/jest:jest",
                     "options": {
                         "jestConfig": "libs/ng-observable/jest.config.js",
                         "tsConfig": "libs/ng-observable/tsconfig.spec.json",
@@ -615,6 +615,138 @@
                     "styleext": "scss"
                 }
             }
+        },
+        "docs": {
+            "root": "apps/docs/",
+            "sourceRoot": "apps/docs/src",
+            "projectType": "application",
+            "prefix": "zodiac-ui",
+            "schematics": {
+                "@nrwl/schematics:component": {
+                    "style": "scss"
+                }
+            },
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "outputPath": "dist/apps/docs",
+                        "index": "apps/docs/src/index.html",
+                        "main": "apps/docs/src/main.ts",
+                        "polyfills": "apps/docs/src/polyfills.ts",
+                        "tsConfig": "apps/docs/tsconfig.app.json",
+                        "webWorkerTsConfig": "apps/docs/tsconfig.worker.json",
+                        "assets": [
+                            "apps/docs/src/favicon.ico",
+                            "apps/docs/src/assets",
+                            "apps/docs/src/generated",
+                            "apps/docs/src/pwa-manifest.json",
+                            {
+                                "glob": "custom-elements.min.js",
+                                "input": "node_modules/@webcomponents/custom-elements",
+                                "output": "/assets/js"
+                            },
+                            {
+                                "glob": "native-shim.js",
+                                "input": "node_modules/@webcomponents/custom-elements/src",
+                                "output": "/assets/js"
+                            }
+                        ],
+                        "styles": ["apps/docs/src/styles.scss"],
+                        "scripts": [],
+                        "es5BrowserSupport": true
+                    },
+                    "configurations": {
+                        "production": {
+                            "serviceWorker": true,
+                            "fileReplacements": [
+                                {
+                                    "replace": "apps/docs/src/environments/environment.ts",
+                                    "with": "apps/docs/src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "extractCss": true,
+                            "namedChunks": false,
+                            "aot": true,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "docs:build"
+                    },
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "docs:build:production"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "docs:build"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": ["apps/docs/tsconfig.app.json", "apps/docs/tsconfig.spec.json"],
+                        "exclude": ["**/node_modules/**"]
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "apps/docs/src/test.ts",
+                        "tsConfig": "apps/docs/tsconfig.spec.json",
+                        "karmaConfig": "apps/docs/karma.conf.js",
+                        "polyfills": "apps/docs/src/polyfills.ts",
+                        "styles": [],
+                        "scripts": [],
+                        "assets": []
+                    }
+                }
+            }
+        },
+        "docs-e2e": {
+            "root": "apps/docs-e2e",
+            "projectType": "application",
+            "prefix": "",
+            "architect": {
+                "e2e": {
+                    "builder": "@angular-devkit/build-angular:protractor",
+                    "options": {
+                        "protractorConfig": "apps/docs-e2e/protractor.conf.js",
+                        "devServerTarget": "docs:serve"
+                    },
+                    "configurations": {
+                        "production": {
+                            "devServerTarget": "docs:serve:production"
+                        }
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": "apps/docs-e2e/tsconfig.e2e.json",
+                        "exclude": ["**/node_modules/**"]
+                    }
+                }
+            }
         }
     },
     "cli": {
@@ -622,7 +754,7 @@
             "typescriptMismatch": false,
             "versionMismatch": false
         },
-        "defaultCollection": "@nrwl/schematics",
+        "defaultCollection": "@nrwl/angular",
         "packageManager": "npm"
     }
 }

@@ -1,19 +1,31 @@
 import { InjectionToken } from "@angular/core"
 
-export const ON_CHANGES = 1
-export const ON_INIT = 2
-export const DO_CHECK = 4
-export const AFTER_CONTENT_INIT = 8
-export const AFTER_CONTENT_CHECKED = 16
-export const AFTER_VIEW_INIT = 32
-export const AFTER_VIEW_CHECKED = 64
-export const ON_DESTROY = 128
-
+/**
+ * The strategy that the state factory uses to detect changes.
+ * When set, takes effect the next time change detection is triggered.
+ *
+ * @publicApi
+ */
 export enum StateChangeStrategy {
+    /**
+     * If detached, reattaches the `ChangeDetectorRef` and allows `OnPush` and `Default` change
+     * detection strategies to trigger change detection. If using "noop" zones, this setting has
+     * no effect.
+     */
     REATTACH = 0,
+
+    /**
+     * When using this strategy, the `ChangeDetectorRef` is automatically detached after the first render.
+     * All change detection must be performed manually by calling `detectChanges` on `ChangeDetectorRef`
+     * or by using {@link StateFactory} and calling {@link State#next}.
+     *
+     */
     DETACH = 1,
 }
 
+/**
+ * Provider token for {@link StateChangeStrategy}
+ */
 export const STATE_CHANGE_STRATEGY = new InjectionToken<StateChangeStrategy>(
     "STATE_CHANGE_STRATEGY",
 )

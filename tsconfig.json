@@ -7,7 +7,7 @@
         "moduleResolution": "node",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "target": "es5",
+        "target": "es2015",
         "typeRoots": ["node_modules/@types"],
         "lib": ["es2017", "dom"],
         "baseUrl": ".",
@@ -18,14 +18,17 @@
             "@zodiac-ui/blog": ["libs/blog/src/index.ts"],
             "@zodiac-ui/editor": ["libs/editor/src/index.ts"],
             "@zodiac-ui/ng-observable": ["libs/ng-observable/src/index.ts"],
-            "@zodiac-ui/ng-observable/subscription-sink": ["libs/ng-observable/ng-observable/subscription-sink/index.ts"]
+            "@zodiac-ui/ng-observable/subscription-sink": [
+                "libs/ng-observable/ng-observable/subscription-sink/index.ts"
+            ]
         },
         "plugins": [
             {
                 "name": "@angular/language-service"
             }
         ],
-        "module": "es2015"
+        "module": "esnext",
+        "rootDir": "."
     },
     "exclude": ["node_modules", "tmp"]
 }

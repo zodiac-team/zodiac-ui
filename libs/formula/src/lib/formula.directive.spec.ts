@@ -12,7 +12,7 @@ import { FormulaModule } from "./formula.module"
     `,
 })
 export class FakeComponent {
-    @ViewChild(FormulaDirective)
+    @ViewChild(FormulaDirective, { static: true })
     public subject: FormulaDirective
     public formula: Formula
     public value: any

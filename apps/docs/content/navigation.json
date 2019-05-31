@@ -1,0 +1,40 @@
+{
+    "TopBar": [
+        {
+            "title": "Get Started",
+            "tooltip": "How to install Zodiac UI packages",
+            "url": "start"
+        },
+        {
+            "title": "API Reference",
+            "tooltip": "Details of the Angular packages, classes, interfaces, and other types.",
+            "url": "api"
+        }
+    ],
+    "TopBarNarrow": [
+    ],
+    "SideNav": [
+        {
+            "title": "Get Started",
+            "tooltip": "How to install Zodiac UI packages",
+            "url": "start"
+        },
+        {
+            "title": "Packages",
+            "children": [
+                {
+                    "url": "guide/ng-observable",
+                    "title": "@zodiac-ui/ng-observable",
+                    "tooltip": "How to use NgObservable in your project"
+                }
+            ]
+        },
+        {
+            "title": "API",
+            "tooltip": "Details of the Angular packages, classes, interfaces, and other types.",
+            "url": "api"
+        }
+    ],
+    "docVersions": [
+    ]
+}
