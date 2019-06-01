@@ -39,7 +39,7 @@ export class LocationService {
     // TODO: ignore if url-without-hash-or-search matches current location?
     go(url: string|null|undefined) {
         if (!url) { return; }
-        url = this.stripSlashes(url);
+        // url = this.stripSlashes(url);
         if (/^http/.test(url)) {
             // Has http protocol so leave the site
             this.goExternal(url);
@@ -49,7 +49,7 @@ export class LocationService {
             this.scrollService.removeStoredScrollPosition();
             this.goExternal(url);
         } else {
-            window.location.assign(url);
+            this.location.go(url);
             this.urlSubject.next(url);
         }
     }
