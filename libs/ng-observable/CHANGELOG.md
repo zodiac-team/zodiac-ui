@@ -1,5 +1,37 @@
 # CHANGELOG
 
+## v0.2.0
+
+- Upgrade to Angular 8.0.0.
+
+- Api docs moved inline with code. New docs website <<TBD>>
+
+- Debouncing `State` change detection again to next microtask tick. State observers will still be notified immediately.
+
+- `StreamSink` is now `Stream`. This should be provided to each component/directive that needs it. For example:
+
+```ts
+@Component({
+    viewProviders: [Stream] // or providers
+})
+export class MyComponent {
+    constructor(@Self() stream: Stream) { // use @Self() to guard against using the wrong provider
+        // subscribes and automatically cleans up when destroyed
+        stream((count) => console.log(count))(interval(1000))
+    }
+}
+```
+
+- Removed `stream` operator. Use `Stream` instead.
+
+- `NgObservable` is no longer generic. Removed `sink` property simplified implementation. For `sink` behaviour use `Stream` instead.
+
+- `NgObservable` no longer extends `Observable`. Lifecycle hooks and operators now check for the presence of named prototype/instance properties.
+
+- `InvokeSubject` now accepts a function argument that is called instead of the default function.
+
+- Removed `useDefaultLifecycleHooks` provider. Lifecycle flags no longer need to be configured. 
+
 ## v0.1.4
 
 -   Fix change detection when using `REATTACH` change strategy.

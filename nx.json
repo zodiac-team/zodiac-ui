@@ -40,6 +40,12 @@
         },
         "ng-observable": {
             "tags": []
+        },
+        "docs": {
+            "tags": []
+        },
+        "docs-e2e": {
+            "tags": []
         }
     }
 }
