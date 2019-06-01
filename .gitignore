@@ -5,7 +5,7 @@
 /tmp
 /out-tsc
 generated
-
+!docs/generated
 # dependencies
 node_modules
 

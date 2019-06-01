@@ -1,0 +1,59 @@
+{
+  "TopBar": [
+    {
+      "title": "Get Started",
+      "tooltip": "How to install Zodiac UI packages",
+      "url": "start"
+    },
+    {
+      "title": "API Reference",
+      "tooltip": "Details of the Angular packages, classes, interfaces, and other types.",
+      "url": "api"
+    }
+  ],
+  "TopBarNarrow": [],
+  "SideNav": [
+    {
+      "title": "Get Started",
+      "tooltip": "How to install Zodiac UI packages",
+      "url": "start"
+    },
+    {
+      "title": "Packages",
+      "children": [
+        {
+          "url": "guide/ng-observable",
+          "title": "@zodiac-ui/ng-observable",
+          "tooltip": "How to use NgObservable in your project"
+        }
+      ]
+    },
+    {
+      "title": "API",
+      "tooltip": "Details of the Angular packages, classes, interfaces, and other types.",
+      "url": "api"
+    }
+  ],
+  "docVersions": [],
+  "__versionInfo": {
+    "options": {
+      "loose": false,
+      "includePrerelease": false
+    },
+    "loose": false,
+    "raw": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 1,
+    "prerelease": [
+      "local"
+    ],
+    "build": "sha.2b1197b",
+    "version": "0.0.1-local",
+    "codeName": "snapshot",
+    "isSnapshot": true,
+    "full": "0.0.1-local+sha.2b1197b",
+    "branch": "master",
+    "commitSHA": "2b1197bf556188c2bc10fb886aa575bc2648ef80"
+  }
+}

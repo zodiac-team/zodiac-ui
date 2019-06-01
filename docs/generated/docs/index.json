@@ -1,0 +1,5 @@
+{
+  "id": "index",
+  "title": "Zodiac UI",
+  "contents": "\n\n\n\n<div class=\"content\">\n<!-- FULL HEADER BLOCK -->\n<header>\n    <!-- BACKGROUND IMAGE -->\n    <div class=\"background-sky hero\"></div>\n    <!-- INTRO SECTION -->\n    <section id=\"intro\">\n        <!-- LOGO -->\n        <div class=\"hero-logo\">\n            <img src=\"assets/images/logos/angular/logo-nav@2x.png\" alt=\"Zodiac\" width=\"256\" height=\"256\">\n        </div>\n        <!-- CONTAINER -->\n        <div class=\"homepage-container\">\n            <h1 class=\"hero-headline no-toc no-link\" id=\"zodiac-ui\">Zodiac UI<a title=\"Link to this heading\" class=\"header-link\" aria-hidden=\"true\" href=\"index#zodiac-ui\"><i class=\"material-icons\">link</i></a></h1>\n            <a class=\"button hero-cta\" href=\"start\">Get Started</a>\n        </div>\n    </section>\n</header>\n\n</div>\n\n<!-- links to this doc:\n-->\n<!-- links from this doc:\n - index#zodiac-ui\n - start\n-->"
+}
