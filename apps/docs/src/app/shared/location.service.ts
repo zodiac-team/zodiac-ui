@@ -49,7 +49,7 @@ export class LocationService {
             this.scrollService.removeStoredScrollPosition();
             this.goExternal(url);
         } else {
-            this.location.go(url);
+            window.location.assign(url);
             this.urlSubject.next(url);
         }
     }
