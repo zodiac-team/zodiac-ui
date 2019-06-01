@@ -637,7 +637,6 @@
                         "tsConfig": "apps/docs/tsconfig.app.json",
                         "webWorkerTsConfig": "apps/docs/tsconfig.worker.json",
                         "assets": [
-                            "apps/docs/src/favicon.ico",
                             "apps/docs/src/assets",
                             "apps/docs/src/generated",
                             "apps/docs/src/pwa-manifest.json",
