@@ -1,36 +1,44 @@
 # CHANGELOG
 
+## v0.2.1
+
+-   When using `ChangeDetectionStrategy.DETACH`, changed `State` so that it immediately detaches the change
+    detector before the view is constructed. To make sure the intial view is still rendered, it will now queue 
+    one change detection cycle on the next tick. This fixes some edge cases where the initial view would not
+    be rendered properly.
+
 ## v0.2.0
 
-- Upgrade to Angular 8.0.0.
+-   Upgrade to Angular 8.0.0.
 
-- Api docs moved inline with code. New docs website <<TBD>>
+-   Api docs moved inline with code. New docs website <<TBD>>
 
-- Debouncing `State` change detection again to next microtask tick. State observers will still be notified immediately.
+-   Debouncing `State` change detection again to next microtask tick. State observers will still be notified immediately.
 
-- `StreamSink` is now `Stream`. This should be provided to each component/directive that needs it. For example:
+-   `StreamSink` is now `Stream`. This should be provided to each component/directive that needs it. For example:
 
 ```ts
 @Component({
-    viewProviders: [Stream] // or providers
+    viewProviders: [Stream], // or providers
 })
 export class MyComponent {
-    constructor(@Self() stream: Stream) { // use @Self() to guard against using the wrong provider
-        // subscribes and automatically cleans up when destroyed
-        stream((count) => console.log(count))(interval(1000))
-    }
+    constructor(@Self() stream: Stream) {
+        // use @Self() to guard against using the wrong provider
+        // subscribes and automatically cleans up when destroyed
+        stream(count => console.log(count))(interval(1000))
+    }
 }
 ```
 
-- Removed `stream` operator. Use `Stream` instead.
+-   Removed `stream` operator. Use `Stream` instead.
 
-- `NgObservable` is no longer generic. Removed `sink` property simplified implementation. For `sink` behaviour use `Stream` instead.
+-   `NgObservable` is no longer generic. Removed `sink` property simplified implementation. For `sink` behaviour use `Stream` instead.
 
-- `NgObservable` no longer extends `Observable`. Lifecycle hooks and operators now check for the presence of named prototype/instance properties.
+-   `NgObservable` no longer extends `Observable`. Lifecycle hooks and operators now check for the presence of named prototype/instance properties.
 
-- `InvokeSubject` now accepts a function argument that is called instead of the default function.
+-   `InvokeSubject` now accepts a function argument that is called instead of the default function.
 
-- Removed `useDefaultLifecycleHooks` provider. Lifecycle flags no longer need to be configured. 
+-   Removed `useDefaultLifecycleHooks` provider. Lifecycle flags no longer need to be configured.
 
 ## v0.1.4
 

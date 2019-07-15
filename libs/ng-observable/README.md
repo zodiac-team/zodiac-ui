@@ -13,6 +13,12 @@ Create powerful reactive components with Angular. AoT compatible and Ivy ready.
 -   🎈 Get strongly typed changes with `TypedChanges<T>`
 -   👉 Extract implementation details into pure reactive functions
 
+## Setup
+
+```bash
+npm install @zodiac-ui/ng-observable
+```
+
 ## Getting Started
 
 [Read the docs](https://zodiac.repl.to/guide/ng-observable)
