@@ -2,19 +2,24 @@
     "name": "@zodiac-ui/store",
     "license": "MIT",
     "author": "zodiac-team",
-    "version": "0.0.9",
+    "version": "0.1.0",
     "homepage": "https://github.com/zodiac-team/zodiac-ui",
     "keywords": [
         "RxJS",
         "Angular",
         "Store",
-        "Redux",
+        "State Management",
         "Zodiac"
     ],
     "peerDependencies": {
-        "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
-        "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
-        "immer": "^1.10.2",
+        "@angular/common": "^7.0.0 || ^8.0.0",
+        "@angular/core": "^7.0.0 || ^8.0.0",
+        "immer": ">=1.10.2 < 4.0.0"
+    },
+    "dependencies": {
+        "sourcemapped-stacktrace": "^1.1.9"
+    },
+    "optionalDependencies": {
         "reselect": "^4.0.0"
     }
 }

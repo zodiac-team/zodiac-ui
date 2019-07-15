@@ -1,34 +1,54 @@
-import { Observable } from "rxjs"
-import { Selector } from "reselect"
+import { NextObserver, Observable } from "rxjs"
 
 export type Feature = string
 
-export interface StoreContext<T> {
-    $implicit: T
+export type PartialValueFnWithContext<T, U extends any = any> = (
+    state: T,
+    ctx: U,
+) => Partial<T> | void
+export type PartialValueFn<T> = (state: T) => Partial<T> | void
+export type PartialValue<T> = Partial<T>
+
+export type _DeepReadonlyObject<T> = { readonly [P in keyof T]: DeepReadonly<T[P]> }
+export interface _DeepReadonlyArray<T> extends ReadonlyArray<DeepReadonly<T>> {}
+export type DeepReadonly<T> = T extends (...args: any[]) => any
+    ? T
+    : T extends any[]
+    ? _DeepReadonlyArray<T[number]>
+    : T extends object
+    ? _DeepReadonlyObject<T>
+    : T
+
+export type Action<T extends { type: string; payload?: any } = { type: string }> = {
+    readonly type: ActionType<T>
+    readonly payload?: ActionPayload<T>
 }
 
-export interface Action {
-    type?: string
+export type ActionType<T extends Action> = T["type"]
+export type ActionPayload<T extends Action> = T["payload"]
+
+export type ActionFactory<T extends string = string, U = any> = Action & ((
+    payload: U,
+) => Action<{ type: T; payload: DeepReadonly<U> }>)
+
+export type StoreSnapshotChanges<T> = {
+    [key in keyof T]?: {
+        hasChanged: boolean
+        previousValue: T[key]
+        currentValue: T[key]
+    }
 }
 
-export type ConnectFnWithContext<T, U> = (ctx: T) => U
-export type ConnectFactoryWithContext<T, U extends ConnectFnWithContext<any, any>> = (
-    fn: U,
-    name?: string,
-) => U
-
-export type StateSetter<T> = Partial<T> | ((draft: T) => any)
-export type StateSetterWithContext<T, U> = Partial<T> | ((draft: T, ctx: U) => any)
-
-export interface StoreLike<T> extends Observable<T> {
-    state: T
-    select<R>(selector: Selector<T, R>): Observable<R>
-    dispatch(action: any): void
-    setState(setter: StateSetter<T>): void
+export interface StoreSnapshot<T extends object> {
+    value: T
+    previousValue: T
+    changes: StoreSnapshotChanges<T>
 }
 
-export type InitialState<T> = { [key in keyof T]: T[key] | Selector<T, T[key]> }
+export type Selector<S, R> = (state: S) => R
 
-export type Computed<T> = { [key in keyof T]: Selector<T, any> }
-
-export type InitialStateGetter<T> = () => InitialState<T>
+export interface StoreLike<T> extends Observable<T>, NextObserver<T> {
+    next<U extends any>(partial: PartialValueFnWithContext<T, U>, context: U): void
+    next(partial: PartialValueFn<T>): void
+    next(partial: PartialValue<T>): void
+}

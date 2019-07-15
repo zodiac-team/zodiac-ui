@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@angular/core"
 import { STORE_DEVTOOLS_EXTENSION } from "./constants"
-import { Actions } from "../actions.service"
+import { Actions } from "../actions"
 import { SetState, Store } from "../store.service"
 import { buffer, delay, map, skip } from "rxjs/operators"
 import { ofAction } from "../operators"

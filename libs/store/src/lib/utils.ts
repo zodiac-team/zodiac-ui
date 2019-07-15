@@ -1,48 +1,65 @@
-import { combineLatest, Observable, Subject } from "rxjs"
-import { Selector } from "reselect"
-import { distinctUntilChanged, map } from "rxjs/operators"
-import { Computed, StoreLike } from "./interfaces"
-import { select, setState } from "./operators"
+import { StoreSnapshotChanges } from "./interfaces"
 
-export function OfType<T extends { new (...args: any[]): {} }>(type: string) {
-    return function(constructor) {
-        return class extends constructor {
-            static type = type
-            type = type
+export function getChanges<T extends object>(current, previous) {
+    const changes: StoreSnapshotChanges<T> = Object.create(null)
 
-            constructor(...args: any[]) {
-                super(...args)
-            }
-        } as typeof constructor
+    previous = previous || Object.create(null)
+
+    for (const key in current) {
+        // noinspection JSUnfilteredForInLoop
+        if (previous[key] !== current[key]) {
+            // noinspection JSUnfilteredForInLoop
+            changes[key] = Object.create(null)
+            // noinspection JSUnfilteredForInLoop
+            changes[key].previousValue = previous[key]
+            // noinspection JSUnfilteredForInLoop
+            changes[key].currentValue = current[key]
+        }
     }
+
+    return changes
 }
 
-export function isRecipe<T>(setter): setter is (draft: T) => any {
-    return typeof setter === "function"
+export function toPreviousValue<T extends object>(currentValue: T) {
+    return Object.getPrototypeOf(currentValue)
 }
 
-export function compute<T, R>(
-    store: StoreLike<T>,
-    state$: Subject<T>,
-    computed: Computed<T>,
-): Observable<any> {
-    const values = Object.keys(computed)
-        .filter(key => typeof computed[key] === "function")
-        .map((key): [string, Selector<T, R>] => [key, computed[key]])
+function isOwnObject(o, prop) {
+    return (o.hasOwnProperty ? o.hasOwnProperty(prop) : true)
+        // noinspection JSUnfilteredForInLoop
+        && o[prop] !== null
+        // noinspection JSUnfilteredForInLoop
+        && (typeof o[prop] === "object" || typeof o[prop] === "function");
 
-    const obs = values.map(([key, selector]) => {
-        return state$.pipe(
-            select(selector),
-            distinctUntilChanged(),
-            map(value => [key, value]),
-        )
-    })
+}
 
-    return combineLatest(obs).pipe(
-        setState(store, (state, computedValues) => {
-            computedValues.forEach(([key, value]) => {
-                state[key] = value
-            })
-        }),
-    )
+export function toEnumeratedValue<T extends object>(value: T, deep?: boolean): T {
+    const enumerated: any = Object.create(null)
+    const previous = toPreviousValue(value)
+
+    if (previous !== null) {
+        for (const key in previous) {
+            // noinspection JSUnfilteredForInLoop
+            enumerated[key] = value[key]
+        }
+    }
+
+    if (value) {
+        for (const key in value) {
+            // noinspection JSUnfilteredForInLoop
+            enumerated[key] = value[key]
+        }
+    }
+
+    if (deep) {
+        for (const key in enumerated) {
+            // noinspection JSUnfilteredForInLoop
+            if (isOwnObject(enumerated, key)) {
+                // noinspection JSUnfilteredForInLoop
+                enumerated[key] = toEnumeratedValue(enumerated[key], deep)
+            }
+        }
+    }
+
+    return enumerated
 }

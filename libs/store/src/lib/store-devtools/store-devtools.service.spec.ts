@@ -4,7 +4,7 @@ import { StoreDevtoolsService } from "./store-devtools.service"
 import { STORE_DEVTOOLS_EXTENSION } from "./constants"
 import { Subject, Observable, Subject } from "rxjs"
 import { StoreLike } from "../interfaces"
-import { Actions } from "../actions.service"
+import { Actions } from "../actions"
 import { Store } from "../store.service"
 
 class FakeStore extends Observable<any> implements StoreLike<any> {

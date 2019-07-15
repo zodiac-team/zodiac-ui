@@ -1,13 +1,13 @@
 import { provideEffects } from "./effects.module"
 import { STORE_EFFECTS_OBSERVER } from "../constants"
-import { Subject, of } from "rxjs"
-import { createConnector, EffectsService, Effects } from "./effects.service"
-import { TestBed, async } from "@angular/core/testing"
+import { of, Subject } from "rxjs"
+import { createConnector, EffectsService, StoreEffects } from "./effects.service"
+import { async, TestBed } from "@angular/core/testing"
 
 function createTestEffectsModule(effects) {
     return TestBed.configureTestingModule({
         providers: [
-            Effects,
+            StoreEffects,
             provideEffects(effects),
             {
                 provide: STORE_EFFECTS_OBSERVER,

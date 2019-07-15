@@ -58,8 +58,9 @@
         "codemirror": "^5.45.0",
         "core-js": "^2.5.4",
         "hammerjs": "^2.0.8",
-        "immer": "^1.10.2",
+        "immer": ">=1.10.2 < 4.0.0",
         "linkify-it": "^2.1.0",
+        "lunr": "^2.3.6",
         "material-design-icons": "^3.0.1",
         "prosemirror-collab": "^1.1.1",
         "prosemirror-commands": "^1.0.7",
@@ -75,8 +76,8 @@
         "prosemirror-view": "^1.8.3",
         "reselect": "^4.0.0",
         "rxjs": "~6.5.2",
-        "zone.js": "~0.9.1",
-        "lunr": "^2.3.6"
+        "sourcemapped-stacktrace": "^1.1.9",
+        "zone.js": "~0.9.1"
     },
     "devDependencies": {
         "@nrwl/workspace": "8.0.0",

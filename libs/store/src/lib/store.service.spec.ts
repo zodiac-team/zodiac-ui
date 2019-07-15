@@ -1,7 +1,7 @@
 import { provideStore, Store } from "./store.service"
 import { Injector } from "@angular/core"
 import { async, TestBed, TestBedStatic } from "@angular/core/testing"
-import { Actions } from "./actions.service"
+import { Actions } from "./actions"
 import { Observable, Subject } from "rxjs"
 import { STORE_ACTIONS_OBSERVER } from "./constants"
 import objectContaining = jasmine.objectContaining

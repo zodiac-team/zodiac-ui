@@ -1,21 +1,9 @@
-import {
-    createConnector,
-    createFeatureSelector,
-    Effects,
-    InitialState,
-    ofAction,
-    ofEffect,
-    OfType,
-    select,
-    setState,
-    Store,
-} from "@zodiac-ui/store"
-import { Injectable } from "@angular/core"
+import { action, Action, Actions, Effects, ofAction, ofEffect, select, setState, Store } from "@zodiac-ui/store"
 import { HttpClient } from "@angular/common/http"
-import { filter, skip, switchMap, take, tap } from "rxjs/operators"
-import { timer } from "rxjs"
+import { Injectable } from "@angular/core"
+import { delay, filter, skip, switchMap, take, tap } from "rxjs/operators"
+import { asapScheduler, queueScheduler, timer } from "rxjs"
 import { createSelector } from "reselect"
-import { Actions } from "@zodiac-ui/store"
 
 interface Todo {
     userId: number
@@ -30,52 +18,45 @@ export interface AppState {
     somethingElse: string
     isLoaded: boolean
     todo: Todo
-    computedValue: number
-    chainedValue: number
 }
 
-const feature = createFeatureSelector<AppState>()
+const feature = (state: AppState) => state
 const $count = createSelector(
     feature,
     state => state.count,
 )
 
-export const $computedValue = createSelector(
-    $count,
-    count => {
-        return count + 1
-    },
-)
+// export const $computedValue = createSelector(
+//     $count,
+//     count => {
+//         return count + 1
+//     },
+// )
+//
+// export const $chainedValue = createSelector(
+//     $computedValue,
+//     computedValue => {
+//         return computedValue * 5
+//     },
+// )
 
-export const $chainedValue = createSelector(
-    $computedValue,
-    computedValue => {
-        return computedValue * 5
-    },
-)
-
-export function initialState(): InitialState<AppState> {
-    return {
-        count: 0,
-        didIncrement: false,
-        somethingElse: null,
-        todo: null,
-        isLoaded: false,
-        computedValue: $computedValue,
-        chainedValue: $chainedValue,
-    }
+export const initialState: AppState = {
+    count: 0,
+    didIncrement: false,
+    somethingElse: null,
+    todo: null,
+    isLoaded: false,
 }
 
-export const connect = createConnector<AppEffects>()
+// export const connect = createConnector<AppEffects>()
 
-@OfType("GET_TODOS")
-export class GetTodos {
-    constructor(public payload: any) {}
-}
-
+// @OfType("GET_TODOS")
+// export class GetTodos {
+//     constructor(public payload: any) {}
+// }
+//
 @Injectable()
-export class AppEffects {
-    static connect = connect
+export class AppEffectsContext {
     constructor(
         public http: HttpClient,
         public store: Store<AppState>,
@@ -83,38 +64,48 @@ export class AppEffects {
         public effects: Effects,
     ) {}
 }
-
-connect(({ store }) => {
-    return store.pipe(
+//
+function didIncrement({ store }: AppEffectsContext) {
+    return (<any>store).state.pipe(
         select($count),
-        skip(1),
-        take(1),
+        filter(count => count === 1),
         setState(store, state => {
             state.didIncrement = true
         }),
     )
-})
+}
 
-connect(({ store }) => timer(1000).pipe(setState(store, { somethingElse: "somethingElse" })))
+function somethingElse({ store }: AppEffectsContext) {
+    return timer(1000).pipe(setState(store, { somethingElse: "somethingElse" }))
+}
 
-const someEffect = connect(({ http, store, actions }) =>
-    actions.pipe(
-        ofAction(GetTodos),
+function someEffect({ http, store, actions }: AppEffectsContext) {
+    return actions.pipe(
+        ofAction(someAction),
         switchMap(action => {
             return http.get<Todo>(action.payload).pipe(
-                setState(store, (state, todo) => {
-                    state.todo = todo
-                }),
+                setState(store, (state, todo) => ({
+                    todo,
+                })),
             )
         }),
-    ),
-)
+    )
+}
 
-connect(({ store, effects }) =>
-    effects.pipe(
+function isLoaded({ store, effects }: AppEffectsContext) {
+    return effects.pipe(
         ofEffect(someEffect),
-        setState(store, state => {
-            state.isLoaded = true
-        }),
-    ),
-)
+        setState(store, (state, ctx) => ({
+            isLoaded: true,
+        })),
+    )
+}
+
+export const appEffects = [didIncrement, somethingElse, someEffect, isLoaded]
+
+type SomeAction = Action<{
+    type: "SOME_ACTION",
+    payload: string
+}>
+
+const someAction = action<SomeAction>("SOME_ACTION")

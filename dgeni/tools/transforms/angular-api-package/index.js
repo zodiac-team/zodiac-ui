@@ -87,6 +87,7 @@ module.exports =
           readTypeScriptModules.sourceFiles = [
             'ng-observable/index.ts',
             'ng-observable/operators.ts',
+            'store/index.ts',
           ];
 
           readFilesProcessor.fileReaders.push(packageContentFileReader);

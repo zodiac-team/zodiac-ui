@@ -7,7 +7,7 @@
         },
         {
             "title": "API Reference",
-            "tooltip": "Details of the Angular packages, classes, interfaces, and other types.",
+            "tooltip": "Details of the Zodiac UI packages, classes, interfaces, and other types.",
             "url": "api"
         }
     ],
@@ -26,12 +26,17 @@
                     "url": "guide/ng-observable",
                     "title": "@zodiac-ui/ng-observable",
                     "tooltip": "How to use NgObservable in your project"
+                },
+                {
+                    "url": "guide/store",
+                    "title": "@zodiac-ui/store",
+                    "tooltip": "How to use Store in your project"
                 }
             ]
         },
         {
             "title": "API",
-            "tooltip": "Details of the Angular packages, classes, interfaces, and other types.",
+            "tooltip": "Details of the Zodiac UI packages, classes, interfaces, and other types.",
             "url": "api"
         }
     ],

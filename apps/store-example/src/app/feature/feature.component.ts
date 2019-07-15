@@ -9,9 +9,7 @@ import { FeatureState } from "./feature.store"
 
         <button (click)="incrementValue()">Increment</button>
 
-        <ng-container *zStore="let state; in: store">
-            <pre>{{ state | json }}</pre>
-        </ng-container>
+        <pre>{{ store | async | jsonAll }}</pre>
     `,
     styleUrls: ["./feature.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,8 +19,8 @@ export class FeatureComponent {
     constructor(public store: Store<FeatureState>) {}
 
     public incrementValue() {
-        this.store.setState(state => {
-            state.count += 3
-        })
+        this.store.next(state => ({
+            count: state.count + 3
+        }))
     }
 }
