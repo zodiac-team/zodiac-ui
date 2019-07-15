@@ -9,10 +9,10 @@ export interface Effect {
 export type EffectFactory = (ctx?: any) => ObservableInput<any>
 
 export interface EffectsConfig {
-    context: Type<any>
+    context?: Type<any>
 }
 
 export interface EffectsProvider {
-    config: EffectsConfig
+    config?: EffectsConfig
     effects: EffectFactory[]
 }

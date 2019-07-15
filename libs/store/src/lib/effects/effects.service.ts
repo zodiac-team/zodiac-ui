@@ -14,7 +14,7 @@ export class StoreEffects {
     public run() {
         const { providers, injector, effectsObserver } = this
         providers.forEach((provider) => {
-            const context = injector.get(provider.config.context, undefined)
+            const context = provider.config ? injector.get(provider.config.context, undefined) : undefined
             const effects = provider.effects.map((type) => from(type(context)).pipe(
                 map((payload) => ({
                     type,

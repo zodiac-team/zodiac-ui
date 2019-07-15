@@ -30,7 +30,7 @@ selectors, you can optionally install `reselect` or use any library/method that 
 npm install reselect
 ```
 
-## Usage
+## Example
 
 ### Root Store
 

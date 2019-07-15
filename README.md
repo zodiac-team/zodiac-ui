@@ -13,6 +13,7 @@ A collection of useful UI libraries for Angular.
 | Package                                         | Description                                       |
 | :---------------------------------------------- | :------------------------------------------------ |
 | [@zodiac-ui/ng-observable](libs/ng-observable/) | Create powerful reactive components with Angular. |
+| [@zodiac-ui/store](libs/store/)               | Zero boilerplate immutable application state      |
 
 #### Internal use/educational purposes
 
@@ -20,5 +21,4 @@ A collection of useful UI libraries for Angular.
 | :------------------------------------------------------ | :-------------------------------------------------- |
 | [@zodiac-ui/formula](libs/formula.md)                   | A form generator inspired by Angular Router         |
 | [@zodiac-ui/formula-material](libs/formula-material.md) | Angular Material components for Formula             |
-| [@zodiac-ui/store](libs/store.md)                       | An immutable store implementation based on ngrx     |
 | [@zodiac-ui/editor](libs/editor.md)                     | A rich text editor for Angular built on ProseMirror |
