@@ -12,7 +12,7 @@
         "lib": ["es2017", "dom"],
         "baseUrl": ".",
         "paths": {
-            "@zodiac-ui/store": ["libs/store/src/index.ts"],
+            "@zodiac-ui/store": ["libs/store/index.ts"],
             "@zodiac-ui/formula": ["libs/formula/src/index.ts"],
             "@zodiac-ui/formula-material": ["libs/formula-material/src/index.ts"],
             "@zodiac-ui/blog": ["libs/blog/src/index.ts"],

@@ -1,11 +1,10 @@
 import { ModuleWithProviders, NgModule } from "@angular/core"
-import { CommonModule } from "@angular/common"
 import { EffectFactory, EffectsConfig } from "./interfaces"
 import { Effects, StoreEffects } from "./effects.service"
 import { provideEffects } from "./providers"
 
 @NgModule({
-    imports: [CommonModule],
+    imports: [],
     declarations: [],
     providers: [],
 })
@@ -21,7 +20,7 @@ export class EffectsModule {
         }
     }
 
-    static forChild(effects: EffectFactory[], options?: EffectsConfig) {
+    static forChild(effects: EffectFactory[], options?: EffectsConfig): ModuleWithProviders {
         return {
             ngModule: EffectsModule,
             providers: [StoreEffects, provideEffects(effects, options)],

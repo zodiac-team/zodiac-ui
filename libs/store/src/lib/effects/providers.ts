@@ -9,5 +9,5 @@ export function provideEffects(effects: EffectFactory[], config: EffectsConfig) 
             config: config
         },
         multi: true
-    }, config && config.context]
+    }]
 }

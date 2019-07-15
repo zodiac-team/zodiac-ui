@@ -168,7 +168,7 @@ Import the effects module into your app module. Use `forRoot` here.
 export class AppModule {}
 ```
 
-For feature modules use `forChild`.
+For feature modules use `forChild`. Make sure that you also provide the effects context in the providers array.
 
 ```typescript
 @NgModule({
@@ -179,6 +179,7 @@ For feature modules use `forChild`.
             context: FeatureEffects,
         }),
     ],
+    providers: [FeatureEffects]
 })
 export class FeatureModule {}
 ```
